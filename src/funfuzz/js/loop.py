@@ -257,7 +257,7 @@ def run_to_report(options, js_interesting_opts, env, log_prefix, fuzzjs, ccovera
 
         with io.open(str(out_log), "r", encoding="utf-8", errors="replace") as f:
             newfileLines = before + [  # pylint: disable=invalid-name
-                l.replace("/*FRC-", "/*") for l in file_manipulation.linesStartingWith(f, "/*FRC-")] + after
+                line.replace("/*FRC-", "/*") for line in file_manipulation.linesStartingWith(f, "/*FRC-")] + after
         orig_log = (log_prefix.parent / f"{log_prefix.stem}-orig").with_suffix(".js")
         with io.open(str(orig_log), "w", encoding="utf-8", errors="replace") as f:
             f.writelines(newfileLines)
