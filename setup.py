@@ -13,17 +13,16 @@ EXTRAS = {
     "test": [
         "codecov==2.0.15",
         "coverage>=4.5.4,<4.6",
-        "distro>=1.3.0",
-        "flake8==3.7.9",
-        "flake8-commas==2.0.0",
-        "flake8-isort==2.8.0",
-        "flake8-quotes>=2.1.1,<2.2",
+        "flake8==3.8.3",
+        "flake8-commas>=2.0.0,<2.1",
+        "flake8-isort>=3.0.0,<3.1",
+        "flake8-quotes>=3.2.0,<3.3",
         "isort==4.3.21",
-        "pylint>=2.4.3,<2.5",
-        "pytest>=5.3,<5.4",
-        "pytest-cov>=2.8.1,<2.9",
-        "pytest-flake8>=1.0.4,<1.1",
-        "pytest-pylint>=0.14.0,<0.15",
+        "pylint>=2.5.3,<2.6",
+        "pytest>=5.4.3,<5.5",
+        "pytest-cov>=2.10.0,<2.11",
+        "pytest-flake8>=1.0.6,<1.1",
+        "pytest-pylint>=0.17.0,<0.18",
     ]}
 
 
@@ -45,7 +44,8 @@ if __name__ == "__main__":
           packages=find_packages(where="src"),
           install_requires=[
               "boto>=2.49.0",
-              "fasteners>=0.15",
+              "distro>=1.3.0",
+              "fasteners>=0.14",
               # https://www.mercurial-scm.org/wiki/SupportedPythonVersions#Python_3.x_support
               # "mercurial>=4.7.2",  # Mercurial does not support Python 3 yet
               "requests>=2.20.1",

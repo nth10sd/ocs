@@ -185,7 +185,7 @@ def grab_crash_log(prog_full_path, crashed_pid, log_prefix, want_stack):
         core_file = Path(dbggr_cmd[-1])
         assert core_file.is_file()
         try:
-            dbbgr_exit_code = subprocess.run(
+            subprocess.run(
                 [str(x) for x in dbggr_cmd],
                 check=True,
                 stdin=None,
@@ -197,8 +197,8 @@ def grab_crash_log(prog_full_path, crashed_pid, log_prefix, want_stack):
                 # Do not generate a core_file if gdb crashes in Linux
                 preexec_fn=(disable_corefile if platform.system() == "Linux" else None),
             )
-        except subprocess.CalledProcessError:
-            print(f'Debugger exited with code {dbbgr_exit_code} : {" ".join(quote(str(x)) for x in dbggr_cmd)}')
+        except subprocess.CalledProcessError as ex:
+            print(f'Debugger exited with code {ex.returncode} : {" ".join(quote(str(x)) for x in dbggr_cmd)}')
         if use_logfiles:  # pylint: disable=no-else-return
             if core_file.is_file():
                 shutil.move(str(core_file), str(core_file))

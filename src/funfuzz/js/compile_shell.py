@@ -59,6 +59,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         build_opts (object): Object containing the build options defined in build_options.py
         hg_hash (str): Changeset hash
     """
+
     def __init__(self, build_opts, hg_hash):
         self.shell_name_without_ext = build_options.computeShellName(build_opts, hg_hash)
         self.hg_hash = hg_hash
@@ -347,6 +348,7 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
         # 32-bit shell on 32/64-bit x86 Linux
         cfg_env["PKG_CONFIG_LIBDIR"] = "/usr/lib/pkgconfig"
         # apt-get `libc6-dev-i386 g++-multilib` first, if on 64-bit Linux. (no matter Clang or GCC)
+        # Also run this: `rustup target add i686-unknown-linux-gnu`
         cfg_env["CC"] = f"clang -m32 {SSE2_FLAGS}"
         cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"
         cfg_cmds.append("sh")

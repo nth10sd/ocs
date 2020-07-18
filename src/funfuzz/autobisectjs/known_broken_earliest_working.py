@@ -100,6 +100,8 @@ def known_broken_ranges(options):  # pylint: disable=missing-param-doc,missing-r
         skips.extend([
             # Fx68, see bug 1542980
             hgrange("427b854cdb1c47ce6a643f83245914d66dca4382", "4c4e45853808229f832e32f6bcdbd4c92a72b13b"),
+            # Fx80, see bug 1652650
+            hgrange("7df94b4f2b9f8d66120a754920f74e256418214a", "e2647b165bc726430f815c3700d3b663c5bfe568"),
         ])
 
     if options.enableSimulatorArm32:
@@ -126,6 +128,8 @@ def earliest_known_working_rev(_options, flags, skip_revs):  # pylint: disable=m
     required = []
 
     # These should be in descending order, or bisection will break at earlier changesets.
+    if platform.system() == "Darwin":  # 1st w/ successful macOS 10.15.4 SDK builds, see bug 1626329
+        required.append("69ca707826ed0fbecfce3e6949fb8e4f81c4bbdb")  # m-c 521440 Fx76
     if "--nursery-bigints=on" in flags or \
             "--nursery-bigints=off" in flags:  # 1st w/--nursery-bigints=on, see bug 1530372
         required.append("a0d1fb0a86b04c74a8809c35230382f90cdfe779")  # m-c 509086 Fx74

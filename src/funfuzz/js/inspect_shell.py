@@ -201,6 +201,7 @@ def verifyBinary(sh):  # pylint: disable=invalid-name,missing-param-doc,missing-
 
     assert queryBuildConfiguration(binary, "more-deterministic") == sh.build_opts.enableMoreDeterministic
     assert queryBuildConfiguration(binary, "asan") == sh.build_opts.enableAddressSanitizer
+    # Checking for profiling status does not work with mozilla-beta and mozilla-release
     assert queryBuildConfiguration(binary, "profiling") != sh.build_opts.disableProfiling
     if platform.machine() == "x86_64":
         assert (queryBuildConfiguration(binary, "arm-simulator") and
