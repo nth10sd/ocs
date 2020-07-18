@@ -7,7 +7,6 @@
 """Test the compile_shell.py file."""
 
 from functools import lru_cache
-import logging
 import os
 from pathlib import Path
 import platform
@@ -16,10 +15,6 @@ import pytest
 
 from funfuzz import js
 from funfuzz import util
-
-FUNFUZZ_TEST_LOG = logging.getLogger("funfuzz_test")
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger("flake8").setLevel(logging.ERROR)
 
 # Paths
 MC_PATH = Path.home() / "trees" / "mozilla-central"

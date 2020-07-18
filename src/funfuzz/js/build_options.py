@@ -8,14 +8,10 @@
 """
 
 import argparse
-import hashlib
-import io
 from pathlib import Path
 import platform
 import random
 import sys
-
-from ..util import hg_helpers
 
 DEFAULT_TREES_LOCATION = Path.home() / "trees"
 
@@ -73,10 +69,6 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
                         dest="repo_dir",
                         type=Path,
                         help="Sets the source repository.")
-    parser.add_argument("-P", "--patch",
-                        dest="patch_file",
-                        type=Path,
-                        help="Define the path to a single JS patch. Ensure mq is installed.")
 
     # Basic spidermonkey options
     randomizeBool(["--32"], 0.5,
@@ -138,13 +130,6 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
                   dest="enableSimulatorArm64",
                   help="Build shells with --enable-simulator=arm64, only applicable to 64-bit shells. "
                        'Defaults to "%(default)s".')
-    parser.add_argument("--enable-arm-simulator",
-                        dest="enableArmSimulatorObsolete",
-                        action="store_true",
-                        default=False,
-                        help="Build the shell using --enable-arm-simulator for legacy purposes. "
-                             "This flag is obsolete and is the equivalent of --enable-simulator=arm, "
-                             'use --enable-simulator=[arm|arm64] instead. Defaults to "%(default)s".')
 
     # If adding a new compile option, be mindful of repository randomization.
     # e.g. it may be in mozilla-central but not in mozilla-beta
@@ -164,9 +149,6 @@ def parse_shell_opts(args):
     parser, randomizer = addParserOptions()
     build_options = parser.parse_args(args.split())
 
-    if build_options.enableArmSimulatorObsolete:
-        build_options.enableSimulatorArm32 = True
-
     if build_options.enableRandom:
         build_options = generateRandomConfigurations(parser, randomizer)
     else:
@@ -174,9 +156,6 @@ def parse_shell_opts(args):
         valid = areArgsValid(build_options)
         if not valid[0]:
             print(f"WARNING: This set of build options is not tested well because: {valid[1]}")
-
-    if build_options.patch_file:
-        build_options.patch_file = build_options.patch_file.expanduser().resolve()
 
     # Ensures releng machines do not enter the if block and assumes mozilla-central always exists
     if DEFAULT_TREES_LOCATION.is_dir():
@@ -190,10 +169,6 @@ def parse_shell_opts(args):
                 sys.exit("repo_dir is not specified, and a default repository location cannot be confirmed. Exiting...")
 
         assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
-
-        if build_options.patch_file:
-            hg_helpers.ensure_mq_enabled()
-            assert build_options.patch_file.is_file()
     else:
         sys.exit(f"DEFAULT_TREES_LOCATION not found at: {DEFAULT_TREES_LOCATION}. Exiting...")
 
@@ -227,14 +202,6 @@ def computeShellType(build_options):  # pylint: disable=invalid-name,missing-par
         fileName.append("armsim64")
     fileName.append(platform.system().lower())
     fileName.append(platform.machine().lower())
-    if build_options.patch_file:
-        # We take the name before the first dot, so Windows (hopefully) does not get confused.
-        # Also replace any "." in the name with "_" so pathlib .stem and suffix-wrangling work properly
-        fileName.append(build_options.patch_file.name.replace(".", "_"))
-        with io.open(str(build_options.patch_file), "r", encoding="utf-8", errors="replace") as f:
-            readResult = f.read()  # pylint: disable=invalid-name
-        # Append the patch hash, but this is not equivalent to Mercurial's hash of the patch.
-        fileName.append(hashlib.sha512(readResult.encode("utf-8")).hexdigest()[:12])
 
     assert "" not in fileName, f'fileName "{fileName!r}" should not have empty elements.'
     return "-".join(fileName)

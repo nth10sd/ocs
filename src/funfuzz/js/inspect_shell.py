@@ -13,9 +13,7 @@ import platform
 from shlex import quote
 import subprocess
 
-from lithium.interestingness.utils import env_with_path
-
-from ..util import subprocesses as sps
+from ..util import utils
 
 ASAN_ERROR_EXIT_CODE = 77
 RUN_MOZGLUE_LIB = ""
@@ -108,51 +106,13 @@ def archOfBinary(binary):  # pylint: disable=inconsistent-return-statements,inva
             return "64"
 
 
-def constructVgCmdList(errorCode=77):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc
-    # pylint: disable=missing-return-type-doc,missing-type-doc
-    """Construct default parameters needed to run valgrind with."""
-    valgrind_cmds = []
-    valgrind_cmds.append("valgrind")
-    if platform.system() == "Darwin":
-        valgrind_cmds.append("--dsymutil=yes")
-    valgrind_cmds.append(f"--error-exitcode={errorCode}")
-    # See bug 913876 comment 18:
-    valgrind_cmds.append("--vex-iropt-register-updates=allregs-at-mem-access")
-    valgrind_cmds.append("--gen-suppressions=all")
-    valgrind_cmds.append("--leak-check=full")
-    valgrind_cmds.append("--errors-for-leak-kinds=definite")
-    valgrind_cmds.append("--show-leak-kinds=definite")
-    valgrind_cmds.append("--show-possibly-lost=no")
-    valgrind_cmds.append("--num-callers=50")
-    return valgrind_cmds
-
-
-def shellSupports(shellPath, args):  # pylint: disable=invalid-name,missing-param-doc,missing-raises-doc
-    # pylint: disable=missing-return-doc,missing-return-type-doc,missing-type-doc
-    """Return True if the shell likes the args.
-
-    You can add support for a function, e.g. ["-e", "foo()"], or a flag, e.g. ["-j", "-e", "42"].
-    """
-    return_code = testBinary(shellPath, args, False)[1]
-    if return_code == 0:  # pylint: disable=no-else-return
-        return True
-    elif 1 <= return_code <= 3:
-        # Exit codes 1 through 3 are all plausible "non-support":
-        #   * "Usage error" is 1 in new js shell, 2 in old js shell, 2 in xpcshell.
-        #   * "Script threw an error" is 3 in most shells, but 1 in some versions (see bug 751425).
-        # Since we want autobisectjs to support all shell versions, allow all these exit codes.
-        return False
-    else:
-        raise Exception(f"Unexpected exit code in shellSupports {return_code}")
-
-
-def testBinary(shellPath, args, useValgrind, stderr=subprocess.STDOUT):  # pylint: disable=invalid-name
+def testBinary(shellPath, args, _useValgrind, stderr=subprocess.STDOUT):  # pylint: disable=invalid-name
     # pylint: disable=missing-param-doc,missing-return-doc,missing-return-type-doc,missing-type-doc
     """Test the given shell with the given args."""
-    test_cmd = (constructVgCmdList() if useValgrind else []) + [str(shellPath)] + args
-    sps.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
+    test_cmd = [] + [str(shellPath)] + args
+    utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
 
-    test_env = env_with_path(str(shellPath.parent))
+    test_env = utils.env_with_path(str(shellPath.parent))
     asan_options = f"exitcode={ASAN_ERROR_EXIT_CODE}"
     # Turn on LSan, Linux-only
     # macOS non-support: https://github.com/google/sanitizers/issues/1026
@@ -172,14 +132,8 @@ def testBinary(shellPath, args, useValgrind, stderr=subprocess.STDOUT):  # pylin
         stdout=subprocess.PIPE,
         timeout=999)
     out, return_code = test_cmd_result.stdout.decode("utf-8", errors="replace"), test_cmd_result.returncode
-    sps.vdump(f"The exit code is: {return_code}")
+    utils.vdump(f"The exit code is: {return_code}")
     return out, return_code
-
-
-def testJsShellOrXpcshell(s):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc
-    # pylint: disable=missing-return-type-doc,missing-type-doc
-    """Test if a binary is a js shell or xpcshell."""
-    return "xpcshell" if shellSupports(s, ["-e", "Components"]) else "jsShell"
 
 
 def queryBuildConfiguration(s, parameter):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc

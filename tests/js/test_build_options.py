@@ -6,17 +6,9 @@
 
 """Test the build_options.py file."""
 
-import logging
-from pathlib import Path
 import random
 
 from funfuzz.js import build_options
-
-FUNFUZZ_TEST_LOG = logging.getLogger("funfuzz_test")
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger("flake8").setLevel(logging.ERROR)
-
-TREES_PATH = Path.home() / "trees"
 
 
 def test_chance(monkeypatch):

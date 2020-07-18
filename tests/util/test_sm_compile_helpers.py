@@ -6,22 +6,12 @@
 
 """Test the sm_compile_helpers.py file."""
 
-import logging
 from pathlib import Path
 import platform
 
 import pytest
 
 from funfuzz import util
-
-FUNFUZZ_TEST_LOG = logging.getLogger("funfuzz_test")
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger("flake8").setLevel(logging.ERROR)
-
-# For ICU tests
-M4_REL_DIR = Path("build") / "autoconf"
-M4_REL_PATH = M4_REL_DIR / "icu.m4"
-MC_ICU_M4 = Path("~/trees/mozilla-central").expanduser() / M4_REL_PATH
 
 
 @pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")

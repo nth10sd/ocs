@@ -111,35 +111,6 @@ def envDump(shell, log):  # pylint: disable=invalid-name,missing-param-doc,missi
         f.write(f"version = {shell.get_version()}\n")
 
 
-def extract_vers(objdir):  # pylint: disable=inconsistent-return-statements
-    """Extract the version from js.pc and put it into *.fuzzmanagerconf.
-
-    Args:
-        objdir (Path): Full path to the objdir
-
-    Raises:
-        OSError: Raises when js.pc is not found
-
-    Returns:
-        str: Version number of the compiled js shell
-    """
-    jspc_file_path = objdir / "js" / "src" / "js.pc"
-    # Moved to <objdir>/js/src/build/, see bug 1262241, Fx55 m-c rev 351194:2159959522f4
-    jspc_new_file_path = objdir / "js" / "src" / "build" / "js.pc"
-
-    if jspc_file_path.is_file():
-        actual_path = jspc_file_path
-    elif jspc_new_file_path.is_file():
-        actual_path = jspc_new_file_path
-    else:
-        raise OSError("js.pc file not found - needed to extract the version number")
-
-    with io.open(str(actual_path), mode="r", encoding="utf-8", errors="replace") as f:
-        for line in f:
-            if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
-                return line.split(": ")[1].rstrip()
-
-
 def get_lock_dir_path(cache_dir_base, repo_dir, tbox_id=""):
     """Return the name of the lock directory.
 

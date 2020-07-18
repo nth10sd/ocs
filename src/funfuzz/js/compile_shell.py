@@ -18,7 +18,6 @@ from shlex import quote
 import shutil
 import subprocess
 import sys
-import tarfile
 import traceback
 
 from pkg_resources import parse_version
@@ -27,12 +26,8 @@ from . import build_options
 from . import inspect_shell
 from ..util import file_system_helpers
 from ..util import hg_helpers
-from ..util import s3cache
 from ..util import sm_compile_helpers
-from ..util import subprocesses as sps
-from ..util.lock_dir import LockDir
-
-S3_SHELL_CACHE_DIRNAME = "shell-cache"  # Used by autobisectjs
+from ..util import utils
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
@@ -68,7 +63,6 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         self.js_objdir = ""
 
         self.cfg = []
-        self.destDir = ""  # pylint: disable=invalid-name
         self.added_env = ""
         self.full_env = ""
         self.js_cfg_file = ""
@@ -124,7 +118,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         options = parser.parse_args(argv)[0]
         options.build_opts = build_options.parse_shell_opts(options.build_opts)
 
-        with LockDir(sm_compile_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
+        with utils.LockDir(sm_compile_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
             if options.revision:
                 shell = CompiledShell(options.build_opts, options.revision)
             else:
@@ -233,22 +227,6 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         """
         return hg_helpers.hgrc_repo_name(self.build_opts.repo_dir)
 
-    def get_s3_tar_name_with_ext(self):
-        """Retrieve the name of the compressed shell tarball to be obtained from/sent to S3.
-
-        Returns:
-            str: Name of the tarball
-        """
-        return f"{self.get_shell_name_without_ext()}.tar.bz2"
-
-    def get_s3_tar_with_ext_full_path(self):
-        """Retrieve the path to the tarball downloaded from S3.
-
-        Returns:
-            Path: Full path to the tarball in the local shell cache directory
-        """
-        return sm_compile_helpers.ensure_cache_dir(Path.home()) / self.get_s3_tar_name_with_ext()
-
     def get_shell_cache_dir(self):
         """Retrieve the shell cache directory of the intended js binary.
 
@@ -355,12 +333,6 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
         cfg_cmds.append(str(shell.get_js_cfg_path()))
         cfg_cmds.append("--target=i686-pc-linux")
         if shell.build_opts.enableSimulatorArm32:
-            # --enable-arm-simulator became --enable-simulator=arm in rev 25e99bc12482
-            # but unknown flags are ignored, so we compile using both till Fx38 ESR is deprecated
-            # Newer configure.in changes mean that things blow up if unknown/removed configure
-            # options are entered, so specify it only if it's requested.
-            if shell.build_opts.enableArmSimulatorObsolete:
-                cfg_cmds.append("--enable-arm-simulator")
             cfg_cmds.append("--enable-simulator=arm")
     # 64-bit shell on Mac OS X 10.13 El Capitan and greater
     elif parse_version(platform.mac_ver()[0]) >= parse_version("10.13") and not shell.build_opts.enable32:
@@ -394,12 +366,6 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
             cfg_cmds.append("--host=x86_64-pc-mingw32")
             cfg_cmds.append("--target=i686-pc-mingw32")
             if shell.build_opts.enableSimulatorArm32:
-                # --enable-arm-simulator became --enable-simulator=arm in rev 25e99bc12482
-                # but unknown flags are ignored, so we compile using both till Fx38 ESR is deprecated
-                # Newer configure.in changes mean that things blow up if unknown/removed configure
-                # options are entered, so specify it only if it's requested.
-                if shell.build_opts.enableArmSimulatorObsolete:
-                    cfg_cmds.append("--enable-arm-simulator")
                 cfg_cmds.append("--enable-simulator=arm")
         else:
             cfg_cmds.append("--host=x86_64-pc-mingw32")
@@ -447,31 +413,6 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
     cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
     cfg_cmds.append("--disable-tests")
 
-    if (
-            (
-                shell.build_opts.enableAddressSanitizer and
-                # Disable cranelift on ASan builds if repository revision is on/after:
-                #   m-c rev 428135:6fcf54117a3b21164e6e769343416d2262991f6e, fx63
-                #   and before m-c rev 479295:9e7c1e1a993d51d611558244049a97599511e965, fx69
-                hg_helpers.existsAndIsAncestor(shell.get_repo_dir(),
-                                               shell.get_hg_hash(),
-                                               "9e7c1e1a993d51d611558244049a97599511e965") and not
-                hg_helpers.existsAndIsAncestor(shell.get_repo_dir(),
-                                               shell.get_hg_hash(),
-                                               "parents(6fcf54117a3b21164e6e769343416d2262991f6e)")
-            ) or (
-                # Disable cranelift if repository revision is on/after:
-                #   m-c rev 438680:4d9500ca5761edd678a109b6b5a4ac3f4aa5edb0, fx64
-                #   and before m-c rev 494893:23803398111029a503a5ab228ad617bd0b9d728d, fx71
-                hg_helpers.existsAndIsAncestor(shell.get_repo_dir(),
-                                               shell.get_hg_hash(),
-                                               "23803398111029a503a5ab228ad617bd0b9d728d") and not
-                hg_helpers.existsAndIsAncestor(shell.get_repo_dir(),
-                                               shell.get_hg_hash(),
-                                               "parents(4d9500ca5761edd678a109b6b5a4ac3f4aa5edb0)")
-            )):
-        cfg_cmds.append("--disable-cranelift")
-
     if platform.system() == "Windows":
         # FIXME: Replace this with shlex's quote  # pylint: disable=fixme
         counter = 0
@@ -490,8 +431,8 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
             f"={cfg_env[str(env_var)]}"
         )
         env_vars.append(str_to_be_appended)
-    sps.vdump(f'Command to be run is: {" ".join(quote(str(x)) for x in env_vars)} '
-              f'{" ".join(quote(str(x)) for x in cfg_cmds)}')
+    utils.vdump(f'Command to be run is: {" ".join(quote(str(x)) for x in env_vars)} '
+                f'{" ".join(quote(str(x)) for x in cfg_cmds)}')
 
     assert shell.get_js_objdir().is_dir()
 
@@ -531,7 +472,7 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
     shell.set_cfg_cmd_excl_env(cfg_cmds)
 
 
-def sm_compile(shell):
+def sm_compile(shell):  # pylint:disable=too-complex
     """Compile a binary and copy essential compiled files into a desired structure.
 
     Args:
@@ -579,7 +520,11 @@ def sm_compile(shell):
                              "clang_rt.asan_dynamic-x86_64.dll"),
                          str(shell.get_shell_cache_dir()))
 
-        shell.set_version(sm_compile_helpers.extract_vers(shell.get_js_objdir()))
+        jspc_new_file_path = shell.get_js_objdir() / "js" / "src" / "build" / "js.pc"
+        with io.open(str(jspc_new_file_path), mode="r", encoding="utf-8", errors="replace") as f:
+            for line in f:
+                if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
+                    shell.set_version(line.split(": ")[1].rstrip())
 
         if platform.system() == "Linux" and not os.getenv("RETAIN_SRC"):
             # At least Mac OS X needs some (possibly *.a)
@@ -598,22 +543,7 @@ def sm_compile(shell):
     return shell.get_shell_compiled_path()
 
 
-def makeTestRev(options):  # pylint: disable=invalid-name,missing-docstring,missing-return-doc,missing-return-type-doc
-    def testRev(rev):  # pylint: disable=invalid-name,missing-return-doc,missing-return-type-doc
-        shell = CompiledShell(options.build_options, rev)
-        print(f"Rev {rev}:", end=" ")
-
-        try:
-            obtainShell(shell, updateToRev=rev)
-        except (subprocess.CalledProcessError, OSError):
-            return options.compilationFailedLabel, "compilation failed"
-
-        print("Testing...", end=" ")
-        return options.testAndLabel(shell.get_shell_cache_js_bin_path(), rev)
-    return testRev
-
-
-def obtainShell(shell, updateToRev=None, updateLatestTxt=False):  # pylint: disable=invalid-name,missing-param-doc
+def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: disable=invalid-name,missing-param-doc
     # pylint: disable=missing-raises-doc,missing-type-doc,too-many-branches,too-complex,too-many-statements
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols."""
     assert sm_compile_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
@@ -640,25 +570,6 @@ def obtainShell(shell, updateToRev=None, updateLatestTxt=False):  # pylint: disa
     shell.get_shell_cache_dir().mkdir()
     hg_helpers.destroyPyc(shell.build_opts.repo_dir)
 
-    s3cache_obj = s3cache.S3Cache(S3_SHELL_CACHE_DIRNAME)
-    use_s3cache = s3cache_obj.connect()
-
-    if use_s3cache and not os.getenv("RETAIN_SRC"):
-        if s3cache_obj.downloadFile(f"{shell.get_shell_name_without_ext()}.busted",
-                                    f"{shell.get_shell_cache_js_bin_path()}.busted"):
-            raise OSError(f"Found a .busted file for rev {shell.get_hg_hash()}")
-
-        if s3cache_obj.downloadFile(f"{shell.get_shell_name_without_ext()}.tar.bz2",
-                                    str(shell.get_s3_tar_with_ext_full_path())):
-            print("Extracting shell...")
-            with tarfile.open(str(shell.get_s3_tar_with_ext_full_path()), "r") as f:
-                f.extractall(str(shell.get_shell_cache_dir()))
-            # Delete tarball after downloading from S3
-            shell.get_s3_tar_with_ext_full_path().unlink()
-            if platform.system() == "Windows":
-                sm_compile_helpers.verify_full_win_pageheap(shell.get_shell_cache_js_bin_path())
-            return
-
     try:
         if updateToRev:
             # Print *with* a trailing newline to avoid breaking other stuff
@@ -669,8 +580,6 @@ def obtainShell(shell, updateToRev=None, updateLatestTxt=False):  # pylint: disa
                            cwd=os.getcwd(),
                            stderr=subprocess.DEVNULL,
                            timeout=9999)
-        if shell.build_opts.patch_file:
-            hg_helpers.patch_hg_repo_with_mq(shell.build_opts.patch_file, shell.get_repo_dir())
 
         cfgJsCompile(shell)
         if platform.system() == "Windows":
@@ -687,23 +596,7 @@ def obtainShell(shell, updateToRev=None, updateLatestTxt=False):  # pylint: disa
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
         print(f"Compilation failed ({ex}) (details in {cached_no_shell})")
-
-        if use_s3cache:
-            s3cache_obj.uploadFileToS3(f"{shell.get_shell_cache_js_bin_path()}.busted")
         raise
-    finally:
-        if shell.build_opts.patch_file:
-            hg_helpers.qpop_qrm_applied_patch(shell.build_opts.patch_file, shell.get_repo_dir())
-
-    if use_s3cache and not os.getenv("RETAIN_SRC"):
-        s3cache_obj.compressAndUploadDirTarball(str(shell.get_shell_cache_dir()),
-                                                str(shell.get_s3_tar_with_ext_full_path()))
-        if updateLatestTxt:
-            # So js-dbg-64-dm-darwin-cdcd33fd6e39 becomes js-dbg-64-dm-darwin-latest.txt with
-            # js-dbg-64-dm-darwin-cdcd33fd6e39 as its contents.
-            txt_info = f'{"-".join(str(shell.get_s3_tar_name_with_ext()).split("-")[:-1] + ["latest"])}.txt'
-            s3cache_obj.uploadStrToS3("", txt_info, str(shell.get_s3_tar_name_with_ext()))
-        shell.get_s3_tar_with_ext_full_path().unlink()
 
 
 def main():

@@ -11,7 +11,7 @@ from setuptools import setup
 
 EXTRAS = {
     "test": [
-        "codecov==2.0.15",
+        # "codecov==2.0.15",
         "coverage>=4.5.4,<4.6",
         "flake8==3.8.3",
         "flake8-commas>=2.0.0,<2.1",
@@ -30,25 +30,13 @@ if __name__ == "__main__":
     setup(name="funfuzz",
           version="0.7.0a1",
           entry_points={
-              "console_scripts": ["funfuzz = funfuzz.bot:main"],
+              "console_scripts": ["funfuzz = funfuzz.js.compile_shell:main"],
           },
           package_data={"funfuzz": [
-              "autobisectjs/*",
-              "ccoverage/*",
-              "js/*",
-              "js/jsfunfuzz/*",
-              "js/shared/*",
-              "util/*",
           ]},
           package_dir={"": "src"},
           packages=find_packages(where="src"),
           install_requires=[
-              "boto>=2.49.0",
-              "distro>=1.3.0",
-              "fasteners>=0.14",
-              # https://www.mercurial-scm.org/wiki/SupportedPythonVersions#Python_3.x_support
-              # "mercurial>=4.7.2",  # Mercurial does not support Python 3 yet
-              "requests>=2.20.1",
           ],
           extras_require=EXTRAS,
           python_requires=">=3.6",
