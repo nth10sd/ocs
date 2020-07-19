@@ -574,7 +574,6 @@ def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: dis
         file_system_helpers.rm_tree_incl_readonly_files(shell.get_shell_cache_dir())
 
     shell.get_shell_cache_dir().mkdir()
-    hg_helpers.destroyPyc(shell.build_opts.repo_dir)
 
     try:
         if updateToRev:

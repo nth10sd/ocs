@@ -9,23 +9,10 @@
 
 import configparser
 import os
-from pathlib import Path
 import subprocess
 import sys
 
 from . import utils
-
-
-def destroyPyc(repo_dir):  # pylint: disable=invalid-name,missing-docstring
-    # This is roughly equivalent to ["hg", "purge", "--all", "--include=**.pyc"])
-    # but doesn't run into purge's issues (incompatbility with -R, requiring an hg extension)
-    for root, dirs, files in os.walk(str(repo_dir)):
-        for fn in files:  # pylint: disable=invalid-name
-            if fn.endswith(".pyc"):
-                (Path(root) / fn).unlink()
-        if ".hg" in dirs:
-            # Don't visit .hg dir
-            dirs.remove(".hg")
 
 
 def get_repo_hash_and_id(repo_dir, repo_rev="parents() and default"):
