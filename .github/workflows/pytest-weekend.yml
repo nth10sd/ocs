@@ -12,6 +12,7 @@ on:
     branches: [ master ]
 
 ### Copy to pytest-weekday.yml after this line ###
+jobs:
   dbg-optDisabled-64-dm-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
     strategy:
