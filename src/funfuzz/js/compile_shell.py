@@ -325,8 +325,8 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
         cfg_env["AR"] = "ar"
     if shell.build_opts.enable32 and platform.system() == "Linux":
         # 32-bit shell on 32/64-bit x86 Linux
-        cfg_env["PKG_CONFIG_LIBDIR"] = "/usr/lib/pkgconfig"
-        # apt-get `libc6-dev-i386 g++-multilib` first, if on 64-bit Linux. (no matter Clang or GCC)
+        cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
+        # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first, if on 64-bit Linux. (no matter Clang or GCC)
         # Also run this: `rustup target add i686-unknown-linux-gnu`
         cfg_env["CC"] = f"clang -m32 {SSE2_FLAGS}"
         cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"
