@@ -59,12 +59,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   dbg-optDisabled-32-dm-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -112,12 +112,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   opt-64-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -165,12 +165,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   opt-64-asan-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -218,12 +218,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   opt-32-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -271,12 +271,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   dbg-optDisabled-32-dm-armsim32-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -324,12 +324,12 @@ jobs:
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
-    - name: Create a tarball and SHA-256 checksum, set "echo ::set-env name=ZSTD_CLEVEL::10" and put "--zstd" in tar parameters if we can upload artifacts as-s without being zipped
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf "$f".tar.zst "$f" && sha256sum "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
-    - name: Archive tarball and checksum  # Zips files up until https://github.com/actions/upload-artifact/issues/14 gets fixed
-      uses: actions/upload-artifact@v2
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar.zst*'
+        path: '~/shell-cache/*.tar*'
 
   dbg-optDisabled-64-dm-armsim64-linux:
     runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
@@ -380,6 +380,6 @@ jobs:
     - name: Create a tarball and SHA-256 checksum
       run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
-      uses: kittaakos/upload-artifact-as-is@v1
+      uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tar*'
