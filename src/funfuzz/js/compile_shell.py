@@ -18,6 +18,7 @@ from shlex import quote
 import shutil
 import subprocess
 import sys
+import tarfile
 import traceback
 
 import distro
@@ -107,6 +108,10 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         )
 
         # Specify how the shell will be built.
+        parser.add_option("-a", "--archive",
+                          action="store_true",
+                          help="Make .bz2 archive tarball after compilation")
+
         parser.add_option("-b", "--build",
                           dest="build_opts",
                           help='Specify build options, e.g. -b "--disable-debug --enable-optimize" '
@@ -126,7 +131,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
                 local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(options.build_opts.repo_dir)[0]
                 shell = CompiledShell(options.build_opts, local_orig_hg_hash)
 
-            obtainShell(shell, updateToRev=options.revision)
+            obtainShell(shell, make_tarball=options.archive, updateToRev=options.revision)
             print(shell.get_shell_cache_js_bin_path())
 
         return 0
@@ -543,7 +548,7 @@ def sm_compile(shell):  # pylint:disable=too-complex
     return shell.get_shell_compiled_path()
 
 
-def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: disable=invalid-name,missing-param-doc
+def obtainShell(shell, make_tarball=False, updateToRev=None):  # pylint: disable=invalid-name,missing-param-doc
     # pylint: disable=missing-raises-doc,missing-type-doc,too-many-branches,too-complex,too-many-statements
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols."""
     assert sm_compile_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
@@ -592,6 +597,11 @@ def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: dis
             f.write(f"{traceback.format_exc()}\n")
         print(f"Compilation failed ({ex}) (details in {cached_no_shell})")
         raise
+
+    if make_tarball:
+        tarball_path = shell.get_shell_cache_dir().parent / (shell.get_shell_name_without_ext() + ".tar.bz2")
+        with tarfile.open(tarball_path, "w:bz2") as tar:
+            tar.add(shell.get_shell_cache_dir(), arcname=shell.get_shell_cache_dir().stem)
 
 
 def main():
