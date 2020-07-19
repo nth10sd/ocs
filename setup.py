@@ -37,6 +37,7 @@ if __name__ == "__main__":
           package_dir={"": "src"},
           packages=find_packages(where="src"),
           install_requires=[
+              "distro>=1.3.0",
           ],
           extras_require=EXTRAS,
           python_requires=">=3.6",
