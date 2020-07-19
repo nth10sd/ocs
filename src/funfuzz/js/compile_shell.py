@@ -531,12 +531,6 @@ def sm_compile(shell):  # pylint:disable=too-complex
             for line in f:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.set_version(line.split(": ")[1].rstrip())
-
-        if platform.system() == "Linux" and not os.getenv("RETAIN_SRC"):
-            # At least Mac OS X needs some (possibly *.a)
-            # files in the objdir or else the stacks from failing testcases will lack symbols.
-            # objdir files are only needed for rr which only currently runs on x86-64 Linux.
-            shutil.rmtree(str(shell.get_shell_cache_dir() / "objdir-js"))
     else:
         print(f"{MAKE_BINARY} did not result in a js shell:")
         with io.open(str(shell.get_shell_cache_dir() / f"{shell.get_shell_name_without_ext()}.busted"), "a",
@@ -562,10 +556,6 @@ def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: dis
         # Assuming that since the binary is present, everything else (e.g. symbols) is also present
         if platform.system() == "Windows":
             sm_compile_helpers.verify_full_win_pageheap(shell.get_shell_cache_js_bin_path())
-
-        if os.getenv("RETAIN_SRC"):
-            print("RETAIN_SRC is set to True, so recompiling with sources retained...")
-            file_system_helpers.rm_tree_incl_readonly_files(shell.get_shell_cache_dir())
         return
     elif cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
