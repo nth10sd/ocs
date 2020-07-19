@@ -13,7 +13,7 @@ import stat
 
 import pytest
 
-from funfuzz import util
+from funfuzz.util import file_system_helpers
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
@@ -33,4 +33,4 @@ def test_rm_tree_incl_readonly_files(tmpdir):
 
     Path.chmod(test_file, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
-    util.file_system_helpers.rm_tree_incl_readonly_files(test_dir)
+    file_system_helpers.rm_tree_incl_readonly_files(test_dir)

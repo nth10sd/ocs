@@ -11,7 +11,7 @@ import platform
 
 import pytest
 
-from funfuzz import util
+from funfuzz.util import sm_compile_helpers
 
 
 @pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")
@@ -24,10 +24,10 @@ def test_autoconf_run(tmpdir):
     tmpdir = Path(tmpdir)
     # configure.in is required by autoconf2.13
     (tmpdir / "configure.in").touch()  # pylint: disable=no-member
-    util.sm_compile_helpers.autoconf_run(tmpdir)
+    sm_compile_helpers.autoconf_run(tmpdir)
 
 
 def test_ensure_cache_dir():
     """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
-    assert util.sm_compile_helpers.ensure_cache_dir(None).is_dir()
-    assert util.sm_compile_helpers.ensure_cache_dir(Path.home()).is_dir()  # pylint: disable=no-member
+    assert sm_compile_helpers.ensure_cache_dir(None).is_dir()
+    assert sm_compile_helpers.ensure_cache_dir(Path.home()).is_dir()  # pylint: disable=no-member

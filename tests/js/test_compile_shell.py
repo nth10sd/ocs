@@ -13,8 +13,9 @@ import platform
 
 import pytest
 
-from funfuzz import js
-from funfuzz import util
+from funfuzz.js import build_options
+from funfuzz.js import compile_shell
+from funfuzz.util import hg_helpers
 
 # Paths
 MC_PATH = Path.home() / "trees" / "mozilla-central"
@@ -42,10 +43,10 @@ def test_shell_compile():
     # Remember to update the corresponding BUILD build parameters in .travis.yml as well
     build_opts = os.getenv("BUILD", default_parameters_debug)
 
-    opts_parsed = js.build_options.parse_shell_opts(build_opts)
-    hg_hash_of_default = util.hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
+    opts_parsed = build_options.parse_shell_opts(build_opts)
+    hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
     # Ensure exit code is 0
-    assert not js.compile_shell.CompiledShell(opts_parsed, hg_hash_of_default).run(["-b", build_opts])
+    assert not compile_shell.CompiledShell(opts_parsed, hg_hash_of_default).run(["-b", build_opts])
 
     file_name = None
     valgrind_name_param = ""
