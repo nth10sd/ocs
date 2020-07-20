@@ -13,170 +13,10 @@ on:
 
 ### Copy to pytest-weekend.yml after this line ###
 jobs:
-  dbg-optDisabled-64-dm-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
-    strategy:
-      matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
-        python-version: [3.8]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache dir
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-    - name: pip cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: ${{ runner.os }}-pip-
-    - name: Install pip dependencies
-      if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
-
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
-    - name: Print the .busted log, if any, when any previous compile steps fail
-      if: ${{ failure() }}
-      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
-
-    - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
-      uses: kittaakos/upload-artifact-as-is@v0
-      with:
-        path: '~/shell-cache/*.tar*'
-
-  dbg-optDisabled-32-dm-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
-    strategy:
-      matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
-        python-version: [3.8]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache dir
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-    - name: pip cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: ${{ runner.os }}-pip-
-    - name: Install pip dependencies
-      if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
-
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
-    - name: Print the .busted log, if any, when any previous compile steps fail
-      if: ${{ failure() }}
-      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
-
-    - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
-      uses: kittaakos/upload-artifact-as-is@v0
-      with:
-        path: '~/shell-cache/*.tar*'
-
-  opt-64-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
-    strategy:
-      matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
-        python-version: [3.8]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Get pip cache dir
-      id: pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-    - name: pip cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-        restore-keys: ${{ runner.os }}-pip-
-    - name: Install pip dependencies
-      if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
-
-    - name: Compile a "" build
-      run: time python -m funfuzz.js.compile_shell
-    - name: Print the .busted log, if any, when any previous compile steps fail
-      if: ${{ failure() }}
-      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
-
-    - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
-      uses: kittaakos/upload-artifact-as-is@v0
-      with:
-        path: '~/shell-cache/*.tar*'
-
   opt-64-asan-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
@@ -196,19 +36,19 @@ jobs:
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
 
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
@@ -219,17 +59,16 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tar*'
 
-  opt-32-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
+  opt-64-linux:
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
@@ -249,40 +88,39 @@ jobs:
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
 
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
-    - name: Compile a "--32" build
-      run: time python -m funfuzz.js.compile_shell -b "--32"
+    - name: Compile a "" build
+      run: time python -m funfuzz.js.compile_shell
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tar*'
 
-  dbg-optDisabled-32-dm-armsim32-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
+  dbg-optDisabled-64-dm-linux:
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
@@ -302,40 +140,39 @@ jobs:
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
 
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
+    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
+      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tar*'
 
   dbg-optDisabled-64-dm-armsim64-linux:
-    runs-on: ubuntu-20.04  # Or ${{ matrix.operating-system }}  # Fixate to exact OS versions to avoid potential test failures over time
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        # operating-system: [ubuntu-20.04, macos-10.15, windows-2019]
         python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
@@ -355,19 +192,19 @@ jobs:
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
-    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
 
-    - name: Set environment variables
-      run: echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=SHELL::/bin/bash
-    - name: Set llvm-config and llvm-symbolizer symlinks
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Check versions
-      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
@@ -378,8 +215,320 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpzf "$f".tar.gz "$f" && sha256sum "$f".tar.gz | tee "$f".tar.gz.sha256; done; popd
-    - name: Archive tarball and checksum  # GitHub UI forces download as gzipped files, double-zipping if files are already gzipped
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  opt-32-linux:
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "--32" build
+      run: time python -m funfuzz.js.compile_shell -b "--32"
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  dbg-optDisabled-32-dm-linux:
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
+      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  dbg-optDisabled-32-dm-armsim32-linux:
+    runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set Linux environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+    - name: Set Linux llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
+      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  opt-64-darwin:
+    runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set macOS environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
+    - name: Set macOS llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "" build
+      run: time python -m funfuzz.js.compile_shell
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  dbg-optDisabled-64-dm-darwin:
+    runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set macOS environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
+    - name: Set macOS llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
+      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+      uses: kittaakos/upload-artifact-as-is@v0
+      with:
+        path: '~/shell-cache/*.tar*'
+
+  dbg-optDisabled-64-dm-armsim64-darwin:
+    runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Get pip cache dir
+      id: pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: ${{ runner.os }}-pip-
+    - name: Install pip dependencies
+      if: steps.pip-cache.outputs.cache-hit != 'true'
+      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+
+    - name: Set macOS environment variables
+      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
+    - name: Set macOS llvm-config and llvm-symbolizer symlinks
+      run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+    - name: Set zstd environment variable and check versions
+      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Install 32/64-bit SpiderMonkey prerequisites
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
+    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Run with flake8 and pylint, and also non-slow tests, using pytest
+      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+    - name: Clone Mercurial mozilla-central repo as a stream
+      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+
+    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
+      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+    - name: Print the .busted log, if any, when any previous compile steps fail
+      if: ${{ failure() }}
+      run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+    - name: Create a tarball and SHA-256 checksum
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+    - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tar*'
