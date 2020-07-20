@@ -15,6 +15,6 @@ jobs:
       uses: c-hive/gha-remove-artifacts@v1
       with:
         age: '1 month'
-        skip-recent: 3
+        skip-recent: 30
         # Optional inputs
         # skip-tags: true
