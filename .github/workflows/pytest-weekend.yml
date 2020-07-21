@@ -41,8 +41,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -59,11 +59,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   opt-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -93,8 +93,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -111,11 +111,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-64-dm-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -145,8 +145,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -163,11 +163,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-64-dm-armsim64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -197,8 +197,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -215,11 +215,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   opt-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -249,8 +249,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -267,11 +267,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-32-dm-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -301,8 +301,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -319,11 +319,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-32-dm-armsim32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -353,8 +353,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -371,11 +371,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   opt-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -405,8 +405,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -423,11 +423,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-64-dm-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -457,8 +457,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -475,11 +475,11 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'
 
   dbg-optDisabled-64-dm-armsim64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -509,8 +509,8 @@ jobs:
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
-    - name: Set zstd environment variable and check versions
-      run: echo ::set-env name=ZSTD_CLEVEL::10 ; gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+    - name: Check versions
+      run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
@@ -527,8 +527,8 @@ jobs:
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
     - name: Create a tarball and SHA-256 checksum
-      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar --zstd -cpf "$f".tar.zst "$f" && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
+      run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
     - name: Archive tarball and checksum  # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
       uses: kittaakos/upload-artifact-as-is@v0
       with:
-        path: '~/shell-cache/*.tar*'
+        path: '~/shell-cache/*.tzst*'

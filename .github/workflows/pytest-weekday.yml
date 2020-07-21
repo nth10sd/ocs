@@ -7,7 +7,7 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '5 4,10,16,22 * * 1-5'
   push:
-    branches: [ master, support-otheros ]  # TODO: Synchronise with other .yml file
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
