@@ -169,6 +169,9 @@ def parse_shell_opts(args):
                 sys.exit("repo_dir is not specified, and a default repository location cannot be confirmed. Exiting...")
 
         assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
+    elif build_options.repo_dir:
+        build_options.repo_dir = build_options.repo_dir.expanduser()
+        assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
     else:
         sys.exit(f"DEFAULT_TREES_LOCATION not found at: {DEFAULT_TREES_LOCATION}. Exiting...")
 
