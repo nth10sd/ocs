@@ -120,7 +120,9 @@ def testBinary(shellPath, args, _useValgrind, stderr=subprocess.STDOUT):  # pyli
     # macOS non-support: https://github.com/google/sanitizers/issues/1026
     # Windows non-support: https://developer.mozilla.org/en-US/docs/Mozilla/Testing/Firefox_and_Address_Sanitizer
     #   (search for LSan)
-    if platform.system() == "Linux" and not ("-asan-" in str(shellPath) and "-armsim64-" in str(shellPath)):
+    # Termux Android aarch64 is not yet supported due to possible ptrace issues
+    if platform.system() == "Linux" and not ("-asan-" in str(shellPath) and "-armsim64-" in str(shellPath)) and \
+            "-aarch64-" not in str(shellPath):
         asan_options = "detect_leaks=1," + asan_options
         test_env.update({"LSAN_OPTIONS": "max_leaks=1,"})
     test_env.update({"ASAN_OPTIONS": asan_options})
