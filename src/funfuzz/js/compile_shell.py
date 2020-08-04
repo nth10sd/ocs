@@ -414,15 +414,10 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
     cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
     cfg_cmds.append("--disable-tests")
 
-    if platform.system() == "Linux":
-        if platform.machine().lower() == "aarch64":
-            path_to_libclang = "/usr/lib/llvm-9/lib"  # Clang 10 is not yet supported by Gecko due to bug 1616692
-            assert Path(path_to_libclang).is_dir()
-            cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
-        elif distro.linux_distribution(full_distribution_name=False)[0] == "gentoo":
-            path_to_libclang = "/usr/lib/llvm/9/lib64"  # Clang 10 is not yet supported by Gecko due to bug 1616692
-            assert Path(path_to_libclang).is_dir()
-            cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
+    if platform.system() == "Linux" and distro.linux_distribution(full_distribution_name=False)[0] == "gentoo":
+        path_to_libclang = "/usr/lib/llvm/9/lib64"  # Clang 10 is not yet supported by Gecko due to bug 1616692
+        assert Path(path_to_libclang).is_dir()
+        cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
 
     if platform.system() == "Windows":
         # FIXME: Replace this with shlex's quote  # pylint: disable=fixme
