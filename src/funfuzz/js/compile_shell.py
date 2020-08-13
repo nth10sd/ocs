@@ -332,6 +332,7 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
         cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.get_js_cfg_path()))
+        cfg_cmds.append("--host=x86_64-pc-linux-gnu")
         cfg_cmds.append("--target=i686-pc-linux")
         if shell.build_opts.enableSimulatorArm32:
             cfg_cmds.append("--enable-simulator=arm")
