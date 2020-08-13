@@ -46,7 +46,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -98,7 +98,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -150,7 +150,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -202,7 +202,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -254,7 +254,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -306,7 +306,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -358,7 +358,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -410,7 +410,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -462,7 +462,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
@@ -514,7 +514,7 @@ jobs:
     - name: Install 32/64-bit SpiderMonkey prerequisites
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu x86_64-unknown-linux-gnux32
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
