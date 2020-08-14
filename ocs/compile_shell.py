@@ -1,11 +1,8 @@
-# coding=utf-8
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Compiles SpiderMonkey shells on different platforms using various specified configuration parameters.
-"""
+"""Compiles SpiderMonkey shells on different platforms using various specified configuration parameters."""
 
 import copy
 import io
@@ -19,16 +16,19 @@ import shutil
 import subprocess
 import sys
 import traceback
+from typing import Any
+from typing import List
+from typing import Optional
 
 import distro
 from pkg_resources import parse_version
 
-from . import build_options
-from . import inspect_shell
-from ..util import file_system_helpers
-from ..util import hg_helpers
-from ..util import sm_compile_helpers
-from ..util import utils
+from ocs import build_options
+from ocs import inspect_shell
+from ocs.util import file_system_helpers
+from ocs.util import hg_helpers
+from ocs.util import sm_compile_helpers
+from ocs.util import utils
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
@@ -51,34 +51,30 @@ class CompiledShellError(Exception):
 class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-public-methods
     """A CompiledShell object represents an actual compiled shell binary.
 
-    Args:
-        build_opts (object): Object containing the build options defined in build_options.py
-        hg_hash (str): Changeset hash
+    :param build_opts: Object containing the build options defined in build_options.py
+    :param hg_hash: Changeset hash
     """
 
-    def __init__(self, build_opts, hg_hash):
-        self.shell_name_without_ext = build_options.computeShellName(build_opts, hg_hash)
+    def __init__(self, build_opts: Any, hg_hash: str):
+        self.shell_name_without_ext = build_options.compute_shell_name(build_opts, hg_hash)
         self.hg_hash = hg_hash
         self.build_opts = build_opts
 
-        self.js_objdir = ""
+        self.js_objdir = Path()
 
-        self.cfg = []
+        self.cfg: List[str] = []
         self.added_env = ""
         self.full_env = ""
-        self.js_cfg_file = ""
+        self.js_cfg_file = Path()
 
         self.js_version = ""
 
     @classmethod
-    def main(cls, args=None):
+    def main(cls: Any, args: Any = None) -> Any:
         """Main function of CompiledShell class.
 
-        Args:
-            args (object): Additional parameters
-
-        Returns:
-            int: 0, to denote a successful compile and 1, to denote a failed compile
+        :param args: Additional parameters
+        :return: 0, to denote a successful compile and 1, to denote a failed compile
         """
         # logging.basicConfig(format="%(message)s", level=logging.INFO)
         try:
@@ -89,14 +85,11 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
             return 1
 
     @staticmethod
-    def run(argv=None):
+    def run(argv: Any = None) -> Any:
         """Build a shell and place it in the autobisectjs cache.
 
-        Args:
-            argv (object): Additional parameters
-
-        Returns:
-            int: 0, to denote a successful compile
+        :param argv: Additional parameters
+        :return: 0, to denote a successful compile
         """
         usage = "Usage: %prog [options]"
         parser = OptionParser(usage)
@@ -110,7 +103,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         parser.add_option("-b", "--build",
                           dest="build_opts",
                           help='Specify build options, e.g. -b "--disable-debug --enable-optimize" '
-                               "(python3 -m funfuzz.js.build_options --help)")
+                               "(python3 -m ocs.build_options --help)")
 
         parser.add_option("-r", "--rev",
                           dest="revision",
@@ -126,198 +119,184 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
                 local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(options.build_opts.repo_dir)[0]
                 shell = CompiledShell(options.build_opts, local_orig_hg_hash)
 
-            obtainShell(shell, updateToRev=options.revision)
+            obtain_shell(shell, update_to_rev=options.revision)
             print(shell.get_shell_cache_js_bin_path())
 
         return 0
 
-    def get_cfg_cmd_excl_env(self):
+    def get_cfg_cmd_excl_env(self) -> List[str]:
         """Retrieve the configure command excluding the enviroment variables.
 
-        Returns:
-            list: Configure command
+        :return: Configure command
         """
         return self.cfg
 
-    def set_cfg_cmd_excl_env(self, cfg):
+    def set_cfg_cmd_excl_env(self, cfg: List[str]) -> None:
         """Sets the configure command excluding the enviroment variables.
 
-        Args:
-            cfg (list): Configure command
+        :param cfg: Configure command
         """
         self.cfg = cfg
 
-    def set_env_added(self, added_env):
+    def set_env_added(self, added_env: Any) -> None:
         """Set environment variables that were added.
 
-        Args:
-            added_env (list): Added environment variables
+        :param added_env: Added environment variables
         """
         self.added_env = added_env
 
-    def get_env_added(self):
+    def get_env_added(self) -> Any:
         """Retrieve environment variables that were added.
 
-        Returns:
-            list: Added environment variables
+        :return: Added environment variables
         """
         return self.added_env
 
-    def set_env_full(self, full_env):
+    def set_env_full(self, full_env: Any) -> None:
         """Set the full environment including the newly added variables.
 
-        Args:
-            full_env (list): Full environment
+        :param full_env: Full environment
         """
         self.full_env = full_env
 
-    def get_env_full(self):
+    def get_env_full(self) -> Any:
         """Retrieve the full environment including the newly added variables.
 
-        Returns:
-            list: Full environment
+        :return: Full environment
         """
         return self.full_env
 
-    def get_hg_hash(self):
+    def get_hg_hash(self) -> str:
         """Retrieve the hash of the current changeset of the repository.
 
-        Returns:
-            str: Changeset hash
+        :return: Changeset hash
         """
         return self.hg_hash
 
-    def get_js_cfg_path(self):
+    def get_js_cfg_path(self) -> Path:
         """Retrieve the configure file in a js/src directory.
 
-        Returns:
-            Path: Full path to the configure file
+        :return: Full path to the configure file
         """
         self.js_cfg_file = self.get_repo_dir() / "js" / "src" / "configure"
         return self.js_cfg_file
 
-    def get_js_objdir(self):
+    def get_js_objdir(self) -> Path:
         """Retrieve the objdir of the js shell to be compiled.
 
-        Returns:
-            Path: Full path to the js shell objdir
+        :return: Full path to the js shell objdir
         """
         return self.js_objdir
 
-    def set_js_objdir(self, objdir):
+    def set_js_objdir(self, objdir: Path) -> None:
         """Set the objdir of the js shell to be compiled.
 
-        Args:
-            objdir (Path): Full path to the objdir of the js shell to be compiled
+        :param objdir: Full path to the objdir of the js shell to be compiled
         """
         self.js_objdir = objdir
 
-    def get_repo_dir(self):
+    def get_repo_dir(self) -> Any:
         """Retrieve the directory of a Mercurial repository.
 
-        Returns:
-            Path: Full path to the repository
+        :return: Full path to the repository
         """
         return self.build_opts.repo_dir
 
-    def get_repo_name(self):
+    def get_repo_name(self) -> str:
         """Retrieve the name of a Mercurial repository.
 
-        Returns:
-            str: Name of the repository
+        :return: Name of the repository
         """
         return hg_helpers.hgrc_repo_name(self.build_opts.repo_dir)
 
-    def get_shell_cache_dir(self):
+    def get_shell_cache_dir(self) -> Path:
         """Retrieve the shell cache directory of the intended js binary.
 
-        Returns:
-            Path: Full path to the shell cache directory of the intended js binary
+        :return: Full path to the shell cache directory of the intended js binary
         """
         return sm_compile_helpers.ensure_cache_dir(Path.home()) / self.get_shell_name_without_ext()
 
-    def get_shell_cache_js_bin_path(self):
+    def get_shell_cache_js_bin_path(self) -> Path:
         """Retrieve the full path to the js binary located in the shell cache.
 
-        Returns:
-            Path: Full path to the js binary in the shell cache
+        :return: Full path to the js binary in the shell cache
         """
         return (sm_compile_helpers.ensure_cache_dir(Path.home()) /
                 self.get_shell_name_without_ext() / self.get_shell_name_with_ext())
 
-    def get_shell_compiled_path(self):
+    def get_shell_compiled_path(self) -> Path:
         """Retrieve the full path to the original location of js binary compiled in the shell cache.
 
-        Returns:
-            Path: Full path to the original location of js binary compiled in the shell cache
+        :return: Full path to the original location of js binary compiled in the shell cache
         """
         full_path = self.get_js_objdir() / "dist" / "bin" / "js"
         return full_path.with_suffix(".exe") if platform.system() == "Windows" else full_path
 
-    def get_shell_compiled_runlibs_path(self):
+    def get_shell_compiled_runlibs_path(self) -> List[Path]:
         """Retrieve the full path to the original location of the libraries of js binary compiled in the shell cache.
 
-        Returns:
-            Path: Full path to the original location of the libraries of js binary compiled in the shell cache
+        :return: Full path to the original location of the libraries of js binary compiled in the shell cache
         """
         return [
             self.get_js_objdir() / "dist" / "bin" / runlib for runlib in inspect_shell.ALL_RUN_LIBS
         ]
 
-    def get_shell_name_with_ext(self):
+    def get_shell_name_with_ext(self) -> str:
         """Retrieve the name of the compiled js shell with the file extension.
 
-        Returns:
-            str: Name of the compiled js shell with the file extension
+        :return: Name of the compiled js shell with the file extension
         """
         # pylint complains if this line uses an f-string with nested if-else, see https://git.io/fxfSo
         return self.shell_name_without_ext + (".exe" if platform.system() == "Windows" else "")
 
-    def get_shell_name_without_ext(self):
+    def get_shell_name_without_ext(self) -> str:
         """Retrieve the name of the compiled js shell without the file extension.
 
-        Returns:
-            str: Name of the compiled js shell without the file extension
+        :return: Name of the compiled js shell without the file extension
         """
         return self.shell_name_without_ext
 
-    def get_version(self):
+    def get_version(self) -> str:
         """Retrieve the version number of the js shell as extracted from js.pc
 
-        Returns:
-            str: Version number of the js shell
+        :return: Version number of the js shell
         """
         return self.js_version
 
-    def set_version(self, js_version):
+    def set_version(self, js_version: str) -> None:
         """Set the version number of the js shell as extracted from js.pc
 
-        Args:
-            js_version (str): Version number of the js shell
+        :param js_version: Version number of the js shell
         """
         self.js_version = js_version
 
 
-def cfgJsCompile(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-type-doc
-    """Configures, compiles and copies a js shell according to required parameters."""
+def configure_js_shell_compile(shell: Any) -> None:
+    """Configures, compiles and copies a js shell according to required parameters.
+
+    :param shell: Potential compiled shell object
+    """
     print("Compiling...")  # Print *with* a trailing newline to avoid breaking other stuff
     js_objdir_path = shell.get_shell_cache_dir() / "objdir-js"
     js_objdir_path.mkdir()
     shell.set_js_objdir(js_objdir_path)
 
     sm_compile_helpers.autoconf_run(shell.get_repo_dir() / "js" / "src")
-    cfgBin(shell)
+    configure_binary(shell)
     sm_compile(shell)
-    inspect_shell.verifyBinary(shell)
+    inspect_shell.verify_binary(shell)
 
     compile_log = shell.get_shell_cache_dir() / f"{shell.get_shell_name_without_ext()}.fuzzmanagerconf"
     if not compile_log.is_file():
-        sm_compile_helpers.envDump(shell, compile_log)
+        env_dump(shell, compile_log)
 
 
-def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-raises-doc,missing-type-doc
-    # pylint: disable=too-complex,too-many-branches,too-many-statements
-    """Configure a binary according to required parameters."""
+def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-many-branches,too-many-statements
+    """Configure a binary according to required parameters.
+
+    :param shell: Potential compiled shell object
+    :raise CalledProcessError: Raise if the shell failed to compile
+    """
     cfg_cmds = []
     cfg_env = copy.deepcopy(os.environ)
     orig_cfg_env = copy.deepcopy(os.environ)
@@ -328,8 +307,8 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
         cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
         # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first, if on 64-bit Linux. (no matter Clang or GCC)
         # Also run this: `rustup target add i686-unknown-linux-gnu`
-        cfg_env["CC"] = f"clang -m32 {SSE2_FLAGS}"
-        cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"
+        # cfg_env["CC"] = f"clang -m32 {SSE2_FLAGS}"  # -m32 is potentially no longer needed
+        # cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"  # -m32 is potentially no longer needed
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.get_js_cfg_path()))
         cfg_cmds.append("--host=x86_64-pc-linux-gnu")
@@ -479,17 +458,68 @@ def cfgBin(shell):  # pylint: disable=invalid-name,missing-param-doc,missing-rai
     shell.set_cfg_cmd_excl_env(cfg_cmds)
 
 
-def sm_compile(shell):  # pylint:disable=too-complex
+def env_dump(shell: CompiledShell, log_: Path) -> None:
+    """Dump environment to a .fuzzmanagerconf file.
+
+    :param shell: A compiled shell
+    :param log_: Log file location
+    """
+    # Platform and OS detection for the spec, part of which is in:
+    #   https://wiki.mozilla.org/Security/CrashSignatures
+    if shell.build_opts.enable32:
+        fmconf_platform = "x86"  # Fixate to 32-bit Intel because we do not support 32-bit ARM hosts for compilation
+    elif platform.system() == "Windows":
+        if platform.machine() == "ARM64":
+            fmconf_platform = "aarch64"  # platform.machine() returns "ARM64" on Windows
+        else:
+            fmconf_platform = "x86_64"  # platform.machine() returns "AMD64" on Windows
+    else:
+        fmconf_platform = platform.machine()
+
+    fmconf_os = None
+    if platform.system() == "Linux":
+        fmconf_os = "linux"
+    elif platform.system() == "Darwin":
+        fmconf_os = "macosx"
+    elif platform.system() == "Windows":
+        fmconf_os = "windows"
+
+    with io.open(str(log_), "a", encoding="utf-8", errors="replace") as f:
+        f.write("# Information about shell:\n# \n")
+
+        f.write("# Create another shell in shell-cache like this one:\n")
+        f.write(f"# python3 -u -m ocs.compile_shell "
+                f'-b "{shell.build_opts.build_options_str}" -r {shell.get_hg_hash()}\n# \n')
+
+        f.write("# Full environment is:\n")
+        f.write(f"# {shell.get_env_full()}\n# \n")
+
+        f.write("# Full configuration command with needed environment variables is:\n")
+        f.write(f'# {" ".join(quote(str(x)) for x in shell.get_env_added())} '
+                f'{" ".join(quote(str(x)) for x in shell.get_cfg_cmd_excl_env())}\n# \n')
+
+        # .fuzzmanagerconf details
+        f.write("\n")
+        f.write("[Main]\n")
+        f.write(f"platform = {fmconf_platform}\n")
+        f.write(f"product = {shell.get_repo_name()}\n")
+        f.write(f"product_version = {shell.get_hg_hash()}\n")
+        f.write(f"os = {fmconf_os}\n")
+
+        f.write("\n")
+        f.write("[Metadata]\n")
+        f.write(f"buildFlags = {shell.build_opts.build_options_str}\n")
+        f.write(f'majorVersion = {shell.get_version().split(".")[0]}\n')
+        f.write(f"pathPrefix = {shell.get_repo_dir()}/\n")
+        f.write(f"version = {shell.get_version()}\n")
+
+
+def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
     """Compile a binary and copy essential compiled files into a desired structure.
 
-    Args:
-        shell (object): SpiderMonkey shell parameters
-
-    Raises:
-        OSError: Raises when a compiled shell is absent
-
-    Returns:
-        Path: Path to the compiled shell
+    :param shell: SpiderMonkey shell parameters
+    :raise OSError: Raises when a compiled shell is absent
+    :return: Path to the compiled shell
     """
     cmd_list = [MAKE_BINARY, "-C", str(shell.get_js_objdir()), f"-j{COMPILATION_JOBS}", "-s"]
     # Note that having a non-zero exit code does not mean that the operation did not succeed,
@@ -544,9 +574,18 @@ def sm_compile(shell):  # pylint:disable=too-complex
     return shell.get_shell_compiled_path()
 
 
-def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: disable=invalid-name,missing-param-doc
-    # pylint: disable=missing-raises-doc,missing-type-doc,too-many-branches,too-complex,too-many-statements
-    """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols."""
+def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest_txt: bool = False) -> None:
+    """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols.
+
+    :param shell: Potential compiled shell object
+    :param update_to_rev: Specified revision to be updated to
+    :param _update_latest_txt: Whether the latest .txt file should be updated (likely obsolete)
+
+    :raise OSError: When a cached shell that failed compilation was found, or when compilation failed
+    :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
+    :raise CalledProcessError: When shell compilation failed
+    """
+    # pylint: disable=too-many-branches,too-complex,too-many-statements
     assert sm_compile_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
     cached_no_shell = shell.get_shell_cache_js_bin_path().with_suffix(".busted")
 
@@ -567,17 +606,17 @@ def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: dis
     shell.get_shell_cache_dir().mkdir()
 
     try:
-        if updateToRev:
+        if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
-            print(f"Updating to rev {updateToRev} in the {shell.build_opts.repo_dir} repository...")
+            print(f"Updating to rev {update_to_rev} in the {shell.build_opts.repo_dir} repository...")
             subprocess.run(["hg", "-R", str(shell.build_opts.repo_dir),
-                            "update", "-C", "-r", updateToRev],
+                            "update", "-C", "-r", update_to_rev],
                            check=True,
                            cwd=os.getcwd(),
                            stderr=subprocess.DEVNULL,
                            timeout=9999)
 
-        cfgJsCompile(shell)
+        configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             sm_compile_helpers.verify_full_win_pageheap(shell.get_shell_cache_js_bin_path())
     except KeyboardInterrupt:
@@ -595,7 +634,7 @@ def obtainShell(shell, updateToRev=None, _updateLatestTxt=False):  # pylint: dis
         raise
 
 
-def main():
+def main() -> None:
     """Execute main() function in CompiledShell class."""
     sys.exit(CompiledShell.main())
 

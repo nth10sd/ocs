@@ -1,5 +1,3 @@
-# coding=utf-8
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -13,27 +11,23 @@ import platform
 
 import pytest
 
-from funfuzz.js import build_options
-from funfuzz.js import compile_shell
-from funfuzz.util import hg_helpers
+from ocs import build_options
+from ocs import compile_shell
+from ocs.util import hg_helpers
 
-# Paths
 MC_PATH = Path.home() / "trees" / "mozilla-central"
 SHELL_CACHE = Path.home() / "shell-cache"
 
 
-@pytest.mark.slow
+@pytest.mark.slow  # type: ignore
 @lru_cache(maxsize=None)
-def test_shell_compile():
+def test_shell_compile() -> Path:
     """Test compilation of shells depending on the specified environment variable.
 
-    Raises:
-        ValueError: If default_parameters_debug is not in build_opts
-
-    Returns:
-        Path: Path to the compiled shell.
+    :raise ValueError: If default_parameters_debug is not in build_opts
+    :return: Path to the compiled shell.
     """
-    assert MC_PATH.is_dir()  # pylint: disable=no-member
+    assert MC_PATH.is_dir()
     # Change the repository location by uncommenting this line and specifying the right one
     # "-R ~/trees/mozilla-central/")
 

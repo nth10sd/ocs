@@ -48,7 +48,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -59,7 +59,7 @@ jobs:
         done
 
     - name: Compile a "--enable-address-sanitizer" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-address-sanitizer"
+      run: time python -u -m ocs.compile_shell -b "--enable-address-sanitizer"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -70,6 +70,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   opt-64-vg-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -106,7 +109,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -117,7 +120,7 @@ jobs:
         done
 
     - name: Compile a "--enable-valgrind" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-valgrind"
+      run: time python -u -m ocs.compile_shell -b "--enable-valgrind"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -128,6 +131,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   opt-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -164,7 +170,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -175,7 +181,7 @@ jobs:
         done
 
     - name: Compile a "" build
-      run: time python -u -m funfuzz.js.compile_shell
+      run: time python -u -m ocs.compile_shell
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -186,6 +192,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-64-dm-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -222,7 +231,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -233,7 +242,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -244,6 +253,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-64-dm-armsim64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -280,7 +292,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -291,7 +303,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -302,6 +314,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   opt-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -338,7 +353,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -349,7 +364,7 @@ jobs:
         done
 
     - name: Compile a "--32" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--32"
+      run: time python -u -m ocs.compile_shell -b "--32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -360,6 +375,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-32-dm-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -396,7 +414,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -407,7 +425,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -418,6 +436,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-32-dm-armsim32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -454,7 +475,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -465,7 +486,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -476,6 +497,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   opt-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -512,7 +536,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -523,7 +547,7 @@ jobs:
         done
 
     - name: Compile a "" build
-      run: time python -u -m funfuzz.js.compile_shell
+      run: time python -u -m ocs.compile_shell
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -534,6 +558,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-64-dm-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -570,7 +597,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -581,7 +608,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -592,6 +619,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)
 
   dbg-optDisabled-64-dm-armsim64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -628,7 +658,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -639,7 +669,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -650,3 +680,6 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
+    - name: Upload coverage report to codecov
+      if: ${{ success() }}
+      run: bash <(curl -s https://codecov.io/bash)

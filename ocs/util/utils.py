@@ -1,22 +1,25 @@
-# coding=utf-8
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Miscellaneous helper functions.
-"""
+"""Miscellaneous helper functions."""
 
 import copy
 import os
+from pathlib import Path
 import platform
+from typing import Any
 
-verbose = False  # pylint: disable=invalid-name
+VERBOSE = False
 
 
-def env_with_path(path, curr_env=None):  # pylint: disable=missing-param-doc,missing-return-doc
-    # pylint: disable=missing-return-type-doc,missing-type-doc
-    """Append the path to the appropriate library path on various platforms."""
+def env_with_path(path: str, curr_env: Any = None) -> Any:
+    """Append the path to the appropriate library path on various platforms.
+
+    :param path: Path to be added to $PATH
+    :param curr_env: Current environment, in case os.environ is not the one required
+    :return: Environment with the path added
+    """
     curr_env = curr_env or os.environ
     if platform.system() == "Linux":
         lib_path = "LD_LIBRARY_PATH"
@@ -45,25 +48,27 @@ class LockDir:
         with LockDir(path):
             # No other code is concurrently using LockDir(path)
 
-    Args:
-        directory (str): Lock directory name
+    :param directory: Lock directory name
     """
 
-    def __init__(self, directory):
+    def __init__(self, directory: Path):
         self.directory = directory
 
-    def __enter__(self):
+    def __enter__(self) -> None:
         try:
             self.directory.mkdir()
         except OSError:
             print(f"Lock directory exists: {self.directory}")
             raise
 
-    def __exit__(self, _exc_type, _exc_val, _exc_tb):
+    def __exit__(self, _exc_type: Any, _exc_val: Any, _exc_tb: Any) -> None:
         self.directory.rmdir()
 
 
-def vdump(inp):  # pylint: disable=missing-param-doc,missing-type-doc
-    """Append the word "DEBUG" to any verbose output."""
-    if verbose:
+def vdump(inp: str) -> None:
+    """Append the word "DEBUG" to any verbose output.
+
+    :param inp: Input string
+    """
+    if VERBOSE:
         print(f"DEBUG - {inp}")

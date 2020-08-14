@@ -1,61 +1,67 @@
-# coding=utf-8
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Allows specification of build configuration parameters.
-"""
+"""Allows specification of build configuration parameters."""
 
 import argparse
 from pathlib import Path
 import platform
 import random
 import sys
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Tuple
 
 DEFAULT_TREES_LOCATION = Path.home() / "trees"
 
 
-def chance(i):
-    """Returns a random boolean result based on an input probability.
+def chance(i: float) -> bool:
+    """Chooses a random boolean result based on an input probability.
 
-    Args:
-        i (float): Intended probability.
-
-    Returns:
-        bool: Result based on the input probability
+    :param i: Intended probability.
+    :return: Result based on the input probability
     """
     return random.random() < i
 
 
-class Randomizer:  # pylint: disable=missing-docstring
-    def __init__(self):
-        self.options = []
+class Randomizer:
+    """Class to randomize parser options."""
+    def __init__(self) -> None:
+        self.options: List[Dict[str, object]] = []
 
-    def add(self, name, weight):  # pylint: disable=missing-docstring
+    def add(self, name: str, weight: float) -> None:
+        """Add the option name and its testing weight."""
         self.options.append({
             "name": name,
             "weight": weight,
         })
 
-    def getRandomSubset(self):  # pylint: disable=invalid-name,missing-docstring,missing-return-doc
-        # pylint: disable=missing-return-type-doc
-        def getWeight(o):  # pylint: disable=invalid-name,missing-return-doc
-            return o["weight"]
-        return [o["name"] for o in self.options if chance(getWeight(o))]
+    def get_rnd_subset(self) -> List[object]:
+        """Get a random subset of build options."""
+        def get_weight(opt: Any) -> Any:
+            return opt["weight"]
+        return [opt["name"] for opt in self.options if chance(get_weight(opt))]
 
 
-def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missing-return-type-doc
-    """Add parser options."""
+def add_parser_opts() -> Tuple[Any, Any]:
+    """Add parser options.
+
+    :return: Tuple containing the parser object and the Randomizer object
+    """
     # Where to find the source dir and compiler, patching if necessary.
     parser = argparse.ArgumentParser(description="Usage: Don't use this directly")
     randomizer = Randomizer()
 
-    def randomizeBool(name, weight, **kwargs):  # pylint: disable=invalid-name
-        # pylint: disable=missing-param-doc,missing-type-doc
+    def randomize_bool(name: List[str], weight: float, **kwargs: Any) -> None:
         """Add a randomized boolean option that defaults to False.
 
         Option also has a [weight] chance of being changed to True when using --random.
+
+        :param name: Name of the build option
+        :param weight: Weight of the build option
+        :param kwargs: Remaining keyword arguments to be passed into parser.add_argument
         """
         randomizer.add(name[-1], weight)
         parser.add_argument(*name, action="store_true", default=False, **kwargs)
@@ -71,36 +77,36 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
                         help="Sets the source repository.")
 
     # Basic spidermonkey options
-    randomizeBool(["--32"], 0.5,
-                  dest="enable32",
-                  help="Build 32-bit shells, but if not enabled, 64-bit shells are built.")
-    randomizeBool(["--enable-debug"], 0.5,
-                  dest="enableDbg",
-                  help='Build shells with --enable-debug. Defaults to "%(default)s". '
-                       "Currently defaults to True in configure.in on mozilla-central.")
-    randomizeBool(["--disable-debug"], 0,
-                  dest="disableDbg",
-                  help='Build shells with --disable-debug. Defaults to "%(default)s". '
-                       "Currently defaults to True in configure.in on mozilla-central.")
-    randomizeBool(["--enable-optimize"], 0,
-                  dest="enableOpt",
-                  help='Build shells with --enable-optimize. Defaults to "%(default)s".')
-    randomizeBool(["--disable-optimize"], 0.1,
-                  dest="disableOpt",
-                  help='Build shells with --disable-optimize. Defaults to "%(default)s".')
-    randomizeBool(["--disable-profiling"], 0.5,
-                  dest="disableProfiling",
-                  help='Build with profiling off. Defaults to "True" on Linux, else "%(default)s".')
+    randomize_bool(["--32"], 0.5,
+                   dest="enable32",
+                   help="Build 32-bit shells, but if not enabled, 64-bit shells are built.")
+    randomize_bool(["--enable-debug"], 0.5,
+                   dest="enableDbg",
+                   help='Build shells with --enable-debug. Defaults to "%(default)s". '
+                        "Currently defaults to True in configure.in on mozilla-central.")
+    randomize_bool(["--disable-debug"], 0,
+                   dest="disableDbg",
+                   help='Build shells with --disable-debug. Defaults to "%(default)s". '
+                        "Currently defaults to True in configure.in on mozilla-central.")
+    randomize_bool(["--enable-optimize"], 0,
+                   dest="enableOpt",
+                   help='Build shells with --enable-optimize. Defaults to "%(default)s".')
+    randomize_bool(["--disable-optimize"], 0.1,
+                   dest="disableOpt",
+                   help='Build shells with --disable-optimize. Defaults to "%(default)s".')
+    randomize_bool(["--disable-profiling"], 0.5,
+                   dest="disableProfiling",
+                   help='Build with profiling off. Defaults to "True" on Linux, else "%(default)s".')
 
     # Memory debuggers
-    randomizeBool(["--enable-address-sanitizer"], 0.3,
-                  dest="enableAddressSanitizer",
-                  help='Build with clang AddressSanitizer support. Defaults to "%(default)s".')
-    randomizeBool(["--enable-valgrind"], 0.2,
-                  dest="enableValgrind",
-                  help='Build with valgrind.h bits. Defaults to "%(default)s". '
-                       "Requires --enable-hardfp for ARM platforms.")
-    # We do not use randomizeBool because we add this flag automatically if --enable-valgrind
+    randomize_bool(["--enable-address-sanitizer"], 0.3,
+                   dest="enableAddressSanitizer",
+                   help='Build with clang AddressSanitizer support. Defaults to "%(default)s".')
+    randomize_bool(["--enable-valgrind"], 0.2,
+                   dest="enableValgrind",
+                   help='Build with valgrind.h bits. Defaults to "%(default)s". '
+                        "Requires --enable-hardfp for ARM platforms.")
+    # We do not use randomize_bool because we add this flag automatically if --enable-valgrind
     # is selected.
     parser.add_argument("--run-with-valgrind",
                         dest="runWithVg",
@@ -109,9 +115,9 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
                         help="Run the shell under Valgrind. Requires --enable-valgrind.")
 
     # Misc spidermonkey options
-    randomizeBool(["--enable-more-deterministic"], 0.75,
-                  dest="enableMoreDeterministic",
-                  help='Build shells with --enable-more-deterministic. Defaults to "%(default)s".')
+    randomize_bool(["--enable-more-deterministic"], 0.75,
+                   dest="enableMoreDeterministic",
+                   help='Build shells with --enable-more-deterministic. Defaults to "%(default)s".')
     parser.add_argument("--enable-oom-breakpoint",  # Extra debugging help for OOM assertions
                         dest="enableOomBreakpoint",
                         action="store_true",
@@ -122,14 +128,14 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
                         action="store_true",
                         default=False,
                         help='Build shells using --without-intl-api. Defaults to "%(default)s".')
-    randomizeBool(["--enable-simulator=arm"], 0.3,
-                  dest="enableSimulatorArm32",
-                  help="Build shells with --enable-simulator=arm, only applicable to 32-bit shells. "
-                       'Defaults to "%(default)s".')
-    randomizeBool(["--enable-simulator=arm64"], 0.3,
-                  dest="enableSimulatorArm64",
-                  help="Build shells with --enable-simulator=arm64, only applicable to 64-bit shells. "
-                       'Defaults to "%(default)s".')
+    randomize_bool(["--enable-simulator=arm"], 0.3,
+                   dest="enableSimulatorArm32",
+                   help="Build shells with --enable-simulator=arm, only applicable to 32-bit shells. "
+                        'Defaults to "%(default)s".')
+    randomize_bool(["--enable-simulator=arm64"], 0.3,
+                   dest="enableSimulatorArm64",
+                   help="Build shells with --enable-simulator=arm64, only applicable to 64-bit shells. "
+                        'Defaults to "%(default)s".')
 
     # If adding a new compile option, be mindful of repository randomization.
     # e.g. it may be in mozilla-central but not in mozilla-beta
@@ -137,23 +143,20 @@ def addParserOptions():  # pylint: disable=invalid-name,missing-return-doc,missi
     return parser, randomizer
 
 
-def parse_shell_opts(args):
+def parse_shell_opts(args: Any) -> Any:
     """Parses shell options into a build_options object.
 
-    Args:
-        args (object): Arguments to be parsed
-
-    Returns:
-        build_options: An immutable build_options object
+    :param args: Arguments to be parsed
+    :return: An immutable build_options object
     """
-    parser, randomizer = addParserOptions()
+    parser, randomizer = add_parser_opts()
     build_options = parser.parse_args(args.split())
 
     if build_options.enableRandom:
-        build_options = generateRandomConfigurations(parser, randomizer)
+        build_options = gen_rnd_cfgs(parser, randomizer)
     else:
         build_options.build_options_str = args
-        valid = areArgsValid(build_options)
+        valid = are_args_valid(build_options)
         if not valid[0]:
             print(f"WARNING: This set of build options is not tested well because: {valid[1]}")
 
@@ -178,47 +181,52 @@ def parse_shell_opts(args):
     return build_options
 
 
-def computeShellType(build_options):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc
-    # pylint: disable=missing-return-type-doc,missing-type-doc,too-complex,too-many-branches
-    """Return configuration information of the shell."""
-    fileName = ["js"]  # pylint: disable=invalid-name
+def compute_shell_type(build_options: Any) -> str:  # pylint: disable=too-complex
+    """Return configuration information of the shell.
+
+    :param build_options: Object containing build options
+    :return: Filename with build option information added
+    """
+    file_name = ["js"]
     if build_options.enableDbg:
-        fileName.append("dbg")
+        file_name.append("dbg")
     if build_options.disableOpt:
-        fileName.append("optDisabled")
-    fileName.append("32" if build_options.enable32 else "64")
+        file_name.append("optDisabled")
+    file_name.append("32" if build_options.enable32 else "64")
     if build_options.disableProfiling:
-        fileName.append("profDisabled")
+        file_name.append("profDisabled")
     if build_options.enableMoreDeterministic:
-        fileName.append("dm")
+        file_name.append("dm")
     if build_options.enableAddressSanitizer:
-        fileName.append("asan")
+        file_name.append("asan")
     if build_options.enableValgrind:
-        fileName.append("vg")
+        file_name.append("vg")
     if build_options.enableOomBreakpoint:
-        fileName.append("oombp")
+        file_name.append("oombp")
     if build_options.enableWithoutIntlApi:
-        fileName.append("intlDisabled")
+        file_name.append("intlDisabled")
     if build_options.enableSimulatorArm32:
-        fileName.append("armsim32")
+        file_name.append("armsim32")
     if build_options.enableSimulatorArm64:
-        fileName.append("armsim64")
-    fileName.append(platform.system().lower())
-    fileName.append(platform.machine().lower())
+        file_name.append("armsim64")
+    file_name.append(platform.system().lower())
+    file_name.append(platform.machine().lower())
 
-    assert "" not in fileName, f'fileName "{fileName!r}" should not have empty elements.'
-    return "-".join(fileName)
+    assert "" not in file_name, f'Filename "{file_name!r}" should not have empty elements.'
+    return "-".join(file_name)
 
 
-def computeShellName(build_options, buildRev):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc
-    # pylint: disable=missing-return-type-doc,missing-type-doc
+def compute_shell_name(build_options: object, build_rev: str) -> str:
     """Return the shell type together with the build revision."""
-    return f"{computeShellType(build_options)}-{buildRev}"
+    return f"{compute_shell_type(build_options)}-{build_rev}"
 
 
-def areArgsValid(args):  # pylint: disable=invalid-name,missing-param-doc,missing-return-doc,missing-return-type-doc
-    # pylint: disable=missing-type-doc,too-many-branches,too-complex,too-many-return-statements
-    """Check to see if chosen arguments are valid."""
+def are_args_valid(args: Any) -> Tuple[bool, str]:  # pylint: disable=too-many-branches,too-complex,too-many-return-statements
+    """Check to see if chosen arguments are valid.
+
+    :param args: Input arguments
+    :return: Whether arguments are valid, with a string as the explanation
+    """
     # Consider refactoring this to raise exceptions instead.
     if args.enableDbg and args.disableDbg:
         return False, "Making a debug, non-debug build would be contradictory."
@@ -281,25 +289,31 @@ def areArgsValid(args):  # pylint: disable=invalid-name,missing-param-doc,missin
     return True, ""
 
 
-def generateRandomConfigurations(parser, randomizer):  # pylint: disable=invalid-name
-    # pylint: disable=missing-docstring,missing-return-doc,missing-return-type-doc
+def gen_rnd_cfgs(parser: Any, randomizer: Any) -> Any:
+    """Generates random configurations.
+
+    :param parser: Parser object for specified configurations
+    :param randomizer: Randomizer object for getting a random subset of build options
+    :return: build_options object
+    """
     while True:
-        randomArgs = randomizer.getRandomSubset()  # pylint: disable=invalid-name
-        if "--enable-valgrind" in randomArgs and chance(0.95):
-            randomArgs.append("--run-with-valgrind")
-        build_options = parser.parse_args(randomArgs)
-        if areArgsValid(build_options)[0]:
-            build_options.build_options_str = " ".join(randomArgs)  # Used for autobisectjs
+        rnd_args = randomizer.get_rnd_subset()
+        if "--enable-valgrind" in rnd_args and chance(0.95):
+            rnd_args.append("--run-with-valgrind")
+        build_options = parser.parse_args(rnd_args)
+        if are_args_valid(build_options)[0]:
+            build_options.build_options_str = " ".join(rnd_args)  # Used for autobisectjs
             build_options.enableRandom = True  # This has to be true since we are randomizing...
             return build_options
 
 
-def main():  # pylint: disable=missing-docstring
+def main() -> None:
+    """Main build_options function, generates sample random build configurations."""
     print("Here are some sample random build configurations that can be generated:")
-    parser, randomizer = addParserOptions()
+    parser, randomizer = add_parser_opts()
 
     for _ in range(30):
-        build_options = generateRandomConfigurations(parser, randomizer)
+        build_options = gen_rnd_cfgs(parser, randomizer)
         print(build_options.build_options_str)
 
     print()

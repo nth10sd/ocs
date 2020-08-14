@@ -1,5 +1,3 @@
-# coding=utf-8
-#
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -13,15 +11,14 @@ import stat
 
 import pytest
 
-from funfuzz.util import file_system_helpers
+from ocs.util import file_system_helpers
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
-def test_rm_tree_incl_readonly_files(tmpdir):
+@pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")  # type: ignore
+def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
     """Test that directory trees with readonly files can be removed.
 
-    Args:
-        tmpdir (class): Fixture from pytest for creating a temporary directory
+    :param tmpdir: Fixture from pytest for creating a temporary directory
     """
     test_dir = Path(tmpdir) / "test_dir"
     read_only_dir = test_dir / "nested_read_only_dir"

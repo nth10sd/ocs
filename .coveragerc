@@ -2,7 +2,7 @@
 concurrency = "multiprocessing"
 
 [report]
-include = */funfuzz/*
+include = */ocs/*
 # Taken from: https://coverage.readthedocs.io/en/coverage-4.5.2/config.html#syntax
 # Regexes for lines to exclude from consideration
 exclude_lines =
