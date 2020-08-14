@@ -49,8 +49,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-address-sanitizer" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-address-sanitizer"
@@ -101,8 +107,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-valgrind" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-valgrind"
@@ -153,8 +165,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "" build
       run: time python -u -m funfuzz.js.compile_shell
@@ -205,8 +223,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
@@ -257,8 +281,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
@@ -309,8 +339,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--32" build
       run: time python -u -m funfuzz.js.compile_shell -b "--32"
@@ -361,8 +397,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
@@ -413,8 +455,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
@@ -465,8 +513,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "" build
       run: time python -u -m funfuzz.js.compile_shell
@@ -517,8 +571,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
@@ -569,8 +629,14 @@ jobs:
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
-    - name: Clone Mercurial mozilla-central repo as a stream
-      run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
+    - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      run: |
+        mkdir -p "$HOME"/trees && hg --version -q ;
+        until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+          echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+          rm -rf "$HOME"/trees/mozilla-central/ ;
+          sleep 2 ;
+        done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
       run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
