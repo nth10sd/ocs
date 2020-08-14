@@ -35,7 +35,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -48,12 +48,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-address-sanitizer" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-address-sanitizer"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-address-sanitizer"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -87,7 +87,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -100,12 +100,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-valgrind" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-valgrind"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-valgrind"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -139,7 +139,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -152,12 +152,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "" build
-      run: time python -m funfuzz.js.compile_shell
+      run: time python -u -m funfuzz.js.compile_shell
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -191,7 +191,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -204,12 +204,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -243,7 +243,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -256,12 +256,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -295,7 +295,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -308,12 +308,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--32" build
-      run: time python -m funfuzz.js.compile_shell -b "--32"
+      run: time python -u -m funfuzz.js.compile_shell -b "--32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -347,7 +347,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -360,12 +360,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -399,7 +399,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
@@ -412,12 +412,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -451,7 +451,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set macOS environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
@@ -464,12 +464,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "" build
-      run: time python -m funfuzz.js.compile_shell
+      run: time python -u -m funfuzz.js.compile_shell
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -503,7 +503,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set macOS environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
@@ -516,12 +516,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -555,7 +555,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -m pip install --upgrade pip setuptools wheel && python -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set macOS environment variables
       run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.0_3/bin/llvm-symbolizer
@@ -568,12 +568,12 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: pytest --flake8 --pylint -m "flake8 or pylint or not slow"
+      run: python -u -m pytest --flake8 --pylint -m "flake8 or pylint or not slow"
     - name: Clone Mercurial mozilla-central repo as a stream
       run: mkdir -p "$HOME"/trees && hg --version -q ; time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/
 
     - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+      run: time python -u -m funfuzz.js.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
