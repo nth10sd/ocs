@@ -32,9 +32,9 @@ if __name__ == "__main__":
           entry_points={
               "console_scripts": ["ocs = ocs.compile_shell:main"],
           },
-          # package_data={"ocs": [
-          #     "<relative path to non-Python files>/*",
-          # ]},
+          package_data={"ocs": [
+              "py.typed",
+          ]},
           packages=find_packages(exclude=("tests",)),
           install_requires=[
               "distro>=1.3.0",
