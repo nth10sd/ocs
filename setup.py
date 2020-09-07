@@ -20,6 +20,7 @@ EXTRAS = {
         "pytest ~= 6.0.1",
         "pytest-cov ~= 2.10.1",
         "pytest-flake8 ~= 1.0.6",
+        "pytest-mypy ~= 0.7.0",
         "pytest-pylint ~= 0.17.0",
         "sphinx ~= 3.2.1",
     ]}
@@ -40,4 +41,5 @@ if __name__ == "__main__":
           ],
           extras_require=EXTRAS,
           python_requires=">= 3.7",
-          zip_safe=False)
+          zip_safe=False,
+    )
