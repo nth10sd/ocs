@@ -40,5 +40,5 @@ if __name__ == "__main__":
               "distro>=1.3.0",
           ],
           extras_require=EXTRAS,
-          python_requires=">=3.6",
+          python_requires=">=3.7",
           zip_safe=False)
