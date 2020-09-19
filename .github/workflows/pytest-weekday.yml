@@ -528,9 +528,13 @@ jobs:
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer
+      run: |
+        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
+        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+      run: |
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
@@ -591,9 +595,13 @@ jobs:
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer
+      run: |
+        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
+        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+      run: |
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
@@ -654,9 +662,13 @@ jobs:
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer
+      run: |
+        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
+        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-config /usr/local/bin/llvm-config && sudo ln -s /usr/local/Cellar/llvm/10.0.1_1/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer
+      run: |
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
+        sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
