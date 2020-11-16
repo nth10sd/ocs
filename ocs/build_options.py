@@ -311,7 +311,7 @@ def main() -> None:
     """Main build_options function, generates sample random build configurations."""
     print("Here are some sample random build configurations that can be generated:")
 
-    parser, randomizer = ANOTHER_NAME()
+    parser, randomizer = add_parser_opts()
 
     for _ in range(30):
         build_options = gen_rnd_cfgs(parser, randomizer)
