@@ -38,7 +38,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -99,7 +102,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -160,7 +166,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -221,7 +230,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -282,7 +294,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -343,7 +358,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -404,7 +422,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -465,7 +486,10 @@ jobs:
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
 
     - name: Set Linux environment variables
-      run: echo ::set-env name=LLVM_CONFIG::/usr/lib/llvm-9/bin/llvm-config && echo ::set-env name=LLVM_SYMBOLIZER::/usr/lib/llvm-9/bin/llvm-symbolizer && echo ::set-env name=SHELL::/bin/bash
+      run: |
+        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
       run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
@@ -529,8 +553,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
-        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
@@ -596,8 +620,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
-        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
@@ -663,8 +687,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo ::set-env name=LLVM_CONFIG::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config ;
-        echo ::set-env name=LLVM_SYMBOLIZER::/usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
