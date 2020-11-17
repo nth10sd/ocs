@@ -553,8 +553,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
@@ -620,8 +620,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
@@ -687,8 +687,8 @@ jobs:
       run: ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/\"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)\"/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
     - name: Set macOS llvm-config and llvm-symbolizer symlinks
       run: |
         sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
