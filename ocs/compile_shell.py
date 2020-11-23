@@ -395,7 +395,7 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
     cfg_cmds.append("--disable-tests")
 
     if platform.system() == "Linux" and distro.linux_distribution(full_distribution_name=False)[0] == "gentoo":
-        path_to_libclang = "/usr/lib/llvm/9/lib64"  # Clang 10 is not yet supported by Gecko due to bug 1616692
+        path_to_libclang = "/usr/lib/llvm/11/lib64"
         assert Path(path_to_libclang).is_dir()
         cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
 
