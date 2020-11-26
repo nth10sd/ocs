@@ -7,9 +7,9 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '5 10,22 * * 0,6'
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 ### Copy to pytest-weekday.yml after this line ###
 jobs:
