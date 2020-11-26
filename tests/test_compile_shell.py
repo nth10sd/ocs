@@ -19,7 +19,7 @@ MC_PATH = Path.home() / "trees" / "mozilla-central"
 SHELL_CACHE = Path.home() / "shell-cache"
 
 
-@pytest.mark.slow  # type: ignore
+@pytest.mark.slow
 @lru_cache(maxsize=None)
 def test_shell_compile() -> Path:
     """Test compilation of shells depending on the specified environment variable.

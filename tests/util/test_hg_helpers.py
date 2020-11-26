@@ -14,7 +14,7 @@ TREES_PATH = Path.home() / "trees"
 
 
 @pytest.mark.skipif(not (TREES_PATH / "mozilla-central" / ".hg" / "hgrc").is_file(),
-                    reason="requires a Mozilla Mercurial repository")  # type: ignore
+                    reason="requires a Mozilla Mercurial repository")
 def test_hgrc_repo_name() -> None:
     """Test that we are able to extract the repository name from the hgrc file."""
     assert hg_helpers.hgrc_repo_name(TREES_PATH / "mozilla-central") == "mozilla-central"

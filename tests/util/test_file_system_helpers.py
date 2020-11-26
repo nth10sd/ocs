@@ -14,7 +14,7 @@ import pytest
 from ocs.util import file_system_helpers
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")  # type: ignore
+@pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
 def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
     """Test that directory trees with readonly files can be removed.
 

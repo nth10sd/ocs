@@ -12,7 +12,7 @@ import pytest
 from ocs.util import sm_compile_helpers
 
 
-@pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")  # type: ignore
+@pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")
 def test_autoconf_run(tmpdir: Path) -> None:
     """Test the autoconf runs properly.
 
