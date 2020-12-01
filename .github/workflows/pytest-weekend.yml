@@ -35,7 +35,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -51,7 +51,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -99,7 +99,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -115,7 +115,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -163,7 +163,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -179,7 +179,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -227,7 +227,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -243,7 +243,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -291,7 +291,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -307,7 +307,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -355,7 +355,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -371,7 +371,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -419,7 +419,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -435,7 +435,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -483,7 +483,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -499,7 +499,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -547,7 +547,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -566,7 +566,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -614,7 +614,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -633,7 +633,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -681,7 +681,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt '.[test]'
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -700,7 +700,7 @@ jobs:
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
-      run: python -u -m pytest --flake8 --mypy --pylint -m "flake8 or mypy or pylint or not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+      run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
