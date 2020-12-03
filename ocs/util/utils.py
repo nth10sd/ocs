@@ -9,9 +9,8 @@ import os
 from pathlib import Path
 import platform
 from typing import Any
-from typing import Final
 
-VERBOSE: Final = False
+VERBOSE = False
 
 
 def env_with_path(path: str, curr_env: Any = None) -> Any:

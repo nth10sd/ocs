@@ -11,12 +11,11 @@ import platform
 from shlex import quote
 import subprocess
 from typing import Any
-from typing import Final
 from typing import Tuple
 
 from ocs.util import utils
 
-ASAN_ERROR_EXIT_CODE: Final = 77
+ASAN_ERROR_EXIT_CODE = 77
 RUN_MOZGLUE_LIB = ""
 RUN_NSPR_LIB = ""
 RUN_PLDS_LIB = ""

@@ -17,7 +17,6 @@ import subprocess
 import sys
 import traceback
 from typing import Any
-from typing import Final
 from typing import List
 from typing import Optional
 
@@ -33,11 +32,11 @@ from ocs.util import utils
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
-    CLANG_VER: Final = "8.0.0"
-    WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
+    CLANG_VER = "8.0.0"
+    WIN_MOZBUILD_CLANG_PATH = Path.home() / ".mozbuild" / "clang"
 else:
     MAKE_BINARY = "make"
-    SSE2_FLAGS: Final = "-msse2 -mfpmath=sse"  # See bug 948321
+    SSE2_FLAGS = "-msse2 -mfpmath=sse"  # See bug 948321
 
 if multiprocessing.cpu_count() > 2:
     COMPILATION_JOBS = multiprocessing.cpu_count() + 1
