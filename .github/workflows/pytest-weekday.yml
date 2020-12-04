@@ -205,7 +205,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-64-dm-linux:
+  dbg-optDisabled-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -253,8 +253,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+    - name: Compile a "--enable-debug --disable-optimize" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -269,7 +269,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-64-dm-armsim64-linux:
+  dbg-optDisabled-64-armsim64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -317,8 +317,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+    - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm64" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -397,7 +397,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-32-dm-linux:
+  dbg-optDisabled-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -445,8 +445,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --32" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --32"
+    - name: Compile a "--enable-debug --disable-optimize --32" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -461,7 +461,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-32-dm-armsim32-linux:
+  dbg-optDisabled-32-armsim32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -509,8 +509,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm --32"
+    - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm --32" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -592,7 +592,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-64-dm-darwin:
+  dbg-optDisabled-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -643,8 +643,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic"
+    - name: Compile a "--enable-debug --disable-optimize" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -659,7 +659,7 @@ jobs:
       if: ${{ success() }}
       run: bash <(curl -s https://codecov.io/bash)
 
-  dbg-optDisabled-64-dm-armsim64-darwin:
+  dbg-optDisabled-64-armsim64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
@@ -710,8 +710,8 @@ jobs:
           sleep 2 ;
         done
 
-    - name: Compile a "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-more-deterministic --enable-simulator=arm64"
+    - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm64" build
+      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
