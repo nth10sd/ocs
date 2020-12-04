@@ -115,9 +115,6 @@ def add_parser_opts() -> Tuple[Any, Any]:
                         help="Run the shell under Valgrind. Requires --enable-valgrind.")
 
     # Misc spidermonkey options
-    randomize_bool(["--enable-more-deterministic"], 0.75,
-                   dest="enableMoreDeterministic",
-                   help='Build shells with --enable-more-deterministic. Defaults to "%(default)s".')
     parser.add_argument("--enable-oom-breakpoint",  # Extra debugging help for OOM assertions
                         dest="enableOomBreakpoint",
                         action="store_true",
@@ -195,8 +192,6 @@ def compute_shell_type(build_options: Any) -> str:  # pylint: disable=too-comple
     file_name.append("32" if build_options.enable32 else "64")
     if build_options.disableProfiling:
         file_name.append("profDisabled")
-    if build_options.enableMoreDeterministic:
-        file_name.append("dm")
     if build_options.enableAddressSanitizer:
         file_name.append("asan")
     if build_options.enableValgrind:

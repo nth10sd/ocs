@@ -168,7 +168,6 @@ def verify_binary(shell: Any) -> None:
     # Testing for debug or opt builds are different because there can be hybrid debug-opt builds.
     assert query_build_cfg(binary, "debug") == shell.build_opts.enableDbg
 
-    assert query_build_cfg(binary, "more-deterministic") == shell.build_opts.enableMoreDeterministic
     assert query_build_cfg(binary, "asan") == shell.build_opts.enableAddressSanitizer
     # Checking for profiling status does not work with mozilla-beta and mozilla-release
     assert query_build_cfg(binary, "profiling") != shell.build_opts.disableProfiling
