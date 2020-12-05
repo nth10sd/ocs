@@ -50,9 +50,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -117,9 +117,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -184,9 +184,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -251,9 +251,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -318,9 +318,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -385,9 +385,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -452,9 +452,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -519,9 +519,9 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -589,9 +589,9 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -659,9 +659,9 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -729,9 +729,9 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines
+    - name: Search for existing linter ignore lines and lines importing the Any type
       run: |
-        rg --stats "(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py)
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa)| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
