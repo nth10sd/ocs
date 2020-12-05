@@ -29,7 +29,7 @@ EXTRAS = {
 if __name__ == "__main__":
     setup(
         name="ocs",
-        version="0.8.0",
+        version="0.9.0a1",
         entry_points={
             "console_scripts": ["ocs = ocs.compile_shell:main"],
         },

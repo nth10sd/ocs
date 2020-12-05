@@ -5,7 +5,7 @@
 """Module details."""
 
 __title__ = "ocs"
-__version__ = "0.8.0"
+__version__ = "0.9.0a1"
 __author__ = "Gary Kwong"
 __license__ = "MPL 2.0"
 __copyright__ = "Copyright 2020 Gary Kwong"
