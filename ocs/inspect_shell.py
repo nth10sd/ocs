@@ -40,13 +40,9 @@ if platform.system() == "Windows":
     ALL_RUN_LIBS.append(RUN_TESTPLUG_LIB)
     WIN_ICU_VERS = []
     # Needs to be updated when the earliest known working revision changes. Currently:
-    # m-c 436503 Fx64, 1st w/ working Windows builds with a recent Win10 SDK, see bug 1485224
-    WIN_ICU_VERS.append(62)  # prior version
-    WIN_ICU_VERS.append(63)  # m-c 443997 Fx65, 1st w/ ICU 63.1, see bug 1499026
-    WIN_ICU_VERS.append(64)  # m-c 467933 Fx68, 1st w/ ICU 64.1, see bug 1533481
-    WIN_ICU_VERS.append(65)  # m-c 498522 Fx72, 1st w/ ICU 65.1, see bug 1583269
-    WIN_ICU_VERS.append(66)  # m-c 519547 Fx76, 1st w/ ICU 66.1, see bug 1610512
-    WIN_ICU_VERS.append(67)  # m-c 528100 Fx78, 1st w/ ICU 67.1, see bug 1632434
+    # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
+    WIN_ICU_VERS.append(67)  # prior version
+    # WIN_ICU_VERS.append(68)  # m-c XXXXXX Fx78, 1st w/ ICU 67.1, see bug 1632434 (to be updated)
 
     # Update if the following changes:
     # https://searchfox.org/mozilla-central/search?q=path%3Aintl%2Ficu%2Fsource%2F+.dll%3C%2FOutputFile%3E
