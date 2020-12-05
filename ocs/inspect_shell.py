@@ -49,7 +49,7 @@ if platform.system() == "Windows":
     WIN_ICU_VERS.append(67)  # m-c 528100 Fx78, 1st w/ ICU 67.1, see bug 1632434
 
     # Update if the following changes:
-    # https://dxr.mozilla.org/mozilla-central/search?q=%3C%2FOutputFile%3E+.dll+path%3Aintl%2Ficu%2Fsource%2F&case=true
+    # https://searchfox.org/mozilla-central/search?q=path%3Aintl%2Ficu%2Fsource%2F+.dll%3C%2FOutputFile%3E
     RUN_ICUUC_LIB_EXCL_EXT = "icuuc"
     RUN_ICUIN_LIB_EXCL_EXT = "icuin"
     RUN_ICUIO_LIB_EXCL_EXT = "icuio"
@@ -58,7 +58,7 @@ if platform.system() == "Windows":
     RUN_ICUTU_LIB_EXCL_EXT = "icutu"
 
     # Debug builds seem to have their debug "d" notation *before* the ICU version.
-    # Check https://dxr.mozilla.org/mozilla-central/search?q=%40BINPATH%40%2Ficudt&case=true&redirect=true
+    # https://searchfox.org/mozilla-central/search?q=%24%28IcuBinOutputDir%29%5Cicudt
     for icu_ver in WIN_ICU_VERS:
         ALL_RUN_LIBS.append(f"{RUN_ICUUC_LIB_EXCL_EXT}{icu_ver}.dll")
         ALL_RUN_LIBS.append(f"{RUN_ICUUC_LIB_EXCL_EXT}d{icu_ver}.dll")
