@@ -53,6 +53,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -120,6 +124,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -187,6 +195,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -254,6 +266,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -321,6 +337,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -388,6 +408,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -455,6 +479,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -522,6 +550,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -592,6 +624,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -662,6 +698,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
@@ -732,6 +772,10 @@ jobs:
     - name: Search for existing linter ignore lines in Python and lines importing the Any type
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+    - name: Lint with flake8 only checking for Python syntax errors or undefined names
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with flake8 and pylint, and also non-slow tests, using pytest
       run: python -u -m pytest --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
