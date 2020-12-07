@@ -586,7 +586,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     assert sm_compile_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
     cached_no_shell = shell.get_shell_cache_js_bin_path().with_suffix(".busted")
 
-    if shell.get_shell_cache_js_bin_path().is_file():  # pylint: disable=no-else-return
+    if shell.get_shell_cache_js_bin_path().is_file():
         # Don't remove the comma at the end of this line, and thus remove the newline printed.
         # We would break JSBugMon.
         print("Found cached shell...")
@@ -594,9 +594,11 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
         if platform.system() == "Windows":
             sm_compile_helpers.verify_full_win_pageheap(shell.get_shell_cache_js_bin_path())
         return
-    elif cached_no_shell.is_file():
+
+    if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
-    elif shell.get_shell_cache_dir().is_dir():
+
+    if shell.get_shell_cache_dir().is_dir():
         print("Found a cache dir without a successful/failed shell...")
         file_system_helpers.rm_tree_incl_readonly_files(shell.get_shell_cache_dir())
 
