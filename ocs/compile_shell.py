@@ -4,6 +4,8 @@
 
 """Compiles SpiderMonkey shells on different platforms using various specified configuration parameters."""
 
+from __future__ import annotations
+
 import copy
 import io
 import multiprocessing

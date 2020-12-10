@@ -4,6 +4,8 @@
 
 """Test the build_options.py file."""
 
+from __future__ import annotations
+
 import random
 from typing import Any
 

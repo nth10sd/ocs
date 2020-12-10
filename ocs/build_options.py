@@ -4,6 +4,8 @@
 
 """Allows specification of build configuration parameters."""
 
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 import platform

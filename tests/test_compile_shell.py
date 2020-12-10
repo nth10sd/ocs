@@ -4,6 +4,8 @@
 
 """Test the compile_shell.py file."""
 
+from __future__ import annotations
+
 from functools import lru_cache
 import os
 from pathlib import Path

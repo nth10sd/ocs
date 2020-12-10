@@ -4,6 +4,8 @@
 
 """Helper functions dealing with the files on the file system."""
 
+from __future__ import annotations
+
 import errno
 from pathlib import Path
 import platform

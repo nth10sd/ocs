@@ -4,6 +4,8 @@
 
 """Test the file_system_helpers.py file."""
 
+from __future__ import annotations
+
 import io
 from pathlib import Path
 import platform

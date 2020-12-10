@@ -4,6 +4,8 @@
 
 """Allows SpiderMonkey shell inspection to ensure that it is compiled as intended."""
 
+from __future__ import annotations
+
 import json
 import os
 from pathlib import Path
