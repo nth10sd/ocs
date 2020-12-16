@@ -53,12 +53,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -133,12 +133,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -213,12 +213,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -293,12 +293,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -373,12 +373,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -453,12 +453,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -533,12 +533,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -613,12 +613,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -696,12 +696,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -779,12 +779,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -862,12 +862,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          tests/ $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  tests/ $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
