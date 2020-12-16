@@ -60,7 +60,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -140,7 +140,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -220,7 +220,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -300,7 +300,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -380,7 +380,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -460,7 +460,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -540,7 +540,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -620,7 +620,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -703,7 +703,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -786,7 +786,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -869,7 +869,7 @@ jobs:
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 60 ] ;
+                    | cut -d' ' -f1) -lt 59 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
