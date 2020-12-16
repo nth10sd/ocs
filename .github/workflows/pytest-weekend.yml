@@ -50,15 +50,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -128,15 +130,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -206,15 +210,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -284,15 +290,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -362,15 +370,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -440,15 +450,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -518,15 +530,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -596,15 +610,17 @@ jobs:
       run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -677,15 +693,17 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -758,15 +776,17 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -839,15 +859,17 @@ jobs:
       run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
-    - name: Search for existing linter ignore lines in Python and lines importing the Any type
+    - name: Search for existing linter ignore lines in Python
       run: |
-        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) || true
+        rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          $(find . -type f -name "*.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
-        if [[ $(rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any)" \
-                  $(sed -n 's/name *= *"\(.*\)",/\1/p' < setup.py) \
+        if [ $(rg -t py --stats \
+                  "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                  $(find . -type f -name "*.py") \
                     | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) < 55 ]] ;
+                    | cut -d' ' -f1) -lt 60 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
