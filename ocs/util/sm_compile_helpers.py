@@ -47,9 +47,13 @@ def autoconf_run(working_dir: Path) -> None:
             subprocess.run(["autoconf-2.13"], check=True, cwd=str(working_dir))
         elif shutil.which("autoconf213"):
             subprocess.run(["autoconf213"], check=True, cwd=str(working_dir))
+        else:
+            raise RuntimeError("autoconf 2.13 not found.")
     elif platform.system() == "Windows":
         # Windows needs to call sh to be able to find autoconf.
         subprocess.run(["sh", "autoconf-2.13"], check=True, cwd=str(working_dir))
+    else:
+        raise RuntimeError("Unsupported platform")
 
 
 def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -> Path:
