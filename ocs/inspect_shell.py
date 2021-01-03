@@ -159,7 +159,7 @@ def verify_binary(shell: Any) -> None:
 
     :param shell: Compiled binary object
     """
-    binary = shell.get_shell_cache_js_bin_path()
+    binary = shell.shell_cache_js_bin_path
 
     assert arch_of_binary(binary) == ("32" if shell.build_opts.enable32 else "64")
 
