@@ -318,8 +318,8 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
         cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
         # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first, if on 64-bit Linux. (no matter Clang or GCC)
         # Also run this: `rustup target add i686-unknown-linux-gnu`
-        # cfg_env["CC"] = f"clang -m32 {SSE2_FLAGS}"  # -m32 is potentially no longer needed
-        # cfg_env["CXX"] = f"clang++ -m32 {SSE2_FLAGS}"  # -m32 is potentially no longer needed
+        cfg_env["CC"] = f"clang {constants.SSE2_FLAGS}"
+        cfg_env["CXX"] = f"clang++ {constants.SSE2_FLAGS}"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
         cfg_cmds.append("--host=x86_64-pc-linux-gnu")
