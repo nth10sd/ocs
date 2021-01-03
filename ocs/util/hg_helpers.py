@@ -66,10 +66,10 @@ def get_repo_hash_and_id(repo_dir: Path, repo_rev: str = "parents() and default"
 
 
 def hgrc_repo_name(repo_dir: Path) -> str:
-    """Look in the hgrc file in the .hg directory of the Mercurial repository and return the name.
+    """Extract the Mercurial repo name from the hgrc file.
 
-    :param repo_dir: Mercurial repository directory
-    :return: Name of the Mercurial repository as indicated in the .hgrc
+    :param repo_dir: Repo directory
+    :return: Name of the repo in the .hgrc file
     """
     hgrc_cfg = configparser.ConfigParser()
     hgrc_cfg.read(repo_dir / ".hg" / "hgrc")
