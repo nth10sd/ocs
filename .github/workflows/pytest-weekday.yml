@@ -39,26 +39,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -119,26 +119,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -199,26 +199,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -279,26 +279,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -359,26 +359,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -439,26 +439,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -519,26 +519,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -599,26 +599,26 @@ jobs:
 
     - name: Set Linux environment variables
       run: |
-        echo "LLVM_CONFIG=/usr/lib/llvm-9/bin/llvm-config" >> $GITHUB_ENV ;
-        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-9/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+        echo "LLVM_CONFIG=/usr/lib/llvm-10/bin/llvm-config" >> $GITHUB_ENV ;
+        echo "LLVM_SYMBOLIZER=/usr/lib/llvm-10/bin/llvm-symbolizer" >> $GITHUB_ENV ;
         echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
     - name: Set Linux llvm-config and llvm-symbolizer symlinks
-      run: sudo ln -s /usr/lib/llvm-9/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-9/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-9 ripgrep valgrind
+      run: sudo apt-get install autoconf2.13 ccache g++-multilib lib32z1-dev libc6-dev-i386 libclang1-10 ripgrep valgrind
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -696,12 +696,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -779,12 +779,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
@@ -862,12 +862,12 @@ jobs:
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-          $(find . -type f -name "*.py") || true
+          $(find . -type f -name "*.py" ! -name "conf_correct.py") || true
     - name: Check that we are not increasing the number of ignore lines as a general guideline
       run: |
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
-                  $(find . -type f -name "*.py") \
+                  $(find . -type f -name "*.py" ! -name "conf_correct.py") \
                     | awk '/ matches/ && !/ contained matches/' \
                     | cut -d' ' -f1) -lt 61 ] ;
         then exit 0 ; else exit 1 ; fi ;
