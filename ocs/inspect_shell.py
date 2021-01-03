@@ -149,7 +149,12 @@ def test_binary(shell_path: Path, args: Any, _use_vg: Any, stderr: Any = subproc
 
 
 def query_build_cfg(shell_path: Path, parameter: str) -> Any:
-    """Test if a binary is compiled with specified parameters, in getBuildConfiguration()."""
+    """Test if a binary is compiled with specified parameters, in getBuildConfiguration().
+
+    :param shell_path: Path of the shell
+    :param parameter: Parameter that will be tested
+    :return: Whether the parameter is supported by the shell
+    """
     return json.loads(test_binary(shell_path,
                                   ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
                                   False, stderr=subprocess.DEVNULL)[0].rstrip().lower())

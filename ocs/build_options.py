@@ -34,15 +34,27 @@ class Randomizer:
         self.options: List[Dict[str, object]] = []
 
     def add(self, name: str, weight: float) -> None:
-        """Add the option name and its testing weight."""
+        """Add the option name and its testing weight.
+
+        :param name: Name of option
+        :param weight: Weight that option should use
+        """
         self.options.append({
             "name": name,
             "weight": weight,
         })
 
     def get_rnd_subset(self) -> List[object]:
-        """Get a random subset of build options."""
+        """Get a random subset of build options.
+
+        :return: A random subset of build options
+        """
         def get_weight(opt: Any) -> Any:
+            """Get the weight of a specific option.
+
+            :param opt: Name of option
+            :return: Weight that option should use
+            """
             return opt["weight"]
         return [opt["name"] for opt in self.options if chance(get_weight(opt))]
 
@@ -214,7 +226,12 @@ def compute_shell_type(build_options: Any) -> str:  # pylint: disable=too-comple
 
 
 def compute_shell_name(build_options: object, build_rev: str) -> str:
-    """Return the shell type together with the build revision."""
+    """Return the shell type together with the build revision.
+
+    :param build_options: Build options the shell should use
+    :param build_rev: Build revision of the shell
+    :return: Shell name to be used
+    """
     return f"{compute_shell_type(build_options)}-{build_rev}"
 
 
