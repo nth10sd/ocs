@@ -15,7 +15,7 @@ import subprocess
 from typing import Any
 from typing import Tuple
 
-from ocs.util import file_system_helpers
+from ocs.util import fs_helpers
 from ocs.util import utils
 
 ASAN_ERROR_EXIT_CODE = 77
@@ -122,7 +122,7 @@ def test_binary(shell_path: Path, args: Any, _use_vg: Any, stderr: Any = subproc
     test_cmd = [str(shell_path)] + args
     utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
 
-    test_env = file_system_helpers.env_with_path(str(shell_path.parent))
+    test_env = fs_helpers.env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={ASAN_ERROR_EXIT_CODE}"
     # Turn on LSan, Linux-only
     # macOS non-support: https://github.com/google/sanitizers/issues/1026

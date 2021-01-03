@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Test the sm_compile_helpers.py file."""
+"""Test the misc_progs.py file."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import platform
 
 import pytest
 
-from ocs.util import sm_compile_helpers
+from ocs.util import misc_progs
 
 
 @pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")
@@ -22,4 +22,4 @@ def test_autoconf_run(tmpdir: Path) -> None:
     """
     # configure.in is required by autoconf2.13
     (Path(tmpdir) / "configure.in").touch()
-    sm_compile_helpers.autoconf_run(tmpdir)
+    misc_progs.autoconf_run(tmpdir)

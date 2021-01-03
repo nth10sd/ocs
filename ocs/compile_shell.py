@@ -26,9 +26,9 @@ from pkg_resources import parse_version
 
 from ocs import build_options
 from ocs import inspect_shell
-from ocs.util import file_system_helpers
+from ocs.util import fs_helpers
 from ocs.util import hg_helpers
-from ocs.util import sm_compile_helpers
+from ocs.util import misc_progs
 from ocs.util import utils
 
 if platform.system() == "Windows":
@@ -112,7 +112,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         options = parser.parse_args(argv)[0]
         options.build_opts = build_options.parse_shell_opts(options.build_opts)
 
-        with utils.LockDir(file_system_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
+        with utils.LockDir(fs_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
             if options.revision:
                 shell = CompiledShell(options.build_opts, options.revision)
             else:
@@ -218,7 +218,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
 
         :return: Full path to the shell cache directory of the intended js binary
         """
-        return file_system_helpers.ensure_cache_dir(Path.home()) / self._name_no_ext
+        return fs_helpers.ensure_cache_dir(Path.home()) / self._name_no_ext
 
     @property
     def shell_cache_js_bin_path(self) -> Path:
@@ -226,7 +226,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
 
         :return: Full path to the js binary in the shell cache
         """
-        return (file_system_helpers.ensure_cache_dir(Path.home()) /
+        return (fs_helpers.ensure_cache_dir(Path.home()) /
                 self._name_no_ext / self.shell_name_with_ext)
 
     @property
@@ -292,7 +292,7 @@ def configure_js_shell_compile(shell: Any) -> None:
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
 
-    sm_compile_helpers.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
+    misc_progs.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
     configure_binary(shell)
     sm_compile(shell)
     inspect_shell.verify_binary(shell)
@@ -593,7 +593,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-many-branches,too-complex,too-many-statements
-    assert file_system_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
+    assert fs_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
@@ -602,14 +602,14 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
         print("Found cached shell...")
         # Assuming that since the binary is present, everything else (e.g. symbols) is also present
         if platform.system() == "Windows":
-            sm_compile_helpers.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
+            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
         return
 
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
         print("Found a cache dir without a successful/failed shell...")
-        file_system_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
+        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
 
     shell.shell_cache_dir.mkdir()
 
@@ -626,12 +626,12 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
 
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
-            sm_compile_helpers.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
+            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
     except KeyboardInterrupt:
-        file_system_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
+        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
-        file_system_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir / "objdir-js")
+        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir / "objdir-js")
         if shell.shell_cache_js_bin_path.is_file():  # Switch to contextlib.suppress when we are fully on Python 3
             shell.shell_cache_js_bin_path.unlink()
         with open(str(cached_no_shell), "a", encoding="utf-8", errors="replace") as f:

@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Test the file_system_helpers.py file."""
+"""Test the fs_helpers.py file."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ import stat
 
 import pytest
 
-from ocs.util import file_system_helpers
+from ocs.util import fs_helpers
 
 
 def test_ensure_cache_dir() -> None:
     """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
-    assert file_system_helpers.ensure_cache_dir(Path()).is_dir()
-    assert file_system_helpers.ensure_cache_dir(Path.home()).is_dir()
+    assert fs_helpers.ensure_cache_dir(Path()).is_dir()
+    assert fs_helpers.ensure_cache_dir(Path.home()).is_dir()
 
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
@@ -37,4 +37,4 @@ def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
 
     Path.chmod(test_file, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
-    file_system_helpers.rm_tree_incl_readonly_files(test_dir)
+    fs_helpers.rm_tree_incl_readonly_files(test_dir)
