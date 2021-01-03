@@ -41,19 +41,19 @@ def autoconf_run(working_dir: Path) -> None:
             autoconf213_mac_bin = str(shutil.which("autoconf213"))
         if not Path(autoconf213_mac_bin).is_file():
             autoconf213_mac_bin = "autoconf213"
-        subprocess.run([autoconf213_mac_bin], check=True, cwd=str(working_dir))
+        subprocess.run([autoconf213_mac_bin], check=True, cwd=working_dir)
     elif platform.system() == "Linux":
         if shutil.which("autoconf2.13"):
-            subprocess.run(["autoconf2.13"], check=True, cwd=str(working_dir))
+            subprocess.run(["autoconf2.13"], check=True, cwd=working_dir)
         elif shutil.which("autoconf-2.13"):
-            subprocess.run(["autoconf-2.13"], check=True, cwd=str(working_dir))
+            subprocess.run(["autoconf-2.13"], check=True, cwd=working_dir)
         elif shutil.which("autoconf213"):
-            subprocess.run(["autoconf213"], check=True, cwd=str(working_dir))
+            subprocess.run(["autoconf213"], check=True, cwd=working_dir)
         else:
             raise RuntimeError("autoconf 2.13 not found.")
     elif platform.system() == "Windows":
         # Windows needs to call sh to be able to find autoconf.
-        subprocess.run(["sh", "autoconf-2.13"], check=True, cwd=str(working_dir))
+        subprocess.run(["sh", "autoconf-2.13"], check=True, cwd=working_dir)
     else:
         raise RuntimeError("Unsupported platform")
 

@@ -441,14 +441,14 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
                 changed_cfg_cmds.append(entry)
             subprocess.run(changed_cfg_cmds,
                            check=True,
-                           cwd=str(shell.js_objdir),
+                           cwd=shell.js_objdir,
                            env=cfg_env,
                            stderr=subprocess.STDOUT,
                            stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
         else:
             subprocess.run(cfg_cmds,
                            check=True,
-                           cwd=str(shell.js_objdir),
+                           cwd=shell.js_objdir,
                            env=cfg_env,
                            stderr=subprocess.STDOUT,
                            stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
@@ -534,7 +534,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
     # Thus, we should *not* use check=True here.
     out = subprocess.run(cmd_list,
                          check=False,
-                         cwd=str(shell.js_objdir),
+                         cwd=shell.js_objdir,
                          env=shell.env_full,
                          stderr=subprocess.STDOUT,
                          stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
@@ -546,7 +546,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
             print("Trying once more due to the compiler running out of memory...")
             out = subprocess.run(cmd_list,
                                  check=False,
-                                 cwd=str(shell.js_objdir),
+                                 cwd=shell.js_objdir,
                                  env=shell.env_full,
                                  stderr=subprocess.STDOUT,
                                  stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
