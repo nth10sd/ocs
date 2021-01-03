@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import copy
-import io
 import multiprocessing
 from optparse import OptionParser  # pylint: disable=deprecated-module
 import os
@@ -454,8 +453,8 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
                            stderr=subprocess.STDOUT,
                            stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
     except subprocess.CalledProcessError as ex:
-        with io.open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
-                     encoding="utf-8", errors="replace") as f:
+        with open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
+                  encoding="utf-8", errors="replace") as f:
             f.write(f"Configuration of {shell.repo_name} rev {shell.hg_hash} "
                     f"failed with the following output:\n")
             f.write(ex.stdout.decode("utf-8", errors="replace"))
@@ -492,7 +491,7 @@ def env_dump(shell: CompiledShell, log_: Path) -> None:
     elif platform.system() == "Windows":
         fmconf_os = "windows"
 
-    with io.open(str(log_), "a", encoding="utf-8", errors="replace") as f:
+    with open(str(log_), "a", encoding="utf-8", errors="replace") as f:
         f.write("# Information about shell:\n# \n")
 
         f.write("# Create another shell in shell-cache like this one:\n")
@@ -566,14 +565,14 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
                          str(shell.shell_cache_dir))
 
         jspc_new_file_path = shell.js_objdir / "js" / "src" / "build" / "js.pc"
-        with io.open(str(jspc_new_file_path), mode="r", encoding="utf-8", errors="replace") as f:
+        with open(str(jspc_new_file_path), mode="r", encoding="utf-8", errors="replace") as f:
             for line in f:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
         print(f"{MAKE_BINARY} did not result in a js shell:")
-        with io.open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
-                     encoding="utf-8", errors="replace") as f:
+        with open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
+                  encoding="utf-8", errors="replace") as f:
             f.write(f"Compilation of {shell.repo_name} rev {shell.hg_hash} "
                     f"failed with the following output:\n")
             f.write(out)
@@ -635,7 +634,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
         file_system_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir / "objdir-js")
         if shell.shell_cache_js_bin_path.is_file():  # Switch to contextlib.suppress when we are fully on Python 3
             shell.shell_cache_js_bin_path.unlink()
-        with io.open(str(cached_no_shell), "a", encoding="utf-8", errors="replace") as f:
+        with open(str(cached_no_shell), "a", encoding="utf-8", errors="replace") as f:
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
