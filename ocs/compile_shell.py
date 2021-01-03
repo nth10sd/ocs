@@ -34,7 +34,7 @@ from ocs.util import utils
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
-    CLANG_VER = "8.0.0"
+    CLANG_VER = "11.0.0"
     WIN_MOZBUILD_CLANG_PATH = Path.home() / ".mozbuild" / "clang"
 else:
     MAKE_BINARY = "make"
