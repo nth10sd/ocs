@@ -4,6 +4,6 @@
 
 """Allow the package to directly head to the main() function."""
 
-from ocs.compile_shell import main
+from ocs.spidermonkey.hatch import main
 
 main()

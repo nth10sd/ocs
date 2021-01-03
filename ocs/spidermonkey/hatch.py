@@ -2,13 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Compiles SpiderMonkey shells on different platforms using various specified configuration parameters."""
+"""Common shell object code"""
 
 from __future__ import annotations
 
-import copy
-import multiprocessing
-from optparse import OptionParser  # pylint: disable=deprecated-module
+import argparse
+import json
+import optparse  # pylint: disable=deprecated-module
 import os
 from pathlib import Path
 import platform
@@ -17,61 +17,42 @@ import shutil
 import subprocess
 import sys
 import traceback
-from typing import Any
+from typing import IO
 from typing import List
 from typing import Optional
+from typing import Tuple
+from typing import Union
 
 import distro
 from pkg_resources import parse_version
 
 from ocs import build_options
-from ocs import inspect_shell
+from ocs.common.hatch import CommonShell
+from ocs.common.hatch import CommonShellError
+from ocs.util import constants
 from ocs.util import fs_helpers
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
 from ocs.util import utils
 
-if platform.system() == "Windows":
-    MAKE_BINARY = "mozmake"
-    CLANG_VER = "11.0.0"
-    WIN_MOZBUILD_CLANG_PATH = Path.home() / ".mozbuild" / "clang"
-else:
-    MAKE_BINARY = "make"
-    SSE2_FLAGS = "-msse2 -mfpmath=sse"  # See bug 948321
 
-if multiprocessing.cpu_count() > 2:
-    COMPILATION_JOBS = multiprocessing.cpu_count() + 1
-else:
-    COMPILATION_JOBS = 3  # Other single/dual core computers
+class SMShellError(CommonShellError):
+    """Error class unique to SMShell objects."""
 
 
-class CompiledShellError(Exception):
-    """Error class unique to CompiledShell objects."""
-
-
-class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-public-methods
-    """A CompiledShell object represents an actual compiled shell binary.
+class SMShell(CommonShell):
+    """A SMShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py
     :param hg_hash: Changeset hash
     """
-
-    def __init__(self, build_opts: Any, hg_hash: str):
-        self._name_no_ext = build_options.compute_shell_name(build_opts, hg_hash)
+    def __init__(self, build_opts: argparse.Namespace, hg_hash: str):
+        super().__init__(build_opts, hg_hash)
         self._hg_hash = hg_hash
-        self.build_opts = build_opts
-
-        self._js_objdir = Path()
-
-        self._cfg_cmd_excl_env: List[str] = []
-        self._added_env = ""
-        self._full_env = ""
-
-        self._js_version = ""
 
     @classmethod
-    def main(cls: Any, args: Any = None) -> Any:
-        """Main function of CompiledShell class.
+    def main(cls, args: Optional[List[str]] = None) -> int:
+        """Main function of CommonShell class.
 
         :param args: Additional parameters
         :return: 0, to denote a successful compile and 1, to denote a failed compile
@@ -79,20 +60,20 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         # logging.basicConfig(format="%(message)s", level=logging.INFO)
         try:
             return cls.run(args)
-        except CompiledShellError as ex:
+        except CommonShellError as ex:
             print(repr(ex))  # noqa: T001
             # log.error(ex)
             return 1
 
     @staticmethod
-    def run(argv: Any = None) -> Any:
+    def run(argv: Optional[List[str]] = None) -> int:
         """Build a shell and place it in the autobisectjs cache.
 
         :param argv: Additional parameters
         :return: 0, to denote a successful compile
         """
         usage = "Usage: %prog [options]"
-        parser = OptionParser(usage)
+        parser = optparse.OptionParser(usage)
         parser.disable_interspersed_args()
 
         parser.set_defaults(
@@ -114,63 +95,15 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
 
         with utils.LockDir(fs_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
             if options.revision:
-                shell = CompiledShell(options.build_opts, options.revision)
+                shell = SMShell(options.build_opts, options.revision)
             else:
                 local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(options.build_opts.repo_dir)[0]
-                shell = CompiledShell(options.build_opts, local_orig_hg_hash)
+                shell = SMShell(options.build_opts, local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
             print(shell.shell_cache_js_bin_path)  # noqa: T001
 
         return 0
-
-    @property
-    def cfg_cmd_excl_env(self) -> List[str]:
-        """Retrieve the configure command excluding the enviroment variables.
-
-        :return: Configure command
-        """
-        return self._cfg_cmd_excl_env
-
-    @cfg_cmd_excl_env.setter
-    def cfg_cmd_excl_env(self, cfg: List[str]) -> None:
-        """Sets the configure command excluding the enviroment variables.
-
-        :param cfg: Configure command
-        """
-        self._cfg_cmd_excl_env = cfg
-
-    @property
-    def env_added(self) -> Any:
-        """Retrieve environment variables that were added.
-
-        :return: Added environment variables
-        """
-        return self._added_env
-
-    @env_added.setter
-    def env_added(self, added_env: Any) -> None:
-        """Set environment variables that were added.
-
-        :param added_env: Added environment variables
-        """
-        self._added_env = added_env
-
-    @property
-    def env_full(self) -> Any:
-        """Retrieve the full environment including the newly added variables.
-
-        :return: Full environment
-        """
-        return self._full_env
-
-    @env_full.setter
-    def env_full(self, full_env: Any) -> None:
-        """Set the full environment including the newly added variables.
-
-        :param full_env: Full environment
-        """
-        self._full_env = full_env
 
     @property
     def hg_hash(self) -> str:
@@ -181,30 +114,6 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         return self._hg_hash
 
     @property
-    def js_cfg_path(self) -> Any:
-        """Retrieve the configure file in a js/src directory.
-
-        :return: Full path to the configure file
-        """
-        return self.build_opts.repo_dir / "js" / "src" / "configure"
-
-    @property
-    def js_objdir(self) -> Path:
-        """Retrieve the objdir of the js shell to be compiled.
-
-        :return: Full path to the js shell objdir
-        """
-        return self._js_objdir
-
-    @js_objdir.setter
-    def js_objdir(self, objdir: Path) -> None:
-        """Set the objdir of the js shell to be compiled.
-
-        :param objdir: Full path to the objdir of the js shell to be compiled
-        """
-        self._js_objdir = objdir
-
-    @property
     def repo_name(self) -> str:
         """Retrieve the name of a Mercurial repository.
 
@@ -212,77 +121,8 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         """
         return hg_helpers.hgrc_repo_name(self.build_opts.repo_dir)
 
-    @property
-    def shell_cache_dir(self) -> Path:
-        """Retrieve the shell cache directory of the intended js binary.
 
-        :return: Full path to the shell cache directory of the intended js binary
-        """
-        return fs_helpers.ensure_cache_dir(Path.home()) / self._name_no_ext
-
-    @property
-    def shell_cache_js_bin_path(self) -> Path:
-        """Retrieve the full path to the js binary located in the shell cache.
-
-        :return: Full path to the js binary in the shell cache
-        """
-        return (fs_helpers.ensure_cache_dir(Path.home()) /
-                self._name_no_ext / self.shell_name_with_ext)
-
-    @property
-    def shell_compiled_path(self) -> Path:
-        """Retrieve the full path to the original location of js binary compiled in the shell cache.
-
-        :return: Full path to the original location of js binary compiled in the shell cache
-        """
-        full_path = self._js_objdir / "dist" / "bin" / "js"
-        return full_path.with_suffix(".exe") if platform.system() == "Windows" else full_path
-
-    @property
-    def shell_compiled_runlibs_path(self) -> List[Path]:
-        """Retrieve the full path to the original location of the libraries of js binary compiled in the shell cache.
-
-        :return: Full path to the original location of the libraries of js binary compiled in the shell cache
-        """
-        return [
-            self._js_objdir / "dist" / "bin" / runlib for runlib in inspect_shell.ALL_RUN_LIBS
-        ]
-
-    @property
-    def shell_name_with_ext(self) -> str:
-        """Retrieve the name of the compiled js shell with the file extension.
-
-        :return: Name of the compiled js shell with the file extension
-        """
-        return (f"{self._name_no_ext}.exe" if platform.system() == "Windows"
-                else f"{self._name_no_ext}")
-
-    @property
-    def shell_name_without_ext(self) -> str:
-        """Retrieve the name of the compiled js shell without the file extension.
-
-        :return: Name of the compiled js shell without the file extension
-        """
-        return self._name_no_ext
-
-    @property
-    def version(self) -> str:
-        """Retrieve the version number of the js shell as extracted from js.pc
-
-        :return: Version number of the js shell
-        """
-        return self._js_version
-
-    @version.setter
-    def version(self, js_version: str) -> None:
-        """Set the version number of the js shell as extracted from js.pc
-
-        :param js_version: Version number of the js shell
-        """
-        self._js_version = js_version
-
-
-def configure_js_shell_compile(shell: Any) -> None:
+def configure_js_shell_compile(shell: SMShell) -> None:
     """Configures, compiles and copies a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
@@ -295,22 +135,22 @@ def configure_js_shell_compile(shell: Any) -> None:
     misc_progs.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
     configure_binary(shell)
     sm_compile(shell)
-    inspect_shell.verify_binary(shell)
+    verify_binary(shell)
 
     compile_log = shell.shell_cache_dir / f"{shell.shell_name_without_ext}.fuzzmanagerconf"
     if not compile_log.is_file():
         env_dump(shell, compile_log)
 
 
-def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-many-branches,too-many-statements
+def configure_binary(shell: SMShell) -> None:  # pylint: disable=too-complex,too-many-branches,too-many-statements
     """Configure a binary according to required parameters.
 
     :param shell: Potential compiled shell object
     :raise CalledProcessError: Raise if the shell failed to compile
     """
     cfg_cmds = []
-    cfg_env = copy.deepcopy(os.environ)
-    orig_cfg_env = copy.deepcopy(os.environ)
+    cfg_env = dict(os.environ.copy())
+    orig_cfg_env = dict(os.environ.copy())
     if platform.system() != "Windows":
         cfg_env["AR"] = "ar"
     if shell.build_opts.enable32 and platform.system() == "Linux":
@@ -337,7 +177,7 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
             cfg_cmds.append("--enable-simulator=arm64")
 
     elif platform.system() == "Windows":
-        win_mozbuild_clang_bin_path = WIN_MOZBUILD_CLANG_PATH / "bin"
+        win_mozbuild_clang_bin_path = constants.WIN_MOZBUILD_CLANG_PATH / "bin"
         assert win_mozbuild_clang_bin_path.is_dir(), 'Please first run "./mach bootstrap".'
         assert (win_mozbuild_clang_bin_path / "clang.exe").is_file()
         assert (win_mozbuild_clang_bin_path / "llvm-config.exe").is_file()
@@ -346,7 +186,8 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
         if shell.build_opts.enableAddressSanitizer:
             cfg_env["LDFLAGS"] = ("clang_rt.asan_dynamic-x86_64.lib "
                                   "clang_rt.asan_dynamic_runtime_thunk-x86_64.lib")
-            cfg_env["CLANG_LIB_DIR"] = str(WIN_MOZBUILD_CLANG_PATH / "lib" / "clang" / CLANG_VER / "lib" / "windows")
+            cfg_env["CLANG_LIB_DIR"] = str(
+                constants.WIN_MOZBUILD_CLANG_PATH / "lib" / "clang" / constants.CLANG_VER / "lib" / "windows")
             # Not sure if the following line works. One seems to need to first copy a .dll to ~/.mozbuild/clang/bin
             #   cp ~/.mozbuild/clang/lib/clang/*/lib/windows/clang_rt.asan_dynamic-x86_64.dll ~/.mozbuild/clang/bin/
             cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = f'{cfg_env["CLANG_LIB_DIR"]}/clang_rt.asan_dynamic-x86_64.dll'
@@ -465,7 +306,7 @@ def configure_binary(shell: Any) -> None:  # pylint: disable=too-complex,too-man
     shell.cfg_cmd_excl_env = cfg_cmds
 
 
-def env_dump(shell: CompiledShell, log_: Path) -> None:
+def env_dump(shell: SMShell, log_: Path) -> None:
     """Dump environment to a .fuzzmanagerconf file.
 
     :param shell: A compiled shell
@@ -483,7 +324,7 @@ def env_dump(shell: CompiledShell, log_: Path) -> None:
     else:
         fmconf_platform = platform.machine()
 
-    fmconf_os = None
+    fmconf_os = ""
     if platform.system() == "Linux":
         fmconf_os = "linux"
     elif platform.system() == "Darwin":
@@ -521,14 +362,14 @@ def env_dump(shell: CompiledShell, log_: Path) -> None:
         f.write(f"version = {shell.version}\n")
 
 
-def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
+def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
     """Compile a binary and copy essential compiled files into a desired structure.
 
     :param shell: SpiderMonkey shell parameters
     :raise OSError: Raises when a compiled shell is absent
     :return: Path to the compiled shell
     """
-    cmd_list = [MAKE_BINARY, "-C", str(shell.js_objdir), f"-j{COMPILATION_JOBS}", "-s"]
+    cmd_list = [constants.MAKE_BINARY, "-C", str(shell.js_objdir), f"-j{constants.COMPILATION_JOBS}", "-s"]
     # Note that having a non-zero exit code does not mean that the operation did not succeed,
     # for example when compiling a shell. A non-zero exit code can appear even though a shell compiled successfully.
     # Thus, we should *not* use check=True here.
@@ -560,7 +401,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
             if run_lib.is_file():
                 shutil.copy2(str(run_lib), str(shell.shell_cache_dir))
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            shutil.copy2(str(WIN_MOZBUILD_CLANG_PATH / "lib" / "clang" / CLANG_VER / "lib" / "windows" /
+            shutil.copy2(str(constants.WIN_MOZBUILD_CLANG_PATH / "lib" / "clang" / constants.CLANG_VER / "lib" / "windows" /
                              "clang_rt.asan_dynamic-x86_64.dll"),
                          str(shell.shell_cache_dir))
 
@@ -570,18 +411,18 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(f"{MAKE_BINARY} did not result in a js shell:")  # noqa: T001
+        print(f"{constants.MAKE_BINARY} did not result in a js shell:")  # noqa: T001
         with open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
                   encoding="utf-8", errors="replace") as f:
             f.write(f"Compilation of {shell.repo_name} rev {shell.hg_hash} "
                     f"failed with the following output:\n")
             f.write(out)
-        raise OSError(f"{MAKE_BINARY} did not result in a js shell.")
+        raise OSError(f"{constants.MAKE_BINARY} did not result in a js shell.")
 
     return shell.shell_compiled_path
 
 
-def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest_txt: bool = False) -> None:
+def obtain_shell(shell: SMShell, update_to_rev: Optional[str] = None, _update_latest_txt: bool = False) -> None:
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols.
 
     :param shell: Potential compiled shell object
@@ -642,10 +483,106 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
         raise
 
 
+def arch_of_binary(binary: Path) -> str:
+    """Test if a binary is 32-bit or 64-bit.
+
+    :param binary: Path to compiled binary
+    :return: Platform architecture of compiled binary
+    """
+    # We can possibly use the python-magic-bin PyPI library in the future
+    unsplit_file_type = subprocess.run(
+        ["file", str(binary)],
+        check=True,
+        cwd=os.getcwd(),
+        stdout=subprocess.PIPE,
+        timeout=99).stdout.decode("utf-8", errors="replace")
+    filetype = unsplit_file_type.split(":", 1)[1]
+    if platform.system() == "Windows":
+        assert "MS Windows" in filetype
+        return "32" if ("Intel 80386 32-bit" in filetype or "PE32 executable" in filetype) else "64"
+    if "32-bit" in filetype or "i386" in filetype:
+        assert "64-bit" not in filetype
+        return "32"
+    if "64-bit" in filetype:
+        assert "32-bit" not in filetype
+        return "64"
+    return "INVALID"
+
+
+def test_binary(shell_path: Path, args: List[str], _use_vg: bool,
+                stderr: Optional[Union[int, IO[bytes]]] = subprocess.STDOUT) -> Tuple[str, int]:
+    """Test the given shell with the given args.
+
+    :param shell_path: Path to the compiled shell binary
+    :param args: Arguments used to compile the shell
+    :param _use_vg: Whether Valgrind should be used
+    :param stderr: stderr and where it should be redirected if needed
+    :return: Tuple comprising the stdout of the run command and its return code
+    """
+    test_cmd = [str(shell_path)] + args
+    utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
+
+    test_env = fs_helpers.env_with_path(str(shell_path.parent))
+    asan_options = f"exitcode={constants.ASAN_ERROR_EXIT_CODE}"
+    # Turn on LSan, Linux-only
+    # macOS non-support: https://github.com/google/sanitizers/issues/1026
+    # Windows non-support: https://developer.mozilla.org/en-US/docs/Mozilla/Testing/Firefox_and_Address_Sanitizer
+    #   (search for LSan)
+    # Termux Android aarch64 is not yet supported due to possible ptrace issues
+    if platform.system() == "Linux" and not ("-asan-" in str(shell_path) and "-armsim64-" in str(shell_path)) and \
+            "-aarch64-" not in str(shell_path):
+        asan_options = "detect_leaks=1," + asan_options
+        test_env.update({"LSAN_OPTIONS": "max_leaks=1,"})
+    test_env.update({"ASAN_OPTIONS": asan_options})
+
+    test_cmd_result = subprocess.run(
+        test_cmd,
+        check=False,
+        cwd=os.getcwd(),
+        env=test_env,
+        stderr=stderr,
+        stdout=subprocess.PIPE,
+        timeout=999)
+    out, return_code = test_cmd_result.stdout.decode("utf-8", errors="replace"), test_cmd_result.returncode
+    utils.vdump(f"The exit code is: {return_code}")
+    return out, return_code
+
+
+def query_build_cfg(shell_path: Path, parameter: str) -> str:
+    """Test if a binary is compiled with specified parameters, in getBuildConfiguration().
+
+    :param shell_path: Path of the shell
+    :param parameter: Parameter that will be tested
+    :return: Whether the parameter is supported by the shell
+    """
+    result: str = json.loads(test_binary(shell_path,
+                                         ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
+                                         False, stderr=subprocess.DEVNULL)[0].rstrip().lower())
+    return result
+
+
+def verify_binary(shell: SMShell) -> None:
+    """Verify that the binary is compiled as intended.
+
+    :param shell: Compiled binary object
+    """
+    binary = shell.shell_cache_js_bin_path
+
+    assert arch_of_binary(binary) == ("32" if shell.build_opts.enable32 else "64")
+
+    # Testing for debug or opt builds are different because there can be hybrid debug-opt builds.
+    assert query_build_cfg(binary, "debug") == shell.build_opts.enableDbg
+
+    assert query_build_cfg(binary, "asan") == shell.build_opts.enableAddressSanitizer
+    # Checking for profiling status does not work with mozilla-beta and mozilla-release
+    assert query_build_cfg(binary, "profiling") != shell.build_opts.disableProfiling
+    if platform.machine() == "x86_64":
+        assert (query_build_cfg(binary, "arm-simulator") and
+                shell.build_opts.enable32) == shell.build_opts.enableSimulatorArm32
+        assert (query_build_cfg(binary, "arm64-simulator") and not
+                shell.build_opts.enable32) == shell.build_opts.enableSimulatorArm64
+
+
 def main() -> None:
-    """Execute main() function in CompiledShell class."""
-    sys.exit(CompiledShell.main())
-
-
-if __name__ == "__main__":
-    main()
+    """Execute main() function in SMShell class."""
+    sys.exit(SMShell.main())

@@ -7,7 +7,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from types import TracebackType
+from typing import Optional
+from typing import Type
 
 VERBOSE = False
 
@@ -32,7 +34,8 @@ class LockDir:
             print(f"Lock directory exists: {self.directory}")  # noqa: T001
             raise
 
-    def __exit__(self, _exc_type: Any, _exc_val: Any, _exc_tb: Any) -> None:
+    def __exit__(self, _exc_type: Optional[Type[BaseException]], _exc_val: Optional[Type[BaseException]],
+                 _exc_tb: Optional[TracebackType]) -> None:
         self.directory.rmdir()
 
 

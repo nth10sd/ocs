@@ -15,8 +15,9 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Tuple
+from typing import Union
 
-DEFAULT_TREES_LOCATION = Path.home() / "trees"
+from ocs.util.constants import DEFAULT_TREES_LOCATION
 
 
 def chance(i: float) -> bool:
@@ -31,7 +32,7 @@ def chance(i: float) -> bool:
 class Randomizer:
     """Class to randomize parser options."""
     def __init__(self) -> None:
-        self.options: List[Dict[str, object]] = []
+        self.options: List[Dict[str, Union[float, str]]] = []
 
     def add(self, name: str, weight: float) -> None:
         """Add the option name and its testing weight.
@@ -44,22 +45,22 @@ class Randomizer:
             "weight": weight,
         })
 
-    def get_rnd_subset(self) -> List[object]:
+    def get_rnd_subset(self) -> List[str]:
         """Get a random subset of build options.
 
         :return: A random subset of build options
         """
-        def get_weight(opt: Any) -> Any:
+        def get_weight(opt: Dict[str, Union[float, str]]) -> float:
             """Get the weight of a specific option.
 
             :param opt: Name of option
             :return: Weight that option should use
             """
-            return opt["weight"]
-        return [opt["name"] for opt in self.options if chance(get_weight(opt))]
+            return float(opt["weight"])
+        return [str(opt["name"]) for opt in self.options if chance(get_weight(opt))]
 
 
-def add_parser_opts() -> Tuple[Any, Any]:
+def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     """Add parser options.
 
     :return: Tuple containing the parser object and the Randomizer object
@@ -68,7 +69,8 @@ def add_parser_opts() -> Tuple[Any, Any]:
     parser = argparse.ArgumentParser(description="Usage: Don't use this directly")
     randomizer = Randomizer()
 
-    def randomize_bool(name: List[str], weight: float, **kwargs: Any) -> None:
+    def randomize_bool(name: List[str], weight: float,
+                       **kwargs: Any) -> None:  # Keyword args of various types not ready for mypy yet: https://git.io/JLdRI
         """Add a randomized boolean option that defaults to False.
 
         Option also has a [weight] chance of being changed to True when using --random.
@@ -154,7 +156,7 @@ def add_parser_opts() -> Tuple[Any, Any]:
     return parser, randomizer
 
 
-def parse_shell_opts(args: Any) -> Any:
+def parse_shell_opts(args: str) -> argparse.Namespace:
     """Parses shell options into a build_options object.
 
     :param args: Arguments to be parsed
@@ -192,7 +194,7 @@ def parse_shell_opts(args: Any) -> Any:
     return build_options
 
 
-def compute_shell_type(build_options: Any) -> str:  # pylint: disable=too-complex
+def compute_shell_type(build_options: argparse.Namespace) -> str:  # pylint: disable=too-complex
     """Return configuration information of the shell.
 
     :param build_options: Object containing build options
@@ -225,7 +227,7 @@ def compute_shell_type(build_options: Any) -> str:  # pylint: disable=too-comple
     return "-".join(file_name)
 
 
-def compute_shell_name(build_options: object, build_rev: str) -> str:
+def compute_shell_name(build_options: argparse.Namespace, build_rev: str) -> str:
     """Return the shell type together with the build revision.
 
     :param build_options: Build options the shell should use
@@ -235,7 +237,8 @@ def compute_shell_name(build_options: object, build_rev: str) -> str:
     return f"{compute_shell_type(build_options)}-{build_rev}"
 
 
-def are_args_valid(args: Any) -> Tuple[bool, str]:  # pylint: disable=too-many-branches,too-complex,too-many-return-statements
+def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-return-statements
+        args: argparse.Namespace) -> Tuple[bool, str]:
     """Check to see if chosen arguments are valid.
 
     :param args: Input arguments
@@ -303,7 +306,7 @@ def are_args_valid(args: Any) -> Tuple[bool, str]:  # pylint: disable=too-many-b
     return True, ""
 
 
-def gen_rnd_cfgs(parser: Any, randomizer: Any) -> Any:
+def gen_rnd_cfgs(parser: argparse.ArgumentParser, randomizer: Randomizer) -> argparse.Namespace:
     """Generates random configurations.
 
     :param parser: Parser object for specified configurations

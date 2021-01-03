@@ -6,14 +6,18 @@
 
 from __future__ import annotations
 
-import copy
 import errno
 import os
 from pathlib import Path
 import platform
 import shutil
 import stat
-from typing import Any
+from types import TracebackType
+from typing import Callable
+from typing import Dict
+from typing import Optional
+from typing import Tuple
+from typing import Type
 
 
 def ensure_cache_dir(base_dir: Path) -> Path:
@@ -29,14 +33,15 @@ def ensure_cache_dir(base_dir: Path) -> Path:
     return cache_dir
 
 
-def env_with_path(path: str, curr_env: Any = None) -> Any:
+def env_with_path(path: str, curr_env: Optional[Dict[str, str]] = None) -> Dict[str, str]:
     """Append the path to the appropriate library path on various platforms.
 
     :param path: Path to be added to $PATH
     :param curr_env: Current environment, in case os.environ is not the one required
     :return: Environment with the path added
     """
-    curr_env = curr_env or os.environ
+    if not curr_env:
+        curr_env = os.environ.copy()
     if platform.system() == "Linux":
         lib_path = "LD_LIBRARY_PATH"
         path_sep = ":"
@@ -47,7 +52,7 @@ def env_with_path(path: str, curr_env: Any = None) -> Any:
         lib_path = "PATH"
         path_sep = ";"
 
-    env = copy.deepcopy(curr_env)
+    env = curr_env.copy()
     if lib_path in env:
         if path not in env[lib_path]:
             env[lib_path] += path_sep + path
@@ -72,7 +77,9 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
     return ensure_cache_dir(cache_dir_base) / lockdir_name
 
 
-def handle_rm_readonly_files(_func: Any, path_: Path, exc: Any) -> None:
+def handle_rm_readonly_files(
+        _func: Callable[..., None], path_: Path,
+        exc: Tuple[Optional[Type[BaseException]], Optional[Type[BaseException]], Optional[TracebackType]]) -> None:
     """Handle read-only files on Windows. Adapted from https://stackoverflow.com/a/21263493.
 
     :param _func: Function which raised the exception
@@ -82,7 +89,7 @@ def handle_rm_readonly_files(_func: Any, path_: Path, exc: Any) -> None:
     :raise OSError: Raised if the read-only files are unable to be handled
     """
     assert platform.system() == "Windows"
-    if exc[1].errno == errno.EACCES:
+    if isinstance(exc[1], int) and exc[1].errno == errno.EACCES:
         Path.chmod(path_, stat.S_IWRITE)
         assert path_.is_file()
         path_.unlink()

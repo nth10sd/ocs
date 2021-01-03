@@ -14,7 +14,7 @@ import platform
 import pytest
 
 from ocs import build_options
-from ocs import compile_shell
+from ocs.spidermonkey.hatch import SMShell
 from ocs.util import hg_helpers
 
 MC_PATH = Path.home() / "trees" / "mozilla-central"
@@ -42,9 +42,9 @@ def test_shell_compile() -> Path:
     opts_parsed = build_options.parse_shell_opts(build_opts)
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
     # Ensure exit code is 0
-    assert not compile_shell.CompiledShell(opts_parsed, hg_hash_of_default).run(["-b", build_opts])
+    assert not SMShell(opts_parsed, hg_hash_of_default).run(["-b", build_opts])
 
-    file_name = None
+    file_name = ""
     valgrind_name_param = ""
     if platform.system() == "Linux":
         valgrind_name_param += "-vg"
