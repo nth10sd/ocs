@@ -41,7 +41,7 @@ def get_repo_hash_and_id(repo_dir: Path, repo_rev: str = "parents() and default"
                                "Would you like to (a)bort, update to (d)efault, or (u)se this rev: ")
         update_default = update_default.strip()
         if update_default == "a":
-            print("Aborting...")
+            print("Aborting...")  # noqa: T001
             sys.exit(0)
         elif update_default == "d":
             subprocess.run(["hg", "-R", str(repo_dir), "update", "default"], check=True)

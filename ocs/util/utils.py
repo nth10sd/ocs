@@ -29,7 +29,7 @@ class LockDir:
         try:
             self.directory.mkdir()
         except OSError:
-            print(f"Lock directory exists: {self.directory}")
+            print(f"Lock directory exists: {self.directory}")  # noqa: T001
             raise
 
     def __exit__(self, _exc_type: Any, _exc_val: Any, _exc_tb: Any) -> None:
@@ -42,4 +42,4 @@ def vdump(inp: str) -> None:
     :param inp: Input string
     """
     if VERBOSE:
-        print(f"DEBUG - {inp}")
+        print(f"DEBUG - {inp}")  # noqa: T001

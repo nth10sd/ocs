@@ -80,7 +80,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         try:
             return cls.run(args)
         except CompiledShellError as ex:
-            print(repr(ex))
+            print(repr(ex))  # noqa: T001
             # log.error(ex)
             return 1
 
@@ -120,7 +120,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
                 shell = CompiledShell(options.build_opts, local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
-            print(shell.shell_cache_js_bin_path)
+            print(shell.shell_cache_js_bin_path)  # noqa: T001
 
         return 0
 
@@ -287,7 +287,7 @@ def configure_js_shell_compile(shell: Any) -> None:
 
     :param shell: Potential compiled shell object
     """
-    print("Compiling...")  # Print *with* a trailing newline to avoid breaking other stuff
+    print("Compiling...")  # noqa: T001  # Print *with* a trailing newline to avoid breaking other stuff
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
@@ -543,7 +543,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
         if ((platform.system() == "Linux" or platform.system() == "Darwin") and
                 ("internal compiler error: Killed (program cc1plus)" in out or  # GCC running out of memory
                  "error: unable to execute command: Killed" in out)):  # Clang running out of memory
-            print("Trying once more due to the compiler running out of memory...")
+            print("Trying once more due to the compiler running out of memory...")  # noqa: T001
             out = subprocess.run(cmd_list,
                                  check=False,
                                  cwd=shell.js_objdir,
@@ -552,7 +552,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
                                  stdout=subprocess.PIPE).stdout.decode("utf-8", errors="replace")
         # A non-zero error can be returned during make, but eventually a shell still gets compiled.
         if shell.shell_compiled_path.is_file():
-            print("A shell was compiled even though there was a non-zero exit code. Continuing...")
+            print("A shell was compiled even though there was a non-zero exit code. Continuing...")  # noqa: T001
 
     if shell.shell_compiled_path.is_file():
         shutil.copy2(str(shell.shell_compiled_path), str(shell.shell_cache_js_bin_path))
@@ -570,7 +570,7 @@ def sm_compile(shell: Any) -> Any:  # pylint:disable=too-complex
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(f"{MAKE_BINARY} did not result in a js shell:")
+        print(f"{MAKE_BINARY} did not result in a js shell:")  # noqa: T001
         with open(str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"), "a",
                   encoding="utf-8", errors="replace") as f:
             f.write(f"Compilation of {shell.repo_name} rev {shell.hg_hash} "
@@ -599,7 +599,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     if shell.shell_cache_js_bin_path.is_file():
         # Don't remove the comma at the end of this line, and thus remove the newline printed.
         # We would break JSBugMon.
-        print("Found cached shell...")
+        print("Found cached shell...")  # noqa: T001
         # Assuming that since the binary is present, everything else (e.g. symbols) is also present
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
@@ -608,7 +608,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
-        print("Found a cache dir without a successful/failed shell...")
+        print("Found a cache dir without a successful/failed shell...")  # noqa: T001
         fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
 
     shell.shell_cache_dir.mkdir()
@@ -616,7 +616,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     try:
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
-            print(f"Updating to rev {update_to_rev} in the {shell.build_opts.repo_dir} repository...")
+            print(f"Updating to rev {update_to_rev} in the {shell.build_opts.repo_dir} repository...")  # noqa: T001
             subprocess.run(["hg", "-R", str(shell.build_opts.repo_dir),
                             "update", "-C", "-r", update_to_rev],
                            check=True,
@@ -638,7 +638,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
-        print(f"Compilation failed ({ex}) (details in {cached_no_shell})")
+        print(f"Compilation failed ({ex}) (details in {cached_no_shell})")  # noqa: T001
         raise
 
 

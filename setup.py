@@ -15,6 +15,7 @@ EXTRAS = {
         "flake8-commas ~= 2.0.0",
         "flake8-comprehensions ~= 3.3.1",
         "flake8-isort ~= 4.0.0",
+        "flake8-print ~= 4.0.0",
         "flake8-quotes ~= 3.2.0",
         "isort ~= 5.6.4",
         "mypy==0.790",

@@ -54,7 +54,7 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
     # or https://blogs.msdn.microsoft.com/webdav_101/2010/06/22/detecting-heap-corruption-using-gflags-and-dumps/
     gflags_bin_path = Path(str(os.getenv("PROGRAMW6432"))) / "Debugging Tools for Windows (x64)" / "gflags.exe"
     if gflags_bin_path.is_file() and shell_path.is_file():
-        print(subprocess.run([str(gflags_bin_path), "-p", "/enable", str(shell_path), "/full"],
+        print(subprocess.run([str(gflags_bin_path), "-p", "/enable", str(shell_path), "/full"],  # noqa: T001
                              check=True,
                              stderr=subprocess.STDOUT,
                              stdout=subprocess.PIPE).stdout)

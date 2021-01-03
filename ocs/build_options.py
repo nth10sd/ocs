@@ -169,7 +169,7 @@ def parse_shell_opts(args: Any) -> Any:
         build_options.build_options_str = args
         valid = are_args_valid(build_options)
         if not valid[0]:
-            print(f"WARNING: This set of build options is not tested well because: {valid[1]}")
+            print(f"WARNING: This set of build options is not tested well because: {valid[1]}")  # noqa: T001
 
     # Ensures releng machines do not enter the if block and assumes mozilla-central always exists
     if DEFAULT_TREES_LOCATION.is_dir():
@@ -323,16 +323,16 @@ def gen_rnd_cfgs(parser: Any, randomizer: Any) -> Any:
 
 def main() -> None:
     """Main build_options function, generates sample random build configurations."""
-    print("Here are some sample random build configurations that can be generated:")
+    print("Here are some sample random build configurations that can be generated:")  # noqa: T001
     parser, randomizer = add_parser_opts()
 
     for _ in range(30):
         build_options = gen_rnd_cfgs(parser, randomizer)
-        print(build_options.build_options_str)
+        print(build_options.build_options_str)  # noqa: T001
 
-    print()
-    print("Running this file directly doesn't do anything, but here's our subparser help:")
-    print()
+    print()  # noqa: T001
+    print("Running this file directly doesn't do anything, but here's our subparser help:")  # noqa: T001
+    print()  # noqa: T001
     parser.parse_args()
 
 
