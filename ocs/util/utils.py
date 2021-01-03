@@ -6,41 +6,10 @@
 
 from __future__ import annotations
 
-import copy
-import os
 from pathlib import Path
-import platform
 from typing import Any
 
 VERBOSE = False
-
-
-def env_with_path(path: str, curr_env: Any = None) -> Any:
-    """Append the path to the appropriate library path on various platforms.
-
-    :param path: Path to be added to $PATH
-    :param curr_env: Current environment, in case os.environ is not the one required
-    :return: Environment with the path added
-    """
-    curr_env = curr_env or os.environ
-    if platform.system() == "Linux":
-        lib_path = "LD_LIBRARY_PATH"
-        path_sep = ":"
-    elif platform.system() == "Darwin":
-        lib_path = "DYLD_LIBRARY_PATH"
-        path_sep = ":"
-    elif platform.system() == "Windows":
-        lib_path = "PATH"
-        path_sep = ";"
-
-    env = copy.deepcopy(curr_env)
-    if lib_path in env:
-        if path not in env[lib_path]:
-            env[lib_path] += path_sep + path
-    else:
-        env[lib_path] = path
-
-    return env
 
 
 class LockDir:

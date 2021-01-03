@@ -23,9 +23,3 @@ def test_autoconf_run(tmpdir: Path) -> None:
     # configure.in is required by autoconf2.13
     (Path(tmpdir) / "configure.in").touch()
     sm_compile_helpers.autoconf_run(tmpdir)
-
-
-def test_ensure_cache_dir() -> None:
-    """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
-    assert sm_compile_helpers.ensure_cache_dir(Path()).is_dir()
-    assert sm_compile_helpers.ensure_cache_dir(Path.home()).is_dir()

@@ -15,6 +15,12 @@ import pytest
 from ocs.util import file_system_helpers
 
 
+def test_ensure_cache_dir() -> None:
+    """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
+    assert file_system_helpers.ensure_cache_dir(Path()).is_dir()
+    assert file_system_helpers.ensure_cache_dir(Path.home()).is_dir()
+
+
 @pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
 def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
     """Test that directory trees with readonly files can be removed.

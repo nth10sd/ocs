@@ -13,19 +13,6 @@ import shutil
 import subprocess
 
 
-def ensure_cache_dir(base_dir: Path) -> Path:
-    """Retrieve a cache directory for compiled shells to live in, and create one if needed.
-
-    :param base_dir: Base directory to create the cache directory in
-    :return: Full shell-cache path
-    """
-    if not base_dir:
-        base_dir = Path.home()
-    cache_dir = base_dir / "shell-cache"
-    cache_dir.mkdir(exist_ok=True)
-    return cache_dir
-
-
 def autoconf_run(working_dir: Path) -> None:
     """Run autoconf binaries corresponding to the platform.
 
@@ -56,21 +43,6 @@ def autoconf_run(working_dir: Path) -> None:
         subprocess.run(["sh", "autoconf-2.13"], check=True, cwd=working_dir)
     else:
         raise RuntimeError("Unsupported platform")
-
-
-def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -> Path:
-    """Return the name of the lock directory.
-
-    :param cache_dir_base: Base directory where the cache directory is located
-    :param repo_dir: Full path to the repository
-    :param tbox_id: Tinderbox entry id
-
-    :return: Full path to the shell cache lock directory
-    """
-    lockdir_name = f"shell-{repo_dir.name}-lock"
-    if tbox_id:
-        lockdir_name += f"-{tbox_id}"
-    return ensure_cache_dir(cache_dir_base) / lockdir_name
 
 
 def verify_full_win_pageheap(shell_path: Path) -> None:

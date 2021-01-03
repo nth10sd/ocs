@@ -112,7 +112,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
         options = parser.parse_args(argv)[0]
         options.build_opts = build_options.parse_shell_opts(options.build_opts)
 
-        with utils.LockDir(sm_compile_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
+        with utils.LockDir(file_system_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir)):
             if options.revision:
                 shell = CompiledShell(options.build_opts, options.revision)
             else:
@@ -218,7 +218,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
 
         :return: Full path to the shell cache directory of the intended js binary
         """
-        return sm_compile_helpers.ensure_cache_dir(Path.home()) / self._name_no_ext
+        return file_system_helpers.ensure_cache_dir(Path.home()) / self._name_no_ext
 
     @property
     def shell_cache_js_bin_path(self) -> Path:
@@ -226,7 +226,7 @@ class CompiledShell:  # pylint: disable=too-many-instance-attributes,too-many-pu
 
         :return: Full path to the js binary in the shell cache
         """
-        return (sm_compile_helpers.ensure_cache_dir(Path.home()) /
+        return (file_system_helpers.ensure_cache_dir(Path.home()) /
                 self._name_no_ext / self.shell_name_with_ext)
 
     @property
@@ -593,7 +593,7 @@ def obtain_shell(shell: Any, update_to_rev: Optional[str] = None, _update_latest
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-many-branches,too-complex,too-many-statements
-    assert sm_compile_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
+    assert file_system_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
