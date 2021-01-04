@@ -6,13 +6,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 
 from ocs.util import hg_helpers
 
-TREES_PATH = Path.home() / "trees"
+from .constants import TREES_PATH
 
 
 @pytest.mark.skipif(not (TREES_PATH / "mozilla-central" / ".hg" / "hgrc").is_file(),

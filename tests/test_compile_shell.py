@@ -17,8 +17,8 @@ from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
 from ocs.util import hg_helpers
 
-MC_PATH = Path.home() / "trees" / "mozilla-central"
-SHELL_CACHE = Path.home() / "shell-cache"
+from .util.constants import MC_PATH
+from .util.constants import SHELL_CACHE
 
 
 @pytest.mark.slow

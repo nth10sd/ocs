@@ -10,30 +10,36 @@ import multiprocessing
 from pathlib import Path
 import platform
 
-DEFAULT_TREES_LOCATION = Path.home() / "trees"
+from typing_extensions import Final
 
-ASAN_ERROR_EXIT_CODE = 77
+if multiprocessing.cpu_count() > 2:
+    COMPILATION_JOBS = multiprocessing.cpu_count() + 1
+else:
+    COMPILATION_JOBS = 3  # Other single/dual core computers
+
+ASAN_ERROR_EXIT_CODE: Final = 77
+DEFAULT_TREES_LOCATION: Final = Path.home() / "trees"
+
 RUN_MOZGLUE_LIB = ""
 RUN_NSPR_LIB = ""
 RUN_PLDS_LIB = ""
 RUN_PLC_LIB = ""
 RUN_TESTPLUG_LIB = ""
+# These include running the js shell (mozglue) and should be in dist/bin.
+# At least Windows required the ICU libraries.
+ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
 
 if platform.system() == "Windows":
+    MAKE_BINARY = "mozmake"
+    CLANG_VER: Final = "11.0.0"
+    WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
+
+    # Library-related
     RUN_MOZGLUE_LIB = "mozglue.dll"
     RUN_NSPR_LIB = "nspr4.dll"
     RUN_PLDS_LIB = "plds4.dll"
     RUN_PLC_LIB = "plc4.dll"
     RUN_TESTPLUG_LIB = "testplug.dll"
-elif platform.system() == "Darwin":
-    RUN_MOZGLUE_LIB = "libmozglue.dylib"
-elif platform.system() == "Linux":
-    RUN_MOZGLUE_LIB = "libmozglue.so"
-
-# These include running the js shell (mozglue) and should be in dist/bin.
-# At least Windows required the ICU libraries.
-ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
-if platform.system() == "Windows":
     ALL_RUN_LIBS.append(RUN_TESTPLUG_LIB)
     WIN_ICU_VERS = []
     # Needs to be updated when the earliest known working revision changes. Currently:
@@ -76,16 +82,13 @@ if platform.system() == "Windows":
         ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}.dll")
         ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}d{icu_ver}.dll")
         ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-if platform.system() == "Windows":
-    MAKE_BINARY = "mozmake"
-    CLANG_VER = "11.0.0"
-    WIN_MOZBUILD_CLANG_PATH = Path.home() / ".mozbuild" / "clang"
 else:
     MAKE_BINARY = "make"
-    SSE2_FLAGS = "-msse2 -mfpmath=sse"  # See bug 948321
+    SSE2_FLAGS: Final = "-msse2 -mfpmath=sse"  # See bug 948321
 
-if multiprocessing.cpu_count() > 2:
-    COMPILATION_JOBS = multiprocessing.cpu_count() + 1
-else:
-    COMPILATION_JOBS = 3  # Other single/dual core computers
+    if platform.system() == "Darwin":
+        RUN_MOZGLUE_LIB = "libmozglue.dylib"
+    elif platform.system() == "Linux":
+        RUN_MOZGLUE_LIB = "libmozglue.so"
+    else:
+        raise RuntimeError("Unsupported platform")
