@@ -24,7 +24,7 @@ from typing import Tuple
 from typing import Union
 
 import distro
-from pkg_resources import parse_version
+from packaging.version import parse
 
 from ocs import build_options
 from ocs.common.hatch import CommonShell
@@ -166,8 +166,8 @@ def configure_binary(shell: SMShell) -> None:  # pylint: disable=too-complex,too
         cfg_cmds.append("--target=i686-pc-linux")
         if shell.build_opts.enableSimulatorArm32:
             cfg_cmds.append("--enable-simulator=arm")
-    # 64-bit shell on Mac OS X 10.13 El Capitan and greater
-    elif parse_version(platform.mac_ver()[0]) >= parse_version("10.13") and not shell.build_opts.enable32:
+    # 64-bit shell on macOS 10.13 El Capitan and greater
+    elif platform.system() == "Darwin" and parse(platform.mac_ver()[0]) >= parse("10.13") and not shell.build_opts.enable32:
         if shutil.which("brew"):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
