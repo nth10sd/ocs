@@ -30,6 +30,8 @@ def autoconf_run(working_dir: Path) -> None:
     """Run autoconf binaries corresponding to the platform.
 
     :param working_dir: Directory to be set as the current working directory
+    :raise RuntimeError: If autoconf 2.13 is not found on Linux
+    :raise RuntimeError: If an unknown OS is input (i.e. neither Windows nor Linux nor macOS)
     """
     if platform.system() == "Darwin":
         # Total hack to support new and old Homebrew configs, we can probably just call autoconf213
