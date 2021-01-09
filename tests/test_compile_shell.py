@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Test the compile_shell.py file."""
+"""Test compiling a shell."""
 
 from __future__ import annotations
 

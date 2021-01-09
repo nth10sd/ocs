@@ -336,7 +336,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write("# Information about shell:\n# \n")
 
         f.write("# Create another shell in shell-cache like this one:\n")
-        f.write(f"# python3 -u -m ocs.compile_shell "
+        f.write(f"# python3 -u -m ocs "
                 f'-b "{shell.build_opts.build_options_str}" -r {shell.hg_hash}\n# \n')
 
         f.write("# Full environment is:\n")

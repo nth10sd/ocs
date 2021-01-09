@@ -35,7 +35,7 @@ if __name__ == "__main__":
         name="ocs",
         version="0.9.0a1",
         entry_points={
-            "console_scripts": ["ocs = ocs.compile_shell:main"],
+            "console_scripts": ["ocs = ocs.spidermonkey.hatch:main"],
         },
         package_data={"ocs": [
             "py.typed",
