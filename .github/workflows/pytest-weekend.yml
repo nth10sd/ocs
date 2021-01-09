@@ -78,7 +78,7 @@ jobs:
         done
 
     - name: Compile a "--enable-address-sanitizer" build
-      run: time python -u -m ocs.compile_shell -b "--enable-address-sanitizer"
+      run: time python -u -m ocs -b "--enable-address-sanitizer"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -158,7 +158,7 @@ jobs:
         done
 
     - name: Compile a "--enable-valgrind" build
-      run: time python -u -m ocs.compile_shell -b "--enable-valgrind"
+      run: time python -u -m ocs -b "--enable-valgrind"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -238,7 +238,7 @@ jobs:
         done
 
     - name: Compile a "" build
-      run: time python -u -m ocs.compile_shell
+      run: time python -u -m ocs
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -318,7 +318,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -398,7 +398,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm64" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm64"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -478,7 +478,7 @@ jobs:
         done
 
     - name: Compile a "--32" build
-      run: time python -u -m ocs.compile_shell -b "--32"
+      run: time python -u -m ocs -b "--32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -558,7 +558,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --32" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --32"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -638,7 +638,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm --32" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm --32"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize --enable-simulator=arm --32"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -721,7 +721,7 @@ jobs:
         done
 
     - name: Compile a "" build
-      run: time python -u -m ocs.compile_shell
+      run: time python -u -m ocs
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -804,7 +804,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
@@ -887,7 +887,7 @@ jobs:
         done
 
     - name: Compile a "--enable-debug --disable-optimize --enable-simulator=arm64" build
-      run: time python -u -m ocs.compile_shell -b "--enable-debug --disable-optimize --enable-simulator=arm64"
+      run: time python -u -m ocs -b "--enable-debug --disable-optimize --enable-simulator=arm64"
     - name: Print the .busted log, if any, when any previous compile steps fail
       if: ${{ failure() }}
       run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
