@@ -42,7 +42,7 @@ if platform.system() == "Windows":
     # At least Windows required the ICU libraries.
     ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
     ALL_RUN_LIBS.append(RUN_TESTPLUG_LIB)
-    
+
     WIN_ICU_VERS = []
     # Needs to be updated when the earliest known working revision changes. Currently:
     # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
@@ -94,5 +94,5 @@ else:
         RUN_MOZGLUE_LIB = "libmozglue.so"
     else:
         raise RuntimeError("Unsupported platform")
-    
+
     ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
