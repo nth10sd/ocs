@@ -25,9 +25,6 @@ RUN_NSPR_LIB = ""
 RUN_PLDS_LIB = ""
 RUN_PLC_LIB = ""
 RUN_TESTPLUG_LIB = ""
-# These include running the js shell (mozglue) and should be in dist/bin.
-# At least Windows required the ICU libraries.
-ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
@@ -40,7 +37,12 @@ if platform.system() == "Windows":
     RUN_PLDS_LIB = "plds4.dll"
     RUN_PLC_LIB = "plc4.dll"
     RUN_TESTPLUG_LIB = "testplug.dll"
+
+    # These include running the js shell (mozglue) and should be in dist/bin.
+    # At least Windows required the ICU libraries.
+    ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
     ALL_RUN_LIBS.append(RUN_TESTPLUG_LIB)
+    
     WIN_ICU_VERS = []
     # Needs to be updated when the earliest known working revision changes. Currently:
     # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
@@ -92,3 +94,5 @@ else:
         RUN_MOZGLUE_LIB = "libmozglue.so"
     else:
         raise RuntimeError("Unsupported platform")
+    
+    ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
