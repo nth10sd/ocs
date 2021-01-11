@@ -298,6 +298,8 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-re
             return False, "Nobody runs the ARM32 simulators on ARM64 Linux."
         if platform.system() == "Linux" and platform.machine() == "aarch64" and args.enableSimulatorArm64:
             return False, "Nobody runs the ARM64 simulators on ARM64 Linux."
+        if platform.system() == "Darwin" and platform.machine() == "arm64" and args.enableSimulatorArm64:
+            return False, "Nobody runs the ARM64 simulators on ARM64 macOS."
         if args.enableSimulatorArm32 and not args.enable32:
             return False, "The 32-bit ARM simulator builds are only for 32-bit binaries."
         if args.enableSimulatorArm64 and args.enable32:

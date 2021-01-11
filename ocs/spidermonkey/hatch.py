@@ -172,7 +172,6 @@ def configure_binary(shell: SMShell) -> None:  # pylint: disable=too-complex,too
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
-        cfg_cmds.append("--target=x86_64-apple-darwin17.7.0")  # macOS 10.13.6
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
