@@ -19,6 +19,8 @@ def get_logger(name: str, fmt: str = "%(asctime)s %(name)-8s %(levelname)-8s {%(
     :param terminator: Line terminator (Set to empty string "" for logging without line endings)
     :return: Desired logger object
     """
+    # If we use StreamHandler() without specifying sys.stdout, it defaults to sys.stderr
+    # By specifying sys.stdout here, stdout on console output should have both stdout and stderr
     handler = logging.StreamHandler(sys.stdout)
     handler.flush = sys.stdout.flush  # type: ignore[assignment]  # See https://github.com/python/mypy/issues/2427
     handler.terminator = terminator
