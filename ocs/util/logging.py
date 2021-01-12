@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import logging
+import sys
 
 
 def get_logger(name: str, fmt: str = "%(asctime)s %(name)-8s %(levelname)-8s {%(module)s} [%(funcName)s] %(message)s",
@@ -18,7 +19,8 @@ def get_logger(name: str, fmt: str = "%(asctime)s %(name)-8s %(levelname)-8s {%(
     :param terminator: Line terminator (Set to empty string "" for logging without line endings)
     :return: Desired logger object
     """
-    handler = logging.StreamHandler()
+    handler = logging.StreamHandler(sys.stdout)
+    handler.flush = sys.stdout.flush  # type: ignore[assignment]  # See https://github.com/python/mypy/issues/2427
     handler.terminator = terminator
     handler.setFormatter(logging.Formatter(fmt=fmt, datefmt="%b %d %H:%M:%S"))
 
