@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from logging import INFO as INFO_LOG_LEVEL
 import optparse  # pylint: disable=deprecated-module
 import os
 from pathlib import Path
@@ -34,6 +35,10 @@ from ocs.util import fs_helpers
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
 from ocs.util import utils
+from ocs.util.logging import get_logger
+
+SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
+SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
 
 class SMShellError(CommonShellError):
@@ -57,12 +62,11 @@ class SMShell(CommonShell):
         :param args: Additional parameters
         :return: 0, to denote a successful compile and 1, to denote a failed compile
         """
-        # logging.basicConfig(format="%(message)s", level=logging.INFO)
         try:
             return cls.run(args)
         except CommonShellError as ex:
             print(repr(ex))  # noqa: T001
-            # log.error(ex)
+            # SM_HATCH_LOG.error(ex)
             return 1
 
     @staticmethod
