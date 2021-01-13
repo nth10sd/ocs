@@ -4,8 +4,22 @@
 
 """setuptools install script"""
 
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
+
+MODULE_NAME = "ocs"
+
+INIT_FILE = "__init__.py"
+VERSION_INDICATOR = "__version__"  # This sets the version in INIT_FILE
+
+with open((Path(MODULE_NAME) / INIT_FILE).expanduser().resolve(), "r") as f:  # Look in module's __init__ for __version__
+    for line in f:
+        if line.startswith(VERSION_INDICATOR):
+            MODULE_VER = line.split("=", 1)[1].rstrip()[1:-1]  # Excl start/end quotes, use remove[pre|suf]fix on Python 3.9+
+            break
+    if not MODULE_VER:
+        raise ValueError(f"{VERSION_INDICATOR} is not defined in {MODULE_NAME}/{INIT_FILE}")
 
 EXTRAS = {
     "test": [
@@ -32,12 +46,12 @@ EXTRAS = {
 
 if __name__ == "__main__":
     setup(
-        name="ocs",
-        version="0.9.0a1",
+        name=MODULE_NAME,
+        version=MODULE_VER,
         entry_points={
-            "console_scripts": ["ocs = ocs.spidermonkey.hatch:main"],
+            "console_scripts": [f"{MODULE_NAME} = {MODULE_NAME}.spidermonkey.hatch:main"],
         },
-        package_data={"ocs": [
+        package_data={MODULE_NAME: [
             "py.typed",
         ]},
         packages=find_packages(exclude=("tests",)),
