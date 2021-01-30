@@ -46,10 +46,10 @@ jobs:
       run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libclang1-10 ripgrep valgrind
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Install 64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache libclang1-10 ripgrep valgrind
+    - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
@@ -126,10 +126,10 @@ jobs:
       run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libclang1-10 ripgrep valgrind
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Install 64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache libclang1-10 ripgrep valgrind
+    - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
@@ -206,10 +206,10 @@ jobs:
       run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libclang1-10 ripgrep valgrind
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Install 64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache libclang1-10 ripgrep valgrind
+    - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
@@ -286,10 +286,10 @@ jobs:
       run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libclang1-10 ripgrep valgrind
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Install 64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache libclang1-10 ripgrep valgrind
+    - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
@@ -366,10 +366,10 @@ jobs:
       run: sudo ln -s /usr/lib/llvm-10/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-10/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-    - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: sudo apt-get install autoconf2.13 ccache g++-multilib libclang1-10 ripgrep valgrind
-    - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
-      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+    - name: Install 64-bit SpiderMonkey prerequisites
+      run: sudo apt-get install autoconf2.13 ccache libclang1-10 ripgrep valgrind
+    - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+      run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
     - name: Search for existing linter ignore lines in Python
       run: |
         rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
