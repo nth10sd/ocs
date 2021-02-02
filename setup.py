@@ -14,13 +14,17 @@ MODULE_NAME = "ocs"
 INIT_FILE = "__init__.py"
 VERSION_INDICATOR = "__version__"  # This sets the version in INIT_FILE
 
-with open((Path(MODULE_NAME) / INIT_FILE).expanduser().resolve(), "r") as f:  # Look in module's __init__ for __version__
+with open(
+    (Path(MODULE_NAME) / INIT_FILE).expanduser().resolve(), "r",
+) as f:  # Look in module's __init__ for __version__
     for line in f:
         if line.startswith(VERSION_INDICATOR):
-            MODULE_VER = line.split("=", 1)[1].strip()[1:-1]  # Excl start/end quotes, use remove[pre|suf]fix on Python 3.9+
+            MODULE_VER = line.split("=", 1)[1].strip()[1:-1]
             break
     if not MODULE_VER:
-        raise ValueError(f"{VERSION_INDICATOR} is not defined in {MODULE_NAME}/{INIT_FILE}")
+        raise ValueError(
+            f"{VERSION_INDICATOR} is not defined in {MODULE_NAME}/{INIT_FILE}",
+        )
 
 EXTRAS = {
     "test": [
