@@ -27,6 +27,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
     :param build_opts: Object containing the build options defined in build_options.py
     :param cset_hash: Changeset hash
     """
+
     def __init__(self, build_opts: argparse.Namespace, cset_hash: str):
         self._name_no_ext = build_options.compute_shell_name(build_opts, cset_hash)
         self._cset_hash = cset_hash
@@ -126,26 +127,36 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
 
         :return: Full path to the js binary in the shell cache
         """
-        return (fs_helpers.ensure_cache_dir(Path.home()) /
-                self._name_no_ext / self.shell_name_with_ext)
+        return (
+            fs_helpers.ensure_cache_dir(Path.home())
+            / self._name_no_ext
+            / self.shell_name_with_ext
+        )
 
     @property
     def shell_compiled_path(self) -> Path:
-        """Retrieve the full path to the original location of js binary compiled in the shell cache.
+        """Retrieve full path to the original location of js binary compiled in the
+        shell cache.
 
-        :return: Full path to the original location of js binary compiled in the shell cache
+        :return: Original binary location that was compiled in the shell cache
         """
         full_path = self._js_objdir / "dist" / "bin" / "js"
-        return full_path.with_suffix(".exe") if platform.system() == "Windows" else full_path
+        return (
+            full_path.with_suffix(".exe")
+            if platform.system() == "Windows"
+            else full_path
+        )
 
     @property
     def shell_compiled_runlibs_path(self) -> List[Path]:
-        """Retrieve the full path to the original location of the libraries of js binary compiled in the shell cache.
+        """Retrieve the full path to the original location of the libraries of js binary
+        compiled in the shell cache.
 
-        :return: Full path to the original location of the libraries of js binary compiled in the shell cache
+        :return: Original libraries' location of the binary compiled in the shell cache
         """
         return [
-            self._js_objdir / "dist" / "bin" / runlib for runlib in constants.ALL_RUN_LIBS
+            self._js_objdir / "dist" / "bin" / runlib
+            for runlib in constants.ALL_RUN_LIBS
         ]
 
     @property
@@ -154,8 +165,11 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
 
         :return: Name of the compiled js shell with the file extension
         """
-        return (f"{self._name_no_ext}.exe" if platform.system() == "Windows"
-                else f"{self._name_no_ext}")
+        return (
+            f"{self._name_no_ext}.exe"
+            if platform.system() == "Windows"
+            else f"{self._name_no_ext}"
+        )
 
     @property
     def shell_name_without_ext(self) -> str:

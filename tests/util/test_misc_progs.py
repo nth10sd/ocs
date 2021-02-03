@@ -14,7 +14,10 @@ import pytest
 from ocs.util import misc_progs
 
 
-@pytest.mark.skipif(platform.system() == "Windows", reason="Windows on Travis is still new and experimental")
+@pytest.mark.skipif(
+    platform.system() == "Windows",
+    reason="Windows on Travis is still new and experimental",
+)
 def test_autoconf_run(tmpdir: Path) -> None:
     """Test the autoconf runs properly.
 

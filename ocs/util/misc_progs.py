@@ -18,10 +18,10 @@ def autoconf_run(working_dir: Path) -> None:
 
     :param working_dir: Directory to be set as the current working directory
     :raise RuntimeError: If autoconf 2.13 is not found on Linux
-    :raise RuntimeError: If an unknown OS is input (i.e. neither Windows nor Linux nor macOS)
+    :raise RuntimeError: If an unknown OS is input (i.e. not any of Windows/Linux/macOS)
     """
     if platform.system() == "Darwin":
-        # Total hack to support new and old Homebrew configs, we can probably just call autoconf213
+        # Hack to support new / old Homebrew configs, can probably just call autoconf213
         if shutil.which("brew"):
             autoconf213_mac_bin = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         else:
@@ -50,11 +50,25 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
 
     :param shell_path: Path to the compiled js shell
     """
-    # More info: https://msdn.microsoft.com/en-us/library/windows/hardware/ff543097(v=vs.85).aspx
-    # or https://blogs.msdn.microsoft.com/webdav_101/2010/06/22/detecting-heap-corruption-using-gflags-and-dumps/
-    gflags_bin_path = Path(str(os.getenv("PROGRAMW6432"))) / "Debugging Tools for Windows (x64)" / "gflags.exe"
+    # See the following references:
+    # https://bit.ly/36Bp09W (Microsoft Docs) or https://bit.ly/36EQAmy (Archived)
+    gflags_bin_path = (
+        Path(str(os.getenv("PROGRAMW6432")))
+        / "Debugging Tools for Windows (x64)"
+        / "gflags.exe"
+    )
     if gflags_bin_path.is_file() and shell_path.is_file():
-        print(subprocess.run([str(gflags_bin_path), "-p", "/enable", str(shell_path), "/full"],  # noqa: T001
-                             check=True,
-                             stderr=subprocess.STDOUT,
-                             stdout=subprocess.PIPE).stdout)
+        print(
+            subprocess.run(
+                [
+                    str(gflags_bin_path),
+                    "-p",
+                    "/enable",
+                    str(shell_path),
+                    "/full",
+                ],  # noqa: T001
+                check=True,
+                stderr=subprocess.STDOUT,
+                stdout=subprocess.PIPE,
+            ).stdout,
+        )

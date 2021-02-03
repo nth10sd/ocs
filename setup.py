@@ -15,7 +15,8 @@ INIT_FILE = "__init__.py"
 VERSION_INDICATOR = "__version__"  # This sets the version in INIT_FILE
 
 with open(
-    (Path(MODULE_NAME) / INIT_FILE).expanduser().resolve(), "r",
+    (Path(MODULE_NAME) / INIT_FILE).expanduser().resolve(),
+    "r",
 ) as f:  # Look in module's __init__ for __version__
     for line in f:
         if line.startswith(VERSION_INDICATOR):
@@ -49,7 +50,8 @@ EXTRAS = {
         "pytest-mypy ~= 0.8.0",
         "pytest-pylint ~= 0.18.0",
         "sphinx ~= 3.4.3",
-    ]}
+    ],
+}
 
 
 if __name__ == "__main__":
@@ -57,11 +59,15 @@ if __name__ == "__main__":
         name=MODULE_NAME,
         version=MODULE_VER,
         entry_points={
-            "console_scripts": [f"{MODULE_NAME} = {MODULE_NAME}.spidermonkey.hatch:main"],
+            "console_scripts": [
+                f"{MODULE_NAME} = {MODULE_NAME}.spidermonkey.hatch:main",
+            ],
         },
-        package_data={MODULE_NAME: [
-            "py.typed",
-        ]},
+        package_data={
+            MODULE_NAME: [
+                "py.typed",
+            ],
+        },
         packages=find_packages(exclude=("tests",)),
         install_requires=[
             "distro ~= 1.5.0",

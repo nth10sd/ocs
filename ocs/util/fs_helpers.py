@@ -21,7 +21,7 @@ from typing import Type
 
 
 def ensure_cache_dir(base_dir: Path) -> Path:
-    """Retrieve a cache directory for compiled shells to live in, and create one if needed.
+    """Retrieve a cache directory for compiled shells to be in, creating one if needed.
 
     :param base_dir: Base directory to create the cache directory in
     :return: Full shell-cache path
@@ -33,7 +33,10 @@ def ensure_cache_dir(base_dir: Path) -> Path:
     return cache_dir
 
 
-def env_with_path(path: str, curr_env: Optional[Dict[str, str]] = None) -> Dict[str, str]:
+def env_with_path(
+    path: str,
+    curr_env: Optional[Dict[str, str]] = None,
+) -> Dict[str, str]:
     """Append the path to the appropriate library path on various platforms.
 
     :param path: Path to be added to $PATH
@@ -78,9 +81,16 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
 
 
 def handle_rm_readonly_files(
-        _func: Callable[..., None], path_: Path,
-        exc: Tuple[Optional[Type[BaseException]], Optional[Type[BaseException]], Optional[TracebackType]]) -> None:
-    """Handle read-only files on Windows. Adapted from https://stackoverflow.com/a/21263493.
+    _func: Callable[..., None],
+    path_: Path,
+    exc: Tuple[
+        Optional[Type[BaseException]],
+        Optional[Type[BaseException]],
+        Optional[TracebackType],
+    ],
+) -> None:
+    """Handle read-only files on Windows.
+    Adapted from https://stackoverflow.com/a/21263493.
 
     :param _func: Function which raised the exception
     :param path_: Path name passed to function
@@ -98,8 +108,12 @@ def handle_rm_readonly_files(
 
 
 def rm_tree_incl_readonly_files(dir_tree: Path) -> None:
-    """Remove a directory tree including all read-only files. Directories should not be read-only.
+    """Remove a directory tree including all read-only files. Directories should not be
+    read-only.
 
     :param dir_tree: Directory tree of files to be removed
     """
-    shutil.rmtree(str(dir_tree), onerror=handle_rm_readonly_files if platform.system() == "Windows" else None)
+    shutil.rmtree(
+        str(dir_tree),
+        onerror=handle_rm_readonly_files if platform.system() == "Windows" else None,
+    )

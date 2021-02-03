@@ -30,10 +30,12 @@ def test_shell_compile() -> Path:
     :return: Path to the compiled shell.
     """
     assert MC_PATH.is_dir()
-    # Change the repository location by uncommenting this line and specifying the right one
-    # "-R ~/trees/mozilla-central/")
+    # Change the repository location by uncommenting this line and specifying the
+    # correct one: "-R ~/trees/mozilla-central/")
 
-    default_parameters_debug = "--enable-debug --disable-optimize --enable-oom-breakpoint"
+    default_parameters_debug = (
+        "--enable-debug --disable-optimize --enable-oom-breakpoint"
+    )
     if platform.system() == "Linux":
         default_parameters_debug += " --enable-valgrind"
     # Remember to update the corresponding BUILD build parameters in .travis.yml as well
@@ -49,16 +51,26 @@ def test_shell_compile() -> Path:
     if platform.system() == "Linux":
         valgrind_name_param += "-vg"
     if default_parameters_debug in build_opts:
-        # Test compilation of a debug shell with OOM breakpoint support. (Valgrind only on Linux)
-        file_name = (f"js-dbg-optDisabled-64{valgrind_name_param}-oombp-"
-                     f"{platform.system().lower()}-{platform.machine().lower()}-{hg_hash_of_default}")
+        # Test compiling a debug shell w/OOM breakpoint support - Valgrind only on Linux
+        file_name = (
+            f"js-dbg-optDisabled-64{valgrind_name_param}-oombp-"
+            f"{platform.system().lower()}-{platform.machine().lower()}-"
+            f"{hg_hash_of_default}"
+        )
     elif "--disable-debug --disable-profiling --without-intl-api" in build_opts:
-        # Test compilation of an opt shell with both profiling and Intl support disabled.
-        # This set of builds should also have the following: 32-bit with ARM, with asan, and with clang
-        file_name = (f"js-64-profDisabled-intlDisabled-{platform.system().lower()}-{platform.machine().lower()}-"
-                     f"{hg_hash_of_default}")
+        # Test compilation of an opt shell with both profiling and Intl support disabled
+        # This set of builds should also have the following:
+        # 32-bit with ARM, with asan, and with clang
+        file_name = (
+            f"js-64-profDisabled-intlDisabled-{platform.system().lower()}-"
+            f"{platform.machine().lower()}-"
+            f"{hg_hash_of_default}"
+        )
     else:
-        raise ValueError(f'default_parameters_debug "{default_parameters_debug}" is not in build_opts "{build_opts}"')
+        raise ValueError(
+            f'default_parameters_debug "{default_parameters_debug}"'
+            f' is not in build_opts "{build_opts}"',
+        )
 
     js_bin_path = SHELL_CACHE / file_name / file_name
     if platform.system() == "Windows":

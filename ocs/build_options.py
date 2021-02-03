@@ -31,6 +31,7 @@ def chance(i: float) -> bool:
 
 class Randomizer:
     """Class to randomize parser options."""
+
     def __init__(self) -> None:
         self.options: List[Dict[str, Union[float, str]]] = []
 
@@ -40,16 +41,19 @@ class Randomizer:
         :param name: Name of option
         :param weight: Weight that option should use
         """
-        self.options.append({
-            "name": name,
-            "weight": weight,
-        })
+        self.options.append(
+            {
+                "name": name,
+                "weight": weight,
+            },
+        )
 
     def get_rnd_subset(self) -> List[str]:
         """Get a random subset of build options.
 
         :return: A random subset of build options
         """
+
         def get_weight(opt: Dict[str, Union[float, str]]) -> float:
             """Get the weight of a specific option.
 
@@ -57,6 +61,7 @@ class Randomizer:
             :return: Weight that option should use
             """
             return float(opt["weight"])
+
         return [str(opt["name"]) for opt in self.options if chance(get_weight(opt))]
 
 
@@ -69,8 +74,8 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     parser = argparse.ArgumentParser(description="Usage: Don't use this directly")
     randomizer = Randomizer()
 
-    def randomize_bool(name: List[str], weight: float,
-                       **kwargs: Any) -> None:  # Keyword args of various types not ready for mypy yet: https://git.io/JLdRI
+    # Keyword args of various types not ready for mypy yet: https://git.io/JLdRI
+    def randomize_bool(name: List[str], weight: float, **kwargs: Any) -> None:
         """Add a randomized boolean option that defaults to False.
 
         Option also has a [weight] chance of being changed to True when using --random.
@@ -82,73 +87,115 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
         randomizer.add(name[-1], weight)
         parser.add_argument(*name, action="store_true", default=False, **kwargs)
 
-    parser.add_argument("--random",
-                        dest="enableRandom",
-                        action="store_true",
-                        default=False,
-                        help='Chooses sensible random build options. Defaults to "%(default)s".')
-    parser.add_argument("-R", "--repodir",
-                        dest="repo_dir",
-                        type=Path,
-                        help="Sets the source repository.")
+    parser.add_argument(
+        "--random",
+        dest="enableRandom",
+        action="store_true",
+        default=False,
+        help='Chooses sensible random build options. Defaults to "%(default)s".',
+    )
+    parser.add_argument(
+        "-R",
+        "--repodir",
+        dest="repo_dir",
+        type=Path,
+        help="Sets the source repository.",
+    )
 
     # Basic spidermonkey options
-    randomize_bool(["--32"], 0.5,
-                   dest="enable32",
-                   help="Build 32-bit shells, but if not enabled, 64-bit shells are built.")
-    randomize_bool(["--enable-debug"], 0.5,
-                   dest="enableDbg",
-                   help='Build shells with --enable-debug. Defaults to "%(default)s". '
-                        "Currently defaults to True in configure.in on mozilla-central.")
-    randomize_bool(["--disable-debug"], 0,
-                   dest="disableDbg",
-                   help='Build shells with --disable-debug. Defaults to "%(default)s". '
-                        "Currently defaults to True in configure.in on mozilla-central.")
-    randomize_bool(["--enable-optimize"], 0,
-                   dest="enableOpt",
-                   help='Build shells with --enable-optimize. Defaults to "%(default)s".')
-    randomize_bool(["--disable-optimize"], 0.1,
-                   dest="disableOpt",
-                   help='Build shells with --disable-optimize. Defaults to "%(default)s".')
-    randomize_bool(["--disable-profiling"], 0.5,
-                   dest="disableProfiling",
-                   help='Build with profiling off. Defaults to "True" on Linux, else "%(default)s".')
+    randomize_bool(
+        ["--32"],
+        0.5,
+        dest="enable32",
+        help="Build 32-bit shells, but if not enabled, 64-bit shells are built.",
+    )
+    randomize_bool(
+        ["--enable-debug"],
+        0.5,
+        dest="enableDbg",
+        help='Build shells with --enable-debug. Defaults to "%(default)s". '
+        "Currently defaults to True in configure.in on mozilla-central.",
+    )
+    randomize_bool(
+        ["--disable-debug"],
+        0,
+        dest="disableDbg",
+        help='Build shells with --disable-debug. Defaults to "%(default)s". '
+        "Currently defaults to True in configure.in on mozilla-central.",
+    )
+    randomize_bool(
+        ["--enable-optimize"],
+        0,
+        dest="enableOpt",
+        help='Build shells with --enable-optimize. Defaults to "%(default)s".',
+    )
+    randomize_bool(
+        ["--disable-optimize"],
+        0.1,
+        dest="disableOpt",
+        help='Build shells with --disable-optimize. Defaults to "%(default)s".',
+    )
+    randomize_bool(
+        ["--disable-profiling"],
+        0.5,
+        dest="disableProfiling",
+        help='Build with profiling off. Defaults to "True"'
+        ' on Linux, else "%(default)s".',
+    )
 
     # Memory debuggers
-    randomize_bool(["--enable-address-sanitizer"], 0.3,
-                   dest="enableAddressSanitizer",
-                   help='Build with clang AddressSanitizer support. Defaults to "%(default)s".')
-    randomize_bool(["--enable-valgrind"], 0.2,
-                   dest="enableValgrind",
-                   help='Build with valgrind.h bits. Defaults to "%(default)s". '
-                        "Requires --enable-hardfp for ARM platforms.")
-    # We do not use randomize_bool because we add this flag automatically if --enable-valgrind
-    # is selected.
-    parser.add_argument("--run-with-valgrind",
-                        dest="runWithVg",
-                        action="store_true",
-                        default=False,
-                        help="Run the shell under Valgrind. Requires --enable-valgrind.")
+    randomize_bool(
+        ["--enable-address-sanitizer"],
+        0.3,
+        dest="enableAddressSanitizer",
+        help='Build with clang AddressSanitizer support. Defaults to "%(default)s".',
+    )
+    randomize_bool(
+        ["--enable-valgrind"],
+        0.2,
+        dest="enableValgrind",
+        help='Build with valgrind.h bits. Defaults to "%(default)s". '
+        "Requires --enable-hardfp for ARM platforms.",
+    )
+    # We do not use randomize_bool because we add this flag automatically
+    # if --enable-valgrind is selected.
+    parser.add_argument(
+        "--run-with-valgrind",
+        dest="runWithVg",
+        action="store_true",
+        default=False,
+        help="Run the shell under Valgrind. Requires --enable-valgrind.",
+    )
 
     # Misc spidermonkey options
-    parser.add_argument("--enable-oom-breakpoint",  # Extra debugging help for OOM assertions
-                        dest="enableOomBreakpoint",
-                        action="store_true",
-                        default=False,
-                        help='Build shells with --enable-oom-breakpoint. Defaults to "%(default)s".')
-    parser.add_argument("--without-intl-api",  # Speeds up compilation but is non-default
-                        dest="enableWithoutIntlApi",
-                        action="store_true",
-                        default=False,
-                        help='Build shells using --without-intl-api. Defaults to "%(default)s".')
-    randomize_bool(["--enable-simulator=arm"], 0.3,
-                   dest="enableSimulatorArm32",
-                   help="Build shells with --enable-simulator=arm, only applicable to 32-bit shells. "
-                        'Defaults to "%(default)s".')
-    randomize_bool(["--enable-simulator=arm64"], 0.3,
-                   dest="enableSimulatorArm64",
-                   help="Build shells with --enable-simulator=arm64, only applicable to 64-bit shells. "
-                        'Defaults to "%(default)s".')
+    parser.add_argument(
+        "--enable-oom-breakpoint",  # Extra debugging help for OOM assertions
+        dest="enableOomBreakpoint",
+        action="store_true",
+        default=False,
+        help='Build shells with --enable-oom-breakpoint. Defaults to "%(default)s".',
+    )
+    parser.add_argument(
+        "--without-intl-api",  # Speeds up compilation but is non-default
+        dest="enableWithoutIntlApi",
+        action="store_true",
+        default=False,
+        help='Build shells using --without-intl-api. Defaults to "%(default)s".',
+    )
+    randomize_bool(
+        ["--enable-simulator=arm"],
+        0.3,
+        dest="enableSimulatorArm32",
+        help="Build shells with --enable-simulator=arm, "
+        'only applicable to 32-bit shells. Defaults to "%(default)s".',
+    )
+    randomize_bool(
+        ["--enable-simulator=arm64"],
+        0.3,
+        dest="enableSimulatorArm64",
+        help="Build shells with --enable-simulator=arm64, "
+        'only applicable to 64-bit shells. Defaults to "%(default)s".',
+    )
 
     # If adding a new compile option, be mindful of repository randomization.
     # e.g. it may be in mozilla-central but not in mozilla-beta
@@ -171,9 +218,12 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
         build_options.build_options_str = args
         valid = are_args_valid(build_options)
         if not valid[0]:
-            print(f"WARNING: This set of build options is not tested well because: {valid[1]}")  # noqa: T001
+            print(
+                "WARNING: This set of build options is not tested well "
+                f"because: {valid[1]}",
+            )  # noqa: T001
 
-    # Ensures releng machines do not enter the if block and assumes mozilla-central always exists
+    # Ensures releng machines do not enter the if block and assumes m-c always exists
     if DEFAULT_TREES_LOCATION.is_dir():
         # Repositories do not get randomized if a repository is specified.
         if build_options.repo_dir:
@@ -182,19 +232,27 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
             build_options.repo_dir = DEFAULT_TREES_LOCATION / "mozilla-central"
 
             if not build_options.repo_dir.is_dir():
-                sys.exit("repo_dir is not specified, and a default repository location cannot be confirmed. Exiting...")
+                sys.exit(
+                    "repo_dir is not specified, and a default repository location "
+                    "cannot be confirmed. Exiting...",
+                )
 
         assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
     elif build_options.repo_dir:
         build_options.repo_dir = build_options.repo_dir.expanduser()
         assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
     else:
-        sys.exit(f"DEFAULT_TREES_LOCATION not found at: {DEFAULT_TREES_LOCATION}. Exiting...")
+        sys.exit(
+            "DEFAULT_TREES_LOCATION not found at: "
+            f"{DEFAULT_TREES_LOCATION}. Exiting...",
+        )
 
     return build_options
 
 
-def compute_shell_type(build_options: argparse.Namespace) -> str:  # pylint: disable=too-complex
+def compute_shell_type(
+    build_options: argparse.Namespace,
+) -> str:  # pylint: disable=too-complex
     """Return configuration information of the shell.
 
     :param build_options: Object containing build options
@@ -223,7 +281,9 @@ def compute_shell_type(build_options: argparse.Namespace) -> str:  # pylint: dis
     file_name.append(platform.system().lower())
     file_name.append(platform.machine().lower())
 
-    assert "" not in file_name, f'Filename "{file_name!r}" should not have empty elements.'
+    assert (
+        "" not in file_name
+    ), f'Filename "{file_name!r}" should not have empty elements.'
     return "-".join(file_name)
 
 
@@ -237,13 +297,15 @@ def compute_shell_name(build_options: argparse.Namespace, build_rev: str) -> str
     return f"{compute_shell_type(build_options)}-{build_rev}"
 
 
-def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-return-statements
-        args: argparse.Namespace) -> Tuple[bool, str]:
+def are_args_valid(  # pylint: disable=too-many-branches,too-complex
+    args: argparse.Namespace,
+) -> Tuple[bool, str]:
     """Check to see if chosen arguments are valid.
 
     :param args: Input arguments
     :return: Whether arguments are valid, with a string as the explanation
     """
+    # pylint: disable=too-many-return-statements
     # Consider refactoring this to raise exceptions instead.
     if args.enableDbg and args.disableDbg:
         return False, "Making a debug, non-debug build would be contradictory."
@@ -260,10 +322,14 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-re
         return False, "WSL does not seem to support 32-bit Linux binaries yet."
 
     if args.enableValgrind:
-        return False, "FIXME: We need to set LD_LIBRARY_PATH first, else Valgrind segfaults."
-        # Test with leak-checking disabled, test that reporting works, test only on x64 16.04
+        return (
+            False,
+            "FIXME: We need to set LD_LIBRARY_PATH first, else Valgrind segfaults.",
+        )
+        # Test with leak-checking disabled
+        # Test that reporting works, test only on x64 16.04
         # Test with bug 1278887
-        # Also ensure we are running autobisectjs w/Valgrind having the --error-exitcode=?? flag
+        # Also ensure we are running autobisectjs w/Valgrind having --error-exitcode=??
         # Uncomment the following when we unbreak Valgrind fuzzing.
         # if not which("valgrind"):
         #     return False, "Valgrind is not installed."
@@ -271,7 +337,8 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-re
         #     # FIXME: Isn't this enabled by default??  # pylint: disable=fixme
         #     return False, "Valgrind needs opt builds."
         # if args.enableAddressSanitizer:
-        #     return False, "One should not compile with both Valgrind flags and ASan flags."
+        #     return False, "One should not compile with both Valgrind flags and "
+        #     "ASan flags."
 
         # if platform.system() == "Windows":
         #     return False, "Valgrind does not work on Windows."
@@ -283,9 +350,17 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-re
 
     if args.enableAddressSanitizer:
         if args.enable32:
-            return False, "32-bit ASan builds fail on 18.04 due to https://github.com/google/sanitizers/issues/954."
+            return (
+                False,
+                "32-bit ASan builds fail on 18.04 due to "
+                "https://github.com/google/sanitizers/issues/954.",
+            )
         if platform.system() == "Linux" and "Microsoft" in platform.release():
-            return False, "Linux ASan builds cannot yet work in WSL though there may be workarounds."
+            return (
+                False,
+                "Linux ASan builds cannot yet work in WSL "
+                "though there may be workarounds.",
+            )
         if platform.system() == "Windows" and args.enable32:
             return False, "ASan is explicitly not supported in 32-bit Windows builds."
 
@@ -294,21 +369,42 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex,too-many-re
             return False, "Nobody runs the ARM32 simulators on Windows."
         if platform.system() == "Windows" and args.enableSimulatorArm64:
             return False, "Nobody runs the ARM64 simulators on Windows."
-        if platform.system() == "Linux" and platform.machine() == "aarch64" and args.enableSimulatorArm32:
+        if (
+            platform.system() == "Linux"
+            and platform.machine() == "aarch64"
+            and args.enableSimulatorArm32
+        ):
             return False, "Nobody runs the ARM32 simulators on ARM64 Linux."
-        if platform.system() == "Linux" and platform.machine() == "aarch64" and args.enableSimulatorArm64:
+        if (
+            platform.system() == "Linux"
+            and platform.machine() == "aarch64"
+            and args.enableSimulatorArm64
+        ):
             return False, "Nobody runs the ARM64 simulators on ARM64 Linux."
-        if platform.system() == "Darwin" and platform.machine() == "arm64" and args.enableSimulatorArm64:
+        if (
+            platform.system() == "Darwin"
+            and platform.machine() == "arm64"
+            and args.enableSimulatorArm64
+        ):
             return False, "Nobody runs the ARM64 simulators on ARM64 macOS."
         if args.enableSimulatorArm32 and not args.enable32:
-            return False, "The 32-bit ARM simulator builds are only for 32-bit binaries."
+            return (
+                False,
+                "The 32-bit ARM simulator builds are only for 32-bit binaries.",
+            )
         if args.enableSimulatorArm64 and args.enable32:
-            return False, "The 64-bit ARM simulator builds are only for 64-bit binaries."
+            return (
+                False,
+                "The 64-bit ARM simulator builds are only for 64-bit binaries.",
+            )
 
     return True, ""
 
 
-def gen_rnd_cfgs(parser: argparse.ArgumentParser, randomizer: Randomizer) -> argparse.Namespace:
+def gen_rnd_cfgs(
+    parser: argparse.ArgumentParser,
+    randomizer: Randomizer,
+) -> argparse.Namespace:
     """Generates random configurations.
 
     :param parser: Parser object for specified configurations
@@ -321,14 +417,20 @@ def gen_rnd_cfgs(parser: argparse.ArgumentParser, randomizer: Randomizer) -> arg
             rnd_args.append("--run-with-valgrind")
         build_options = parser.parse_args(rnd_args)
         if are_args_valid(build_options)[0]:
-            build_options.build_options_str = " ".join(rnd_args)  # Used for autobisectjs
-            build_options.enableRandom = True  # This has to be true since we are randomizing...
+            build_options.build_options_str = " ".join(
+                rnd_args,
+            )  # Used for autobisectjs
+            build_options.enableRandom = (
+                True  # This has to be true since we are randomizing...
+            )
             return build_options
 
 
 def main() -> None:
     """Main build_options function, generates sample random build configurations."""
-    print("Here are some sample random build configurations that can be generated:")  # noqa: T001
+    print(
+        "Here are some sample random build configurations that can be generated:",
+    )  # noqa: T001
     parser, randomizer = add_parser_opts()
 
     for _ in range(30):
@@ -336,7 +438,10 @@ def main() -> None:
         print(build_options.build_options_str)  # noqa: T001
 
     print()  # noqa: T001
-    print("Running this file directly doesn't do anything, but here's our subparser help:")  # noqa: T001
+    print(
+        "Running this file directly doesn't do anything, "
+        "but here's our subparser help:",
+    )  # noqa: T001
     print()  # noqa: T001
     parser.parse_args()
 

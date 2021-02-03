@@ -47,10 +47,10 @@ if platform.system() == "Windows":
     # Needs to be updated when the earliest known working revision changes. Currently:
     # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
     WIN_ICU_VERS.append(67)  # prior version
-    # WIN_ICU_VERS.append(68)  # m-c XXXXXX Fx78, 1st w/ ICU 67.1, see bug 1632434 (to be updated)
+    # WIN_ICU_VERS.append(68)  # m-c XXXXXX FxXX, 1st w/ ICU XX.1, see bug XXXXXX
 
-    # Update if the following changes:
-    # https://searchfox.org/mozilla-central/search?q=path%3Aintl%2Ficu%2Fsource%2F+.dll%3C%2FOutputFile%3E
+    # Search for changes to the versioning of the ICU files:
+    # https://bit.ly/3jgrTSK
     RUN_ICUUC_LIB_EXCL_EXT = "icuuc"
     RUN_ICUIN_LIB_EXCL_EXT = "icuin"
     RUN_ICUIO_LIB_EXCL_EXT = "icuio"

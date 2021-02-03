@@ -12,7 +12,9 @@ from typing import Any
 from ocs import build_options
 
 
-def test_chance(monkeypatch: Any) -> None:  # Ignore till mypy knows the monkeypatch type w/o importing _pytest
+def test_chance(
+    monkeypatch: Any,
+) -> None:  # Ignore till mypy knows the monkeypatch type w/o importing _pytest
     """Test that the chance function works as intended.
 
     :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions

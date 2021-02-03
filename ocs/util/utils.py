@@ -15,7 +15,8 @@ VERBOSE = False
 
 
 class LockDir:
-    """A class to create a filesystem-based lock while in scope. The lock dir will be deleted after the lock is released.
+    """A class to create a filesystem-based lock while in scope.
+    The lock dir will be deleted after the lock is released.
 
     Use:
         with LockDir(path):
@@ -34,8 +35,12 @@ class LockDir:
             print(f"Lock directory exists: {self.directory}")  # noqa: T001
             raise
 
-    def __exit__(self, _exc_type: Optional[Type[BaseException]], _exc_val: Optional[Type[BaseException]],
-                 _exc_tb: Optional[TracebackType]) -> None:
+    def __exit__(
+        self,
+        _exc_type: Optional[Type[BaseException]],
+        _exc_val: Optional[Type[BaseException]],
+        _exc_tb: Optional[TracebackType],
+    ) -> None:
         self.directory.rmdir()
 
 

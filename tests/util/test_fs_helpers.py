@@ -16,13 +16,17 @@ from ocs.util import fs_helpers
 
 
 def test_ensure_cache_dir() -> None:
-    """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
+    """Test the shell-cache dir is created properly if it does not exist, and things
+    work even though it does."""
     assert fs_helpers.ensure_cache_dir(Path()).is_dir()
     fs_helpers.ensure_cache_dir(Path()).rmdir()
     assert fs_helpers.ensure_cache_dir(Path.home()).is_dir()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Test only applies to read-only files on Windows")
+@pytest.mark.skipif(
+    platform.system() != "Windows",
+    reason="Test only applies to read-only files on Windows",
+)
 def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
     """Test that directory trees with readonly files can be removed.
 
