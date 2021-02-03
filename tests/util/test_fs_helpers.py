@@ -18,6 +18,7 @@ from ocs.util import fs_helpers
 def test_ensure_cache_dir() -> None:
     """Test the shell-cache dir is created properly if it does not exist, and things work even though it does."""
     assert fs_helpers.ensure_cache_dir(Path()).is_dir()
+    fs_helpers.ensure_cache_dir(Path()).rmdir()
     assert fs_helpers.ensure_cache_dir(Path.home()).is_dir()
 
 

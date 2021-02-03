@@ -65,4 +65,6 @@ def test_shell_compile() -> Path:
         js_bin_path = js_bin_path.with_suffix(".exe")
     assert js_bin_path.is_file()
 
+    SHELL_CACHE.rmdir()  # Cleanup shell-cache test directory
+
     return js_bin_path
