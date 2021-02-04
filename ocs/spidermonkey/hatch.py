@@ -142,9 +142,9 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     :param shell: Potential compiled shell object
     """
-    print(
+    print(  # noqa: T001  # Print *with* a trailing newline to stop breaking other stuff
         "Compiling...",
-    )  # noqa: T001  # Print *with* a trailing newline to avoid breaking other stuff
+    )
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
@@ -458,9 +458,9 @@ def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
         ):  # Clang running out of memory
-            print(
+            print(  # noqa: T001
                 "Trying once more due to the compiler running out of memory...",
-            )  # noqa: T001
+            )
             out = subprocess.run(
                 cmd_list,
                 check=False,
@@ -471,10 +471,10 @@ def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
             ).stdout.decode("utf-8", errors="replace")
         # `make` can return a non-zero error, but later a shell still gets compiled.
         if shell.shell_compiled_path.is_file():
-            print(
+            print(  # noqa: T001
                 "A shell was compiled even though there was a non-zero exit code. "
                 "Continuing...",
-            )  # noqa: T001
+            )
 
     if shell.shell_compiled_path.is_file():
         shutil.copy2(str(shell.shell_compiled_path), str(shell.shell_cache_js_bin_path))
@@ -560,10 +560,10 @@ def obtain_shell(
     try:
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
-            print(
+            print(  # noqa: T001
                 f"Updating to rev {update_to_rev} in the "
                 f"{shell.build_opts.repo_dir} repository...",
-            )  # noqa: T001
+            )
             subprocess.run(
                 [
                     "hg",

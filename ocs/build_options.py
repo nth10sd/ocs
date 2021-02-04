@@ -218,10 +218,10 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
         build_options.build_options_str = args
         valid = are_args_valid(build_options)
         if not valid[0]:
-            print(
+            print(  # noqa: T001
                 "WARNING: This set of build options is not tested well "
                 f"because: {valid[1]}",
-            )  # noqa: T001
+            )
 
     # Ensures releng machines do not enter the if block and assumes m-c always exists
     if DEFAULT_TREES_LOCATION.is_dir():
@@ -428,9 +428,9 @@ def gen_rnd_cfgs(
 
 def main() -> None:
     """Main build_options function, generates sample random build configurations."""
-    print(
+    print(  # noqa: T001
         "Here are some sample random build configurations that can be generated:",
-    )  # noqa: T001
+    )
     parser, randomizer = add_parser_opts()
 
     for _ in range(30):
@@ -438,10 +438,10 @@ def main() -> None:
         print(build_options.build_options_str)  # noqa: T001
 
     print()  # noqa: T001
-    print(
+    print(  # noqa: T001
         "Running this file directly doesn't do anything, "
         "but here's our subparser help:",
-    )  # noqa: T001
+    )
     print()  # noqa: T001
     parser.parse_args()
 

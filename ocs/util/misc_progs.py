@@ -58,7 +58,7 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
         / "gflags.exe"
     )
     if gflags_bin_path.is_file() and shell_path.is_file():
-        print(
+        print(  # noqa: T001
             subprocess.run(
                 [
                     str(gflags_bin_path),
@@ -66,7 +66,7 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
                     "/enable",
                     str(shell_path),
                     "/full",
-                ],  # noqa: T001
+                ],
                 check=True,
                 stderr=subprocess.STDOUT,
                 stdout=subprocess.PIPE,
