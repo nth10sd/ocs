@@ -523,7 +523,7 @@ def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
     return shell.shell_compiled_path
 
 
-def obtain_shell(
+def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
     shell: SMShell,
     update_to_rev: Optional[str] = None,
     _update_latest_txt: bool = False,
@@ -631,7 +631,7 @@ def arch_of_binary(binary: Path) -> str:
     return "INVALID"
 
 
-def test_binary(
+def test_binary(  # pylint: disable=useless-param-doc,useless-type-doc
     shell_path: Path,
     args: List[str],
     _use_vg: bool,
