@@ -190,7 +190,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         if shell.build_opts.enableSimulatorArm32:
             cfg_cmds.append("--enable-simulator=arm")
     # 64-bit shell on macOS 10.13 El Capitan and greater
-    elif (
+    elif (  # pylint: disable=confusing-consecutive-elif
         platform.system() == "Darwin"
         and parse(platform.mac_ver()[0]) >= parse("10.13")
         and not shell.build_opts.enable32
@@ -202,7 +202,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
-    elif platform.system() == "Windows":
+    elif platform.system() == "Windows":  # pylint: disable=confusing-consecutive-elif
         win_mozbuild_clang_bin_path = constants.WIN_MOZBUILD_CLANG_PATH / "bin"
         assert (
             win_mozbuild_clang_bin_path.is_dir()
@@ -319,7 +319,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     assert shell.js_objdir.is_dir()
 
-    try:
+    try:  # pylint: disable=too-many-try-statements
         if platform.system() == "Windows":
             changed_cfg_cmds = []
             for entry in cfg_cmds:
@@ -557,7 +557,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
 
     shell.shell_cache_dir.mkdir()
 
-    try:
+    try:  # pylint: disable=too-many-try-statements
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
             print(  # noqa: T001

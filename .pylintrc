@@ -22,12 +22,15 @@ jobs=3
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
 #
-# Whole list retrieved on 2017-07-28 from: https://pylint.readthedocs.io/en/latest/technical_reference/extensions.html
-# Remaining disabled: pylint.extensions.comparetozero,pylint.extensions.emptystring
+# Whole list retrieved on 2021-04-24 from: https://pylint.readthedocs.io/en/latest/technical_reference/extensions.html
 load-plugins=pylint.extensions.bad_builtin,
+             pylint.extensions.broad_try_clause,
              pylint.extensions.check_elif,
+             pylint.extensions.confusing_elif,
+             pylint.extensions.comparetozero,
              pylint.extensions.docparams,
              pylint.extensions.docstyle,
+             pylint.extensions.emptystring,
              pylint.extensions.mccabe,
              pylint.extensions.overlapping_exceptions,
              pylint.extensions.redefined_variable_type
