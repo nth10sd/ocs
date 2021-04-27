@@ -199,10 +199,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
-        if (Path.home() / ".mozbuild" / "macos-sdk" / "MacOSX10.15.sdk").is_dir():
-            cfg_cmds.append(
-                "--with-macos-sdk=$HOME/.mozbuild/macos-sdk/MacOSX10.15.sdk",
-            )
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
