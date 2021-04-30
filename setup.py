@@ -29,7 +29,7 @@ with open(
 
 EXTRAS = {
     "test": [
-        "black ~= 21.4b0",
+        "black ~= 21.4b2",
         "coverage ~= 5.5",
         "flake8==3.9.1",
         "flake8-bugbear ~= 21.4.3",
