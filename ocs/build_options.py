@@ -105,7 +105,7 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     # Basic spidermonkey options
     randomize_bool(
         ["--32"],
-        0.5,
+        0.3,
         dest="enable32",
         help="Build 32-bit shells, but if not enabled, 64-bit shells are built.",
     )
@@ -137,7 +137,7 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     )
     randomize_bool(
         ["--disable-profiling"],
-        0.5,
+        0.1,
         dest="disableProfiling",
         help='Build with profiling off. Defaults to "True"'
         ' on Linux, else "%(default)s".',
@@ -184,14 +184,14 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     )
     randomize_bool(
         ["--enable-simulator=arm"],
-        0.3,
+        0.2,
         dest="enableSimulatorArm32",
         help="Build shells with --enable-simulator=arm, "
         'only applicable to 32-bit shells. Defaults to "%(default)s".',
     )
     randomize_bool(
         ["--enable-simulator=arm64"],
-        0.3,
+        0.4,
         dest="enableSimulatorArm64",
         help="Build shells with --enable-simulator=arm64, "
         'only applicable to 64-bit shells. Defaults to "%(default)s".',
