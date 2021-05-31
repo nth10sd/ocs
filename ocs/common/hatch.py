@@ -28,7 +28,6 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
 
     def __init__(self, build_opts: argparse.Namespace, cset_hash: str):
         self._name_no_ext = build_options.compute_shell_name(build_opts, cset_hash)
-        self._cset_hash = cset_hash
         self.build_opts = build_opts
 
         self._js_objdir = Path()
