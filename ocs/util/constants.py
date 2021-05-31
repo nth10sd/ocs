@@ -40,13 +40,17 @@ if platform.system() == "Windows":
 
     # These include running the js shell (mozglue) and should be in dist/bin.
     # At least Windows required the ICU libraries.
-    ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
-    ALL_RUN_LIBS.append(RUN_TESTPLUG_LIB)
+    ALL_RUN_LIBS = [
+        RUN_MOZGLUE_LIB,
+        RUN_NSPR_LIB,
+        RUN_PLDS_LIB,
+        RUN_PLC_LIB,
+        RUN_TESTPLUG_LIB,
+    ]
 
-    WIN_ICU_VERS = []
     # Needs to be updated when the earliest known working revision changes. Currently:
     # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
-    WIN_ICU_VERS.append(67)  # prior version
+    WIN_ICU_VERS = [67]  # prior version
     # WIN_ICU_VERS.append(68)  # m-c XXXXXX FxXX, 1st w/ ICU XX.1, see bug XXXXXX
 
     # Search for changes to the versioning of the ICU files:
