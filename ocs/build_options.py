@@ -12,10 +12,6 @@ import platform
 import random
 import sys
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
-from typing import Union
 
 from ocs.util.constants import DEFAULT_TREES_LOCATION
 
@@ -33,7 +29,7 @@ class Randomizer:
     """Class to randomize parser options."""
 
     def __init__(self) -> None:
-        self.options: List[Dict[str, Union[float, str]]] = []
+        self.options: list[dict[str, float | str]] = []
 
     def add(self, name: str, weight: float) -> None:
         """Add the option name and its testing weight.
@@ -48,13 +44,13 @@ class Randomizer:
             },
         )
 
-    def get_rnd_subset(self) -> List[str]:
+    def get_rnd_subset(self) -> list[str]:
         """Get a random subset of build options.
 
         :return: A random subset of build options
         """
 
-        def get_weight(opt: Dict[str, Union[float, str]]) -> float:
+        def get_weight(opt: dict[str, float | str]) -> float:
             """Get the weight of a specific option.
 
             :param opt: Name of option
@@ -65,7 +61,7 @@ class Randomizer:
         return [str(opt["name"]) for opt in self.options if chance(get_weight(opt))]
 
 
-def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
+def add_parser_opts() -> tuple[argparse.ArgumentParser, Randomizer]:
     """Add parser options.
 
     :return: Tuple containing the parser object and the Randomizer object
@@ -75,7 +71,7 @@ def add_parser_opts() -> Tuple[argparse.ArgumentParser, Randomizer]:
     randomizer = Randomizer()
 
     # Keyword args of various types not ready for mypy yet: https://git.io/JLdRI
-    def randomize_bool(name: List[str], weight: float, **kwargs: Any) -> None:
+    def randomize_bool(name: list[str], weight: float, **kwargs: Any) -> None:
         """Add a randomized boolean option that defaults to False.
 
         Option also has a [weight] chance of being changed to True when using --random.
@@ -299,7 +295,7 @@ def compute_shell_name(build_options: argparse.Namespace, build_rev: str) -> str
 
 def are_args_valid(  # pylint: disable=too-many-branches,too-complex
     args: argparse.Namespace,
-) -> Tuple[bool, str]:
+) -> tuple[bool, str]:
     """Check to see if chosen arguments are valid.
 
     :param args: Input arguments

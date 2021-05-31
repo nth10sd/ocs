@@ -14,10 +14,6 @@ import shutil
 import stat
 from types import TracebackType
 from typing import Callable
-from typing import Dict
-from typing import Optional
-from typing import Tuple
-from typing import Type
 
 
 def ensure_cache_dir(base_dir: Path) -> Path:
@@ -35,8 +31,8 @@ def ensure_cache_dir(base_dir: Path) -> Path:
 
 def env_with_path(
     path: str,
-    curr_env: Optional[Dict[str, str]] = None,
-) -> Dict[str, str]:
+    curr_env: dict[str, str] | None = None,
+) -> dict[str, str]:
     """Append the path to the appropriate library path on various platforms.
 
     :param path: Path to be added to $PATH
@@ -83,10 +79,10 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
 def handle_rm_readonly_files(  # pylint: disable=useless-param-doc,useless-type-doc
     _func: Callable[..., None],
     path_: Path,
-    exc: Tuple[
-        Optional[Type[BaseException]],
-        Optional[Type[BaseException]],
-        Optional[TracebackType],
+    exc: tuple[
+        type[BaseException] | None,
+        type[BaseException] | None,
+        TracebackType | None,
     ],
 ) -> None:
     """Handle read-only files on Windows.

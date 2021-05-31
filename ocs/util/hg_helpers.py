@@ -11,13 +11,12 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-from typing import Tuple
 
 
 def get_repo_hash_and_id(
     repo_dir: Path,
     repo_rev: str = "parents() and default",
-) -> Tuple[str, str, bool]:
+) -> tuple[str, str, bool]:
     """Return the repository hash and id, and whether it is on default. It will also ask
     what the user would like to do, should the repository not be on default.
 

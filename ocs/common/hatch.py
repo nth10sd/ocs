@@ -9,8 +9,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import platform
-from typing import Dict
-from typing import List
 
 from ocs import build_options
 from ocs.util import constants
@@ -35,14 +33,14 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
 
         self._js_objdir = Path()
 
-        self._cfg_cmd_excl_env: List[str] = []
-        self._added_env: List[str] = []
-        self._full_env: Dict[str, str] = {}
+        self._cfg_cmd_excl_env: list[str] = []
+        self._added_env: list[str] = []
+        self._full_env: dict[str, str] = {}
 
         self._js_version = ""
 
     @property
-    def cfg_cmd_excl_env(self) -> List[str]:
+    def cfg_cmd_excl_env(self) -> list[str]:
         """Retrieve the configure command excluding the enviroment variables.
 
         :return: Configure command
@@ -50,7 +48,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         return self._cfg_cmd_excl_env
 
     @cfg_cmd_excl_env.setter
-    def cfg_cmd_excl_env(self, cfg: List[str]) -> None:
+    def cfg_cmd_excl_env(self, cfg: list[str]) -> None:
         """Sets the configure command excluding the enviroment variables.
 
         :param cfg: Configure command
@@ -58,7 +56,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         self._cfg_cmd_excl_env = cfg
 
     @property
-    def env_added(self) -> List[str]:
+    def env_added(self) -> list[str]:
         """Retrieve environment variables that were added.
 
         :return: Added environment variables
@@ -66,7 +64,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         return self._added_env
 
     @env_added.setter
-    def env_added(self, added_env: List[str]) -> None:
+    def env_added(self, added_env: list[str]) -> None:
         """Set environment variables that were added.
 
         :param added_env: Added environment variables
@@ -74,7 +72,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         self._added_env = added_env
 
     @property
-    def env_full(self) -> Dict[str, str]:
+    def env_full(self) -> dict[str, str]:
         """Retrieve the full environment including the newly added variables.
 
         :return: Full environment
@@ -82,7 +80,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         return self._full_env
 
     @env_full.setter
-    def env_full(self, full_env: Dict[str, str]) -> None:
+    def env_full(self, full_env: dict[str, str]) -> None:
         """Set the full environment including the newly added variables.
 
         :param full_env: Full environment
@@ -148,7 +146,7 @@ class CommonShell:  # pylint: disable=too-many-instance-attributes
         )
 
     @property
-    def shell_compiled_runlibs_path(self) -> List[Path]:
+    def shell_compiled_runlibs_path(self) -> list[Path]:
         """Retrieve the full path to the original location of the libraries of js binary
         compiled in the shell cache.
 

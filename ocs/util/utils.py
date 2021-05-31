@@ -8,8 +8,6 @@ from __future__ import annotations
 
 from pathlib import Path
 from types import TracebackType
-from typing import Optional
-from typing import Type
 
 VERBOSE = False
 
@@ -37,9 +35,9 @@ class LockDir:
 
     def __exit__(
         self,
-        _exc_type: Optional[Type[BaseException]],
-        _exc_val: Optional[Type[BaseException]],
-        _exc_tb: Optional[TracebackType],
+        _exc_type: type[BaseException] | None,
+        _exc_val: type[BaseException] | None,
+        _exc_tb: TracebackType | None,
     ) -> None:
         self.directory.rmdir()
 

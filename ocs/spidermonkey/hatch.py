@@ -19,10 +19,6 @@ import subprocess
 import sys
 import traceback
 from typing import IO
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import Union
 
 import distro
 from packaging.version import parse
@@ -56,7 +52,7 @@ class SMShell(CommonShell):
         self._hg_hash = hg_hash
 
     @classmethod
-    def main(cls, args: Optional[List[str]] = None) -> int:
+    def main(cls, args: list[str] | None = None) -> int:
         """Main function of CommonShell class.
 
         :param args: Additional parameters
@@ -70,7 +66,7 @@ class SMShell(CommonShell):
             return 1
 
     @staticmethod
-    def run(argv: Optional[List[str]] = None) -> int:
+    def run(argv: list[str] | None = None) -> int:
         """Build a shell and place it in the autobisectjs cache.
 
         :param argv: Additional parameters
@@ -524,7 +520,7 @@ def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
 
 def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
     shell: SMShell,
-    update_to_rev: Optional[str] = None,
+    update_to_rev: str | None = None,
     _update_latest_txt: bool = False,
 ) -> None:
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols.
@@ -632,10 +628,10 @@ def arch_of_binary(binary: Path) -> str:
 
 def test_binary(  # pylint: disable=useless-param-doc,useless-type-doc
     shell_path: Path,
-    args: List[str],
+    args: list[str],
     _use_vg: bool,
-    stderr: Optional[Union[int, IO[bytes]]] = subprocess.STDOUT,
-) -> Tuple[str, int]:
+    stderr: int | IO[bytes] | None = subprocess.STDOUT,
+) -> tuple[str, int]:
     """Test the given shell with the given args.
 
     :param shell_path: Path to the compiled shell binary
