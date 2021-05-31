@@ -37,6 +37,7 @@ def env_with_path(
 
     :param path: Path to be added to $PATH
     :param curr_env: Current environment, in case os.environ is not the one required
+    :raise OSError: When the current operating system is not supported
     :return: Environment with the path added
     """
     if not curr_env:
@@ -50,6 +51,8 @@ def env_with_path(
     elif platform.system() == "Windows":
         lib_path = "PATH"
         path_sep = ";"
+    else:
+        raise OSError(f"Unsupported operating system: {platform.system()}")
 
     env = curr_env.copy()
     if lib_path in env:
