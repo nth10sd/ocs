@@ -40,9 +40,8 @@ from ocs.util.logging import get_logger
 SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
 SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
-
-class SMShellError(CommonShellError):
-    """Error class unique to SMShell objects."""
+# class SMShellError(CommonShellError):
+#     """Error class unique to SMShell objects."""
 
 
 class SMShell(CommonShell):
