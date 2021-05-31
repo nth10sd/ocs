@@ -29,12 +29,13 @@ with open(
 
 EXTRAS = {
     "test": [
-        "black ~= 21.4b2",
+        "bandit ~= 1.7.0",
+        "black ~= 21.5b1",
         "coverage ~= 5.5",
-        "flake8==3.9.1",
+        "flake8 ~= 3.9.2",
         "flake8-bugbear ~= 21.4.3",
         "flake8-commas ~= 2.0.0",
-        "flake8-comprehensions ~= 3.4.0",
+        "flake8-comprehensions ~= 3.5.0",
         "flake8-isort ~= 4.0.0",
         "flake8-print ~= 4.0.0",
         "flake8-quotes ~= 3.2.0",
@@ -42,14 +43,16 @@ EXTRAS = {
         "mypy==0.812",
         "pep8-naming ~= 0.11.1",
         "pylint ~= 2.8.2",
-        "pytest ~= 6.2.3",
+        "pytest ~= 6.2.4",
+        "pytest-bandit ~= 0.6.1",
         "pytest-black ~= 0.3.12",
-        "pytest-cov ~= 2.11.1",
+        "pytest-cov ~= 2.12.0",
         "pytest-dependency ~= 0.5.1",
         "pytest-flake8 ~= 1.0.7",
         "pytest-mypy ~= 0.8.1",
         "pytest-pylint ~= 0.18.0",
-        "sphinx ~= 3.5.3",
+        "sphinx ~= 4.0.2",
+        "vulture ~= 2.3",
     ],
 }
 
