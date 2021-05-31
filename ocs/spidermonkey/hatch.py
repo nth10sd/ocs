@@ -296,7 +296,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         for entry in cfg_cmds:
             if os.sep in entry:
                 cfg_cmds[counter] = cfg_cmds[counter].replace(os.sep, "//")
-            counter = counter + 1
+            counter += 1
 
     # Print whatever we added to the environment
     env_vars = []
