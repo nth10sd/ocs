@@ -35,7 +35,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -66,9 +66,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -91,9 +95,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   opt-64-vg-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -117,7 +121,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -148,9 +152,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -173,9 +181,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   opt-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -199,7 +207,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -230,9 +238,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -255,9 +267,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -281,7 +293,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -312,9 +324,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -337,9 +353,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-64-armsim64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -363,7 +379,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -394,9 +410,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -419,9 +439,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   opt-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -445,7 +465,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -476,9 +496,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -501,9 +525,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -527,7 +551,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -558,9 +582,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -583,9 +611,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-32-armsim32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -609,7 +637,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -640,9 +668,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -665,9 +697,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   opt-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -691,7 +723,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -725,9 +757,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -750,9 +786,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -776,7 +812,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -810,9 +846,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -835,9 +875,9 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
 
   dbg-optDisabled-64-armsim64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -861,7 +901,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -895,9 +935,13 @@ jobs:
       run: |
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Run with pyupgrade to find code that can be written in a more modern way
+      run: pyup_dirs --py37-plus --recursive .
+    - name: Run with vulture to find dead code
+      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --black --flake8 --mypy --pylint -m "not slow" \
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
           --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
@@ -920,6 +964,6 @@ jobs:
       uses: kittaakos/upload-artifact-as-is@v0
       with:
         path: '~/shell-cache/*.tzst*'
-    - name: Upload coverage report to codecov
-      if: ${{ success() }}
-      run: bash <(curl -s https://codecov.io/bash)
+    - uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true # optional (default = false)
