@@ -72,8 +72,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -96,8 +95,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   opt-64-vg-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -158,8 +158,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -182,8 +181,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   opt-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -244,8 +244,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -268,8 +267,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -330,8 +330,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -354,8 +353,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-64-armsim64-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -416,8 +416,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -440,8 +439,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   opt-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -502,8 +502,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -526,8 +525,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -588,8 +588,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -612,8 +611,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-32-armsim32-linux:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -674,8 +674,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -698,8 +697,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   opt-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -763,8 +763,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -787,8 +786,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -852,8 +852,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -876,8 +875,9 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
 
   dbg-optDisabled-64-armsim64-darwin:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
@@ -941,8 +941,7 @@ jobs:
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" \
-          --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
+        python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -965,5 +964,6 @@ jobs:
       with:
         path: '~/shell-cache/*.tzst*'
     - uses: codecov/codecov-action@v1
+      continue-on-error: true  # codecov limits number of uploads allowed for each commit
       with:
-        fail_ci_if_error: true # optional (default = false)
+        fail_ci_if_error: true  # optional (default = false)
