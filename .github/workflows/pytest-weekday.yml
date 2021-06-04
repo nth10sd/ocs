@@ -70,6 +70,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -156,6 +158,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -242,6 +246,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -328,6 +334,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -414,6 +422,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -500,6 +510,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -586,6 +598,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -672,6 +686,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -761,6 +777,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -850,6 +868,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
@@ -939,6 +959,8 @@ jobs:
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
       run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+    - name: Ensure Sphinx docs always work, resetting Git repo after generation
+      run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
         python -u -m pytest --bandit --black --flake8 --mypy --pylint -m "not slow" --cov --cov-report term-missing --no-cov-on-fail --cov-fail-under=25
