@@ -71,7 +71,7 @@ if __name__ == "__main__":
             ],
         },
         packages=find_packages(exclude=("tests",)),
-        install_requires=[
+        install_requires=[  # Include relevant types-* package, e.g. types-toml & toml
             "distro ~= 1.5.0",
         ],
         extras_require=EXTRAS,
