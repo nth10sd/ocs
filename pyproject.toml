@@ -46,7 +46,7 @@ line_length = 88
 profile = "black"
 
 [tool.pytest.ini_options]
-addopts = "--durations=10 --cache-clear"
+addopts = '--bandit --black --flake8 --mypy --pylint --cov --no-cov-on-fail --durations=7 --cache-clear'
 bandit_recurse = true
 # 1 = LOW, 2 = MEDIUM, 3 = HIGH is the scale for the bandit's conf and sev levels
 bandit_conf_level = 1
