@@ -75,7 +75,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -164,7 +164,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -253,7 +253,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -342,7 +342,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -431,7 +431,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -520,7 +520,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -609,7 +609,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -698,7 +698,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -790,7 +790,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -882,7 +882,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
@@ -974,7 +974,7 @@ jobs:
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
     - name: Run tools using pytest, and also non-slow tests under code coverage
       run: |
-        python -u -m pytest -m "not slow"
+        python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
     - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
       run: |
         mkdir -p "$HOME"/trees && hg --version -q ;
