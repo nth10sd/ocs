@@ -12,6 +12,7 @@ from pathlib import Path
 import platform
 import shutil
 import stat
+import subprocess
 from types import TracebackType
 from typing import Callable
 
@@ -104,6 +105,25 @@ def handle_rm_readonly_files(  # pylint: disable=useless-param-doc,useless-type-
         path_.unlink()
     else:
         raise OSError("Unable to handle read-only files.")
+
+
+def bash_piping(first_cmd: list[str], second_cmd: list[str]) -> str:
+    """Simulate a bash piping command (one pipe only).
+
+    :param first_cmd: First command to be run
+    :param second_cmd: Second command to be piped through
+    :return: stdout of subprocess command
+    """
+    with subprocess.Popen(
+        first_cmd,
+        stdout=subprocess.PIPE,
+    ) as first_sbpr:
+        return subprocess.run(
+            second_cmd,
+            check=True,
+            stdin=first_sbpr.stdout,
+            stdout=subprocess.PIPE,
+        ).stdout.decode("utf-8")
 
 
 def rm_tree_incl_readonly_files(dir_tree: Path) -> None:

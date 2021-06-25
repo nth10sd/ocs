@@ -31,6 +31,7 @@ from ocs.util import fs_helpers
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
 from ocs.util import utils
+from ocs.util.fs_helpers import bash_piping as piping
 from ocs.util.logging import get_logger
 
 SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
@@ -286,7 +287,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         platform.system() == "Linux"
         and distro.linux_distribution(full_distribution_name=False)[0] == "gentoo"
     ):
-        path_to_libclang = "/usr/lib/llvm/11/lib64"
+        path_to_libclang = (
+            "/usr/lib/llvm/"
+            f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
+            "/lib64"
+        )
         assert Path(path_to_libclang).is_dir()
         cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
 
