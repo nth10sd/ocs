@@ -205,8 +205,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         ), 'Please first run "./mach bootstrap".'
         assert (win_mozbuild_clang_bin_path / "clang.exe").is_file()
         assert (win_mozbuild_clang_bin_path / "llvm-config.exe").is_file()
-        cfg_env["CC"] = str(win_mozbuild_clang_bin_path / "clang.exe")
-        cfg_env["CXX"] = str(win_mozbuild_clang_bin_path / "clang++.exe")
         cfg_env["LIBCLANG_PATH"] = str(win_mozbuild_clang_bin_path)
         cfg_env["MAKE"] = "mozmake"  # Workaround for bug 948534
         if shell.build_opts.enableAddressSanitizer:
