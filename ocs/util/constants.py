@@ -51,7 +51,8 @@ if platform.system() == "Windows":
     # Needs to be updated when the earliest known working revision changes. Currently:
     # m-c 528308 Fx78, 1st w/ python3 only, that does not check python2
     WIN_ICU_VERS = [67]  # prior version
-    # WIN_ICU_VERS.append(68)  # m-c XXXXXX FxXX, 1st w/ ICU XX.1, see bug XXXXXX
+    WIN_ICU_VERS.append(68)  # m-c 581959 Fx91, 1st w/ ICU 68.2, see bug 1686052
+    WIN_ICU_VERS.append(69)  # m-c 583213 Fx91, 1st w/ ICU 69.1, see bug 1714933
 
     # Search for changes to the versioning of the ICU files:
     # https://bit.ly/3jgrTSK
