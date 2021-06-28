@@ -28,7 +28,7 @@ RUN_TESTPLUG_LIB = ""
 
 if platform.system() == "Windows":
     MAKE_BINARY = "mozmake"
-    CLANG_VER: Final = "11.0.0"
+    CLANG_VER: Final = "12.0.0"
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
 
     # Library-related
