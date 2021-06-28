@@ -281,6 +281,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append("--with-ccache")
     cfg_cmds.append("--enable-gczeal")
     cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
+    cfg_cmds.append("--disable-bootstrap")
     cfg_cmds.append("--disable-tests")
 
     if (
