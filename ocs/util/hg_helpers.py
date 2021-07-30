@@ -114,7 +114,8 @@ def get_repo_hash_and_id(
             stdout=subprocess.PIPE,
             timeout=99,
         ).stdout.decode("utf-8", errors="replace")
-    assert hg_id_full != ""  # pylint: disable=compare-to-empty-string
+    if hg_id_full == "":  # pylint: disable=compare-to-empty-string
+        raise ValueError("hg_id_full should not be an empty string")
     (hg_id_hash, hg_id_local_num) = hg_id_full.split(" ")
     # The following line interferes with __init__.py import system, needs to be
     # converted to logging:

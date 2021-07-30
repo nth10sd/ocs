@@ -96,12 +96,16 @@ def handle_rm_readonly_files(  # pylint: disable=useless-param-doc,useless-type-
     :param path_: Path name passed to function
     :param exc: Exception information returned by sys.exc_info()
 
-    :raise OSError: Raised if the read-only files are unable to be handled
+    :raise OSError: If host operating system is not Windows
+    :raise FileNotFoundError: If input file is not a file after changing permissions
+    :raise OSError: If the read-only files are unable to be handled
     """
-    assert platform.system() == "Windows"
+    if platform.system() != "Windows":
+        raise OSError("Only Windows operating systems supported")
     if isinstance(exc[1], int) and exc[1].errno == errno.EACCES:
         Path.chmod(path_, stat.S_IWRITE)
-        assert path_.is_file()
+        if not path_.is_file():
+            raise FileNotFoundError(f"{path_} is not a file")
         path_.unlink()
     else:
         raise OSError("Unable to handle read-only files.")

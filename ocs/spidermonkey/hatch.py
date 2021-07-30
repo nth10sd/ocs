@@ -163,7 +163,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     """Configure a binary according to required parameters.
 
     :param shell: Potential compiled shell object
-    :raise CalledProcessError: Raise if the shell failed to compile
+    :raise FileNotFoundError: If the default .mozbuild folder not found, especially
+                              if `./mach bootstrap` was not run
+    :raise FileNotFoundError: If clang.exe not found in default .mozbuild folder
+    :raise FileNotFoundError: If llvm-config.exe not found in default .mozbuild folder
+    :raise FileNotFoundError: If MOZ_CLANG_RT_ASAN_LIB_PATH env var file not found
+    :raise FileNotFoundError: If libclang path is not a directory
+    :raise FileNotFoundError: If js_objdir is not a directory
+    :raise CalledProcessError: If the shell failed to compile
     """
     # pylint: disable=too-many-statements
     cfg_cmds = []
@@ -200,11 +207,16 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     elif platform.system() == "Windows":  # pylint: disable=confusing-consecutive-elif
         win_mozbuild_clang_bin_path = constants.WIN_MOZBUILD_CLANG_PATH / "bin"
-        assert (
-            win_mozbuild_clang_bin_path.is_dir()
-        ), 'Please first run "./mach bootstrap".'
-        assert (win_mozbuild_clang_bin_path / "clang.exe").is_file()
-        assert (win_mozbuild_clang_bin_path / "llvm-config.exe").is_file()
+        if not win_mozbuild_clang_bin_path.is_dir():
+            raise FileNotFoundError('Please first run "./mach bootstrap".')
+        if not (win_mozbuild_clang_bin_path / "clang.exe").is_file():
+            raise FileNotFoundError(
+                f"clang.exe not found at: {win_mozbuild_clang_bin_path}",
+            )
+        if not (win_mozbuild_clang_bin_path / "llvm-config.exe").is_file():
+            raise FileNotFoundError(
+                f"llvm-config.exe not found at: {win_mozbuild_clang_bin_path}",
+            )
         cfg_env["LIBCLANG_PATH"] = str(win_mozbuild_clang_bin_path)
         cfg_env["MAKE"] = "mozmake"  # Workaround for bug 948534
         if shell.build_opts.enableAddressSanitizer:
@@ -228,7 +240,10 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             cfg_env[
                 "MOZ_CLANG_RT_ASAN_LIB_PATH"
             ] = f'{cfg_env["CLANG_LIB_DIR"]}/clang_rt.asan_dynamic-x86_64.dll'
-            assert Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file()
+            if not Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file():
+                raise FileNotFoundError(
+                    f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
+                )
             cfg_env["LIB"] = cfg_env.get("LIB", "") + cfg_env["CLANG_LIB_DIR"]
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
@@ -300,7 +315,8 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
             "/lib64"
         )
-        assert Path(path_to_libclang).is_dir()
+        if not Path(path_to_libclang).is_dir():
+            raise FileNotFoundError(f"{path_to_libclang} is not a directory")
         cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
 
     if platform.system() == "Windows":
@@ -325,7 +341,8 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         f'{" ".join(quote(str(x)) for x in cfg_cmds)}',
     )
 
-    assert shell.js_objdir.is_dir()
+    if not shell.js_objdir.is_dir():
+        raise FileNotFoundError(f"{shell.js_objdir} is not a directory")
 
     try:  # pylint: disable=too-many-try-statements
         if platform.system() == "Windows":
@@ -542,12 +559,15 @@ def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
     :param update_to_rev: Specified revision to be updated to
     :param _update_latest_txt: Whether latest .txt should be updated (likely obsolete)
 
+    :raise FileNotFoundError: If lock dir is not a directory
     :raise OSError: When a cached failed-compile shell was found, or when compile failed
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-many-branches,too-complex,too-many-statements
-    assert fs_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir).is_dir()
+    lock_dir = fs_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
+    if not lock_dir.is_dir():
+        raise FileNotFoundError(f"{lock_dir} is not a directory")
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
@@ -612,6 +632,9 @@ def arch_of_binary(binary: Path) -> str:
     """Test if a binary is 32-bit or 64-bit.
 
     :param binary: Path to compiled binary
+    :raise ValueError: If a Windows binary was not compiled in Windows
+    :raise ValueError: If a 64-bit binary was compiled though 32-bit was desired
+    :raise ValueError: If a 32-bit binary was compiled though 64-bit was desired
     :return: Platform architecture of compiled binary
     """
     # We can possibly use the python-magic-bin PyPI library in the future
@@ -624,17 +647,23 @@ def arch_of_binary(binary: Path) -> str:
     ).stdout.decode("utf-8", errors="replace")
     filetype = unsplit_file_type.split(":", 1)[1]
     if platform.system() == "Windows":
-        assert "MS Windows" in filetype
+        if "MS Windows" not in filetype:
+            raise ValueError(
+                "A Windows binary was not compiled in Windows, "
+                f"but rather the following type: {filetype}",
+            )
         return (
             "32"
             if ("Intel 80386 32-bit" in filetype or "PE32 executable" in filetype)
             else "64"
         )
     if "32-bit" in filetype or "i386" in filetype:
-        assert "64-bit" not in filetype
+        if "64-bit" in filetype:
+            raise ValueError(f"We should not have a 64-bit binary filetype: {filetype}")
         return "32"
     if "64-bit" in filetype:
-        assert "32-bit" not in filetype
+        if "32-bit" in filetype:
+            raise ValueError(f"We should not have a 32-bit binary filetype: {filetype}")
         return "64"
     return "INVALID"
 
@@ -716,24 +745,57 @@ def verify_binary(shell: SMShell) -> None:
     """Verify that the binary is compiled as intended.
 
     :param shell: Compiled binary object
+    :raise ValueError: When compiled binary architecture differs from intended input
+    :raise ValueError: When debug status of binary differs from intended input
+    :raise ValueError: When asan status of binary differs from intended input
+    :raise ValueError: When profiling status of binary differs from intended input
+    :raise ValueError: When ARM32 simulator status of binary differs from intended input
+    :raise ValueError: When ARM64 simulator status of binary differs from intended input
     """
     binary = shell.shell_cache_js_bin_path
 
-    assert arch_of_binary(binary) == ("32" if shell.build_opts.enable32 else "64")
+    if arch_of_binary(binary) != ("32" if shell.build_opts.enable32 else "64"):
+        raise ValueError(
+            f"{arch_of_binary(binary)} architecture of binary is different "
+            f"from the intended input: {shell.build_opts.enable32}",
+        )
 
     # Testing for debug / opt builds are different, as there are hybrid debug-opt builds
-    assert query_build_cfg(binary, "debug") == shell.build_opts.enableDbg
+    if query_build_cfg(binary, "debug") != shell.build_opts.enableDbg:
+        raise ValueError(
+            f'Debug status of shell is: {query_build_cfg(binary, "debug")}, '
+            f"compared to intended input: {shell.build_opts.enableDbg}",
+        )
 
-    assert query_build_cfg(binary, "asan") == shell.build_opts.enableAddressSanitizer
+    if query_build_cfg(binary, "asan") != shell.build_opts.enableAddressSanitizer:
+        raise ValueError(
+            f'Asan status of shell is: {query_build_cfg(binary, "asan")}, '
+            f"compared to intended input: {shell.build_opts.enableAddressSanitizer}",
+        )
     # Checking for profiling status does not work with mozilla-beta and mozilla-release
-    assert query_build_cfg(binary, "profiling") != shell.build_opts.disableProfiling
+    if query_build_cfg(binary, "profiling") == shell.build_opts.disableProfiling:
+        raise ValueError(
+            f'Profiling status of shell is: {query_build_cfg(binary, "profiling")}, '
+            f"compared to intended input: {not shell.build_opts.disableProfiling}",
+        )
     if platform.machine() == "x86_64":
-        assert (
+        if (
             query_build_cfg(binary, "arm-simulator") and shell.build_opts.enable32
-        ) == shell.build_opts.enableSimulatorArm32
-        assert (
+        ) != shell.build_opts.enableSimulatorArm32:
+            raise ValueError(
+                f"ARM32 simulator status of shell is: "
+                f'{query_build_cfg(binary, "arm-simulator")}, '
+                f"compared to intended input: {shell.build_opts.enableSimulatorArm32}",
+            )
+        if (
             query_build_cfg(binary, "arm64-simulator") and not shell.build_opts.enable32
-        ) == shell.build_opts.enableSimulatorArm64
+        ) != shell.build_opts.enableSimulatorArm64:
+            raise ValueError(
+                f"ARM64 simulator status of shell is: "
+                f'{query_build_cfg(binary, "arm64-simulator")}, '
+                f"compared to intended 32-bit status: {shell.build_opts.enable32}",
+                f"and intended ARM64 status: {shell.build_opts.enableSimulatorArm64}",
+            )
 
 
 def main() -> None:

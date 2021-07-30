@@ -203,6 +203,8 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     """Parses shell options into a build_options object.
 
     :param args: Arguments to be parsed
+    :raise FileNotFoundError: If repos not found when searching default tree locations
+    :raise FileNotFoundError: If repos not found when tree locations specified
     :return: An immutable build_options object
     """
     parser, randomizer = add_parser_opts()
@@ -233,10 +235,16 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
                     "cannot be confirmed. Exiting...",
                 )
 
-        assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
-    elif build_options.repo_dir:
+        if not (build_options.repo_dir / ".hg" / "hgrc").is_file():
+            raise FileNotFoundError(
+                f"Repository not found at: {build_options.repo_dir}",
+            )
+    elif build_options.repo_dir:  # pylint: disable=confusing-consecutive-elif
         build_options.repo_dir = build_options.repo_dir.expanduser()
-        assert (build_options.repo_dir / ".hg" / "hgrc").is_file()
+        if not (build_options.repo_dir / ".hg" / "hgrc").is_file():
+            raise FileNotFoundError(
+                f"Repository not found at: {build_options.repo_dir}",
+            )
     else:
         sys.exit(
             "DEFAULT_TREES_LOCATION not found at: "
@@ -246,12 +254,13 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     return build_options
 
 
-def compute_shell_type(
+def compute_shell_type(  # pylint: disable=too-complex
     build_options: argparse.Namespace,
-) -> str:  # pylint: disable=too-complex
+) -> str:
     """Return configuration information of the shell.
 
     :param build_options: Object containing build options
+    :raise ValueError: When filename has empty elements
     :return: Filename with build option information added
     """
     file_name = ["js"]
@@ -277,9 +286,8 @@ def compute_shell_type(
     file_name.append(platform.system().lower())
     file_name.append(platform.machine().lower())
 
-    assert (
-        "" not in file_name
-    ), f'Filename "{file_name!r}" should not have empty elements.'
+    if "" in file_name:
+        raise ValueError(f'Filename "{file_name!r}" should not have empty elements.')
     return "-".join(file_name)
 
 
