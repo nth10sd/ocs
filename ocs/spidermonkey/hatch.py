@@ -163,6 +163,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     """Configure a binary according to required parameters.
 
     :param shell: Potential compiled shell object
+    :raise FileNotFoundError: If zlib.pc not found in cfg_env["PKG_CONFIG_PATH"] folder
     :raise FileNotFoundError: If the default .mozbuild folder not found, especially
                               if `./mach bootstrap` was not run
     :raise FileNotFoundError: If clang.exe not found in default .mozbuild folder
@@ -200,6 +201,13 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     ):
         if shutil.which("brew"):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
+        if Path("/opt/homebrew/opt/zlib/lib/pkgconfig/zlib.pc").is_file():
+            cfg_env["PKG_CONFIG_PATH"] = "/opt/homebrew/opt/zlib/lib/pkgconfig"
+        else:
+            print(  # noqa: T001
+                "Try installing zlib first, via `brew install zlib`",
+            )
+            raise FileNotFoundError("zlib.pc not found")
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
         if shell.build_opts.enableSimulatorArm64:
