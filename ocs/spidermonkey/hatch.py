@@ -314,14 +314,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         "parents(c69826ee93e91671fd5c87f01ac7bd2b483c991f)",
     ):
         cfg_cmds.append("--disable-bootstrap")
-    # Use --without-sysroot if repository revision is on/after:
-    #   m-c rev 588494:722284bed619b13c30f5d4e08c4ec3f6ae7eda25, Fx93
-    if not hg_helpers.exists_and_is_ancestor(
-        shell.build_opts.repo_dir,
-        shell.hg_hash,
-        "parents(722284bed619b13c30f5d4e08c4ec3f6ae7eda25)",
-    ):
-        cfg_cmds.append("--without-sysroot")
     cfg_cmds.append("--disable-tests")
 
     if (
