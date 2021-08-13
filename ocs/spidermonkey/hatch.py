@@ -201,15 +201,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     ):
         if shutil.which("brew"):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
-        if Path("/opt/homebrew/opt/zlib/lib/pkgconfig/zlib.pc").is_file():
-            cfg_env["PKG_CONFIG_PATH"] = "/opt/homebrew/opt/zlib/lib/pkgconfig"
-        elif Path("/usr/local/opt/zlib/lib/pkgconfig/zlib.pc").is_file():
-            cfg_env["PKG_CONFIG_PATH"] = "/usr/local/opt/zlib/lib/pkgconfig"
-        else:
-            print(  # noqa: T001
-                "Try installing zlib first, via `brew install zlib`",
-            )
-            raise FileNotFoundError("zlib.pc not found")
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
         if shell.build_opts.enableSimulatorArm64:
