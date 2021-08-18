@@ -163,7 +163,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     """Configure a binary according to required parameters.
 
     :param shell: Potential compiled shell object
-    :raise FileNotFoundError: If zlib.pc not found in cfg_env["PKG_CONFIG_PATH"] folder
     :raise FileNotFoundError: If the default .mozbuild folder not found, especially
                               if `./mach bootstrap` was not run
     :raise FileNotFoundError: If clang.exe not found in default .mozbuild folder
