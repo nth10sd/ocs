@@ -415,7 +415,7 @@ def gen_rnd_cfgs(
     :param randomizer: Randomizer object for getting a random subset of build options
     :return: build_options object
     """
-    while True:
+    while True:  # pylint: disable=while-used
         rnd_args = randomizer.get_rnd_subset()
         if "--enable-valgrind" in rnd_args and chance(0.95):
             rnd_args.append("--run-with-valgrind")
