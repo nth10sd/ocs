@@ -59,8 +59,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -148,8 +148,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -237,8 +237,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -326,8 +326,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -415,8 +415,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -504,8 +504,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -593,8 +593,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -682,8 +682,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -774,8 +774,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -866,8 +866,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
@@ -958,8 +958,8 @@ jobs:
         if [ $(rg -t py --stats \
                   "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
                   $(find . -type f -name "*.py" ! -name "conf_correct.py") \
-                    | awk '/ matches/ && !/ contained matches/' \
-                    | cut -d' ' -f1) -lt 47 ] ;
+                    | awk "/ matches/ && "\!"/ contained matches/" \
+                    | cut -d" " -f1) -lt 47 ] ;
         then exit 0 ; else exit 1 ; fi ;
     - name: Lint with flake8 only checking for Python syntax errors or undefined names
       run: |
