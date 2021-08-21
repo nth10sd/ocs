@@ -80,7 +80,7 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
     return ensure_cache_dir(cache_dir_base) / lockdir_name
 
 
-def handle_rm_readonly_files(  # pylint: disable=useless-param-doc,useless-type-doc
+def handle_rm_readonly_files(  # pylint: disable=useless-param-doc
     _func: Callable[..., None],
     path_: Path,
     exc: tuple[

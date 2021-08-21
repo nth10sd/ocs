@@ -19,7 +19,7 @@ class CommonShellError(BaseException):
     """Error class unique to CommonShell objects."""
 
 
-class CommonShell:  # pylint: disable=too-many-instance-attributes
+class CommonShell:
     """A CommonShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py

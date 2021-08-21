@@ -451,7 +451,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write(f"version = {shell.version}\n")
 
 
-def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
+def sm_compile(shell: SMShell) -> Path:
     """Compile a binary and copy essential compiled files into a desired structure.
 
     :param shell: SpiderMonkey shell parameters
@@ -548,7 +548,7 @@ def sm_compile(shell: SMShell) -> Path:  # pylint:disable=too-complex
     return shell.shell_compiled_path
 
 
-def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
+def obtain_shell(  # pylint: disable=useless-param-doc
     shell: SMShell,
     update_to_rev: str | None = None,
     _update_latest_txt: bool = False,
@@ -564,7 +564,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc,useless-type-doc
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    # pylint: disable=too-many-branches,too-complex,too-many-statements
+    # pylint: disable=too-complex
     lock_dir = fs_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
     if not lock_dir.is_dir():
         raise FileNotFoundError(f"{lock_dir} is not a directory")
@@ -668,7 +668,7 @@ def arch_of_binary(binary: Path) -> str:
     return "INVALID"
 
 
-def test_binary(  # pylint: disable=useless-param-doc,useless-type-doc
+def test_binary(  # pylint: disable=useless-param-doc
     shell_path: Path,
     args: list[str],
     _use_vg: bool,
