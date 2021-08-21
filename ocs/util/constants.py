@@ -12,10 +12,9 @@ import platform
 
 from typing_extensions import Final
 
-if multiprocessing.cpu_count() > 2:
-    COMPILATION_JOBS = multiprocessing.cpu_count() + 1
-else:
-    COMPILATION_JOBS = 3  # Other single/dual core computers
+COMPILATION_JOBS = (
+    multiprocessing.cpu_count() + 1 if multiprocessing.cpu_count() > 2 else 3
+)  # 3 only for single/dual core computers
 
 ASAN_ERROR_EXIT_CODE: Final = 77
 DEFAULT_TREES_LOCATION: Final = Path.home() / "trees"
