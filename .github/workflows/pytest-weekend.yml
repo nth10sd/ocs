@@ -69,7 +69,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -161,7 +161,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -253,7 +253,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -345,7 +345,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -437,7 +437,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -529,7 +529,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -621,7 +621,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -713,7 +713,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -808,7 +808,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -903,7 +903,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
@@ -998,7 +998,7 @@ jobs:
     - name: Run with pyupgrade to find code that can be written in a more modern way
       run: pyup_dirs --py37-plus --recursive .
     - name: Run with vulture to find dead code
-      run: python -u -m vulture ocs/ tests/ .vulture_allowlist
+      run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
     - name: Ensure Sphinx docs always work, resetting Git repo after generation
       if: startsWith(runner.os, 'Linux')
       run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
