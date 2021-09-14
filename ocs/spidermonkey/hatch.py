@@ -670,20 +670,22 @@ def arch_of_binary(binary: Path) -> str:
     return "INVALID"
 
 
-def test_binary(  # pylint: disable=useless-param-doc
+def test_binary(
     shell_path: Path,
     args: list[str],
-    _use_vg: bool,
+    use_vg: bool,
     stderr: int | IO[bytes] | None = subprocess.STDOUT,
 ) -> tuple[str, int]:
     """Test the given shell with the given args.
 
     :param shell_path: Path to the compiled shell binary
     :param args: Arguments used to compile the shell
-    :param _use_vg: Whether Valgrind should be used
+    :param use_vg: Whether Valgrind should be used
     :param stderr: stderr and where it should be redirected if needed
     :return: Tuple comprising the stdout of the run command and its return code
     """
+    if use_vg:
+        print("Using Valgrind to test...")  # noqa: T001
     test_cmd = [str(shell_path)] + args
     utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
 
