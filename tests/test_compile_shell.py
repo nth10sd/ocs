@@ -21,7 +21,7 @@ from .util.constants import MC_PATH
 from .util.constants import SHELL_CACHE
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @lru_cache(maxsize=None)
 def test_shell_compile() -> Path:
     """Test compilation of shells depending on the specified environment variable.
