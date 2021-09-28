@@ -35,7 +35,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -128,7 +128,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -221,7 +221,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -314,7 +314,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -407,7 +407,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -500,7 +500,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -593,7 +593,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -686,7 +686,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Set Linux environment variables
       run: |
@@ -779,7 +779,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -875,7 +875,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
@@ -971,7 +971,7 @@ jobs:
         restore-keys: ${{ runner.os }}-pip-
     - name: Install pip dependencies
       if: steps.pip-cache.outputs.cache-hit != 'true'
-      run: python -u -m pip install --upgrade pip setuptools wheel pyupgrade_directories && python -u -m pip install -r requirements.txt
+      run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
     - name: Look for available LLVM versions
       run: ls -l /usr/local/Cellar/llvm/
