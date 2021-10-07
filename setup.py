@@ -32,7 +32,7 @@ EXTRAS = {
     "test": [
         "bandit ~= 1.7.0",
         "black ~= 21.9b0",
-        "coverage[toml] ~= 5.5",
+        "coverage[toml] ~= 6.0.1",
         "flake8 ~= 3.9.2",
         "flake8-bugbear ~= 21.9.2",
         "flake8-commas ~= 2.0.0",
@@ -79,7 +79,8 @@ if __name__ == "__main__":
         },
         packages=find_packages(exclude=("tests",)),
         install_requires=[  # Include relevant types-* package, e.g. types-toml & toml
-            "distro ~= 1.5.0",
+            "distro ~= 1.6.0",
+            "types-setuptools ~= 57.4.0",
         ],
         extras_require=EXTRAS,
         python_requires=">= 3.7",
