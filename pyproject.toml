@@ -78,7 +78,9 @@ warn_unused_configs = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = []
+module = [
+    "distro",  # Unsure why 1.6.0 does not work here, this worked in other 3.9 projects
+]
 ignore_missing_imports = true
 
 [tool.pylint.basic]
