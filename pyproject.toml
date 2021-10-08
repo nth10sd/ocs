@@ -77,6 +77,7 @@ warn_return_any = true
 warn_unused_configs = true
 warn_unused_ignores = true
 
+# Add Python modules to be ignored by mypy here
 [[tool.mypy.overrides]]
 module = [
     "distro",  # Unsure why 1.6.0 does not work here, this worked in other 3.9 projects
