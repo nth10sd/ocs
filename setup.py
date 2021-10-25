@@ -58,7 +58,7 @@ EXTRAS = {
         "pytest-pylint ~= 0.18.0",
         "pyupgrade-directories ~= 0.2.0",
         "sphinx ~= 4.4.0",
-        "tryceratops ~= 1.0.0; python_version >= '3.8'",
+        "tryceratops ~= 1.0.0",
         "vulture ~= 2.3",
     ],
 }
@@ -87,6 +87,6 @@ if __name__ == "__main__":
             "wheel >= 0.37.0",
         ],
         extras_require=EXTRAS,
-        python_requires=">= 3.7",
+        python_requires=">= 3.10",
         zip_safe=False,
     )

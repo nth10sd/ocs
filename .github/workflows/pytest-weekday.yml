@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -67,7 +67,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -160,7 +160,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -203,7 +203,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -253,7 +253,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -296,7 +296,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -346,7 +346,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -389,7 +389,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -439,7 +439,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -482,7 +482,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -532,7 +532,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -575,7 +575,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -625,7 +625,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -668,7 +668,7 @@ jobs:
     runs-on: ubuntu-20.04  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -718,7 +718,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -761,7 +761,7 @@ jobs:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -814,7 +814,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -857,7 +857,7 @@ jobs:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -910,7 +910,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -953,7 +953,7 @@ jobs:
     runs-on: macos-10.15  # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -1006,7 +1006,7 @@ jobs:
         # stop the build if there are Python syntax errors or undefined names
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with pyupgrade to find code that can be written in a more modern way
-      run: pyup_dirs --py37-plus --recursive .
+      run: pyup_dirs --py310-plus --recursive .
     - name: Run with vulture to find dead code
       if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
       run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
