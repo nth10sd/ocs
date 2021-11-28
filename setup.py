@@ -58,7 +58,7 @@ EXTRAS = {
         "pytest-pylint ~= 0.18.0",
         "pyupgrade-directories ~= 0.2.0",
         "sphinx ~= 4.3.1",
-        "tryceratops ~= 1.0.0",
+        "tryceratops ~= 1.0.0; python_version >= '3.8'",
         "vulture ~= 2.3",
     ],
 }
