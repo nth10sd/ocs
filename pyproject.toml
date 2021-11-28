@@ -223,3 +223,8 @@ score = "no"
 # Min Python version to use for typing related checks, e.g. ``3.7``
 # This should be equal to the min supported Python version of the project
 py-version = "3.7"
+
+[tool.tryceratops]
+ignore = [
+    "TC003",
+]
