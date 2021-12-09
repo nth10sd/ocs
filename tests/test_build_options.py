@@ -7,14 +7,13 @@
 from __future__ import annotations
 
 import random
-from typing import Any
+
+from _pytest.monkeypatch import MonkeyPatch
 
 from ocs import build_options
 
 
-def test_chance(
-    monkeypatch: Any,
-) -> None:  # Ignore till mypy knows the monkeypatch type w/o importing _pytest
+def test_chance(monkeypatch: MonkeyPatch) -> None:
     """Test that the chance function works as intended.
 
     :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions
