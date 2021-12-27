@@ -81,10 +81,10 @@ if __name__ == "__main__":
         packages=find_packages(exclude=("tests",)),
         install_requires=[  # Include relevant types-* package, e.g. types-toml & toml
             "distro ~= 1.6.0",
-            "setuptools ~= 60.0.3",
-            "types-setuptools ~= 57.4.2",
+            "setuptools >= 60.0.5",
+            "types-setuptools >= 57.4.2",
             "types-toml ~= 0.10.1",  # For (temp) infrastructure stuff of some packages
-            "wheel ~= 0.37.0",
+            "wheel >= 0.37.0",
         ],
         extras_require=EXTRAS,
         python_requires=">= 3.7",
