@@ -8,12 +8,12 @@ from __future__ import annotations
 
 import random
 
-from _pytest.monkeypatch import MonkeyPatch
+import pytest
 
 from ocs import build_options
 
 
-def test_chance(monkeypatch: MonkeyPatch) -> None:
+def test_chance(monkeypatch: pytest.MonkeyPatch) -> None:
     """Test that the chance function works as intended.
 
     :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions
