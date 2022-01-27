@@ -80,8 +80,7 @@ def get_repo_hash_and_id(
         stdout=subprocess.PIPE,
         timeout=99,
     ).stdout.decode("utf-8", errors="replace")
-    is_on_default = bool(hg_id_full)
-    if not is_on_default:
+    if not (is_on_default := bool(hg_id_full)):
         update_default = input(
             "Not on default tip! "
             "Would you like to (a)bort, update to (d)efault, or (u)se this rev: ",

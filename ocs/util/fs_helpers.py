@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import errno
 import os
 from pathlib import Path
@@ -14,7 +15,6 @@ import shutil
 import stat
 import subprocess
 from types import TracebackType
-from typing import Callable
 
 
 def ensure_cache_dir(base_dir: Path) -> Path:
