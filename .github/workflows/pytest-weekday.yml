@@ -794,7 +794,7 @@ jobs:
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: brew update ; brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
@@ -890,7 +890,7 @@ jobs:
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: brew update ; brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
@@ -986,7 +986,7 @@ jobs:
     - name: Check versions
       run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
     - name: Install 32/64-bit SpiderMonkey prerequisites
-      run: brew update ; brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
+      run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
     - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
       run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
     - name: Search for existing linter ignore lines in Python
