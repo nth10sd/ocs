@@ -68,7 +68,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -167,7 +167,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -266,7 +266,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -365,7 +365,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -464,7 +464,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -563,7 +563,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -662,7 +662,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -761,7 +761,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -863,7 +863,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -965,7 +965,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
@@ -1067,7 +1067,7 @@ jobs:
         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: Run with yesqa to find obsolete flake8 ignores
       if: startsWith(runner.os, 'Linux')
-      run: find . -type f -name "*.py" | xargs yesqa
+      run: find . -type f -name "*.py" -not -path "./build/*" | xargs yesqa
     - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
       if: startsWith(runner.os, 'Linux')
       run: flynt --dry-run --fail-on-change --transform-concats .
