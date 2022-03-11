@@ -272,7 +272,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     if shell.build_opts.enableOpt:
         cfg_cmds.append(
-            "--enable-optimize" + ("=-O1" if shell.build_opts.enableValgrind else ""),
+            f"--enable-optimize{'=-O1' if shell.build_opts.enableValgrind else ''}",
         )
     elif shell.build_opts.disableOpt:
         cfg_cmds.append("--disable-optimize")
@@ -333,9 +333,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     env_vars = []
     for env_var in set(cfg_env.keys()) - set(orig_cfg_env.keys()):
         str_to_be_appended = (
-            f"{env_var}" f'="{cfg_env[str(env_var)]}' + '"'
+            f'{env_var}="{cfg_env[str(env_var)]}"'
             if " " in cfg_env[str(env_var)]
-            else env_var + f"={cfg_env[str(env_var)]}"
+            else f"{env_var}={cfg_env[str(env_var)]}"
         )
         env_vars.append(str_to_be_appended)
     utils.vdump(
@@ -703,7 +703,7 @@ def test_binary(
         and not ("-asan-" in str(shell_path) and "-armsim64-" in str(shell_path))
         and "-aarch64-" not in str(shell_path)
     ):
-        asan_options = "detect_leaks=1," + asan_options
+        asan_options = f"detect_leaks=1,{asan_options}"
         test_env.update({"LSAN_OPTIONS": "max_leaks=1,"})
     test_env.update({"ASAN_OPTIONS": asan_options})
 
