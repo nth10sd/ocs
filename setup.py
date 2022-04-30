@@ -85,8 +85,8 @@ if __name__ == "__main__":
             "distro ~= 1.6.0",
             "mercurial ~= 6.0.1",
             "setuptools >= 60.0.5",
-            "types-setuptools == 57.4.14",  # Bump types-* only with mypy
-            "types-toml ~= 0.10.6",  # For (temp) infrastructure stuff of some packages
+            "types-setuptools==57.4.14",  # Bump types-* only with mypy
+            "types-toml==0.10.6",  # For (temp) infrastructure stuff of some packages
             "wheel >= 0.37.0",
         ],
         extras_require=EXTRAS,
