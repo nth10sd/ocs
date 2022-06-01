@@ -82,8 +82,8 @@ if __name__ == "__main__":
         },
         packages=find_packages(exclude=("tests",)),
         install_requires=[  # Include relevant types-* package, e.g. types-toml & toml
-            "distro ~= 1.6.0",
-            "mercurial ~= 6.0.1",
+            "distro ~= 1.7.0",
+            "mercurial ~= 6.1.2",
             "setuptools >= 60.0.5",
             "types-setuptools==57.4.16",  # Bump types-* only with mypy
             "types-toml==0.10.7",  # For (temp) infrastructure stuff of some packages

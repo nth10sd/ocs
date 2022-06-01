@@ -66,9 +66,7 @@ strict = true
 
 # Add Python modules to be ignored by mypy here
 [[tool.mypy.overrides]]
-module = [
-    "distro",  # Unsure why 1.6.0 does not work here, this worked in other 3.9 projects
-]
+module = []
 ignore_missing_imports = true
 
 [tool.pylint.basic]
