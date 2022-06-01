@@ -355,7 +355,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 #   but really, the whole thing likes forward slashes way better"
                 # See bug 1038590 comment 9.
                 if "\\" in entry:
-                    entry = entry.replace("\\", "/")
+                    entry = entry.replace(  # pylint: disable=redefined-loop-name
+                        "\\", "/"
+                    )
                 changed_cfg_cmds.append(entry)
             subprocess.run(
                 changed_cfg_cmds,
