@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 import json
 from logging import INFO as INFO_LOG_LEVEL
-import optparse  # pylint: disable=deprecated-module
 import os
 from pathlib import Path
 import platform
@@ -26,6 +25,7 @@ from packaging.version import parse
 from ocs import build_options
 from ocs.common.hatch import CommonShell
 from ocs.common.hatch import CommonShellError
+from ocs.spidermonkey.parsing import parse_args
 from ocs.util import constants
 from ocs.util import fs_helpers
 from ocs.util import hg_helpers
@@ -59,6 +59,9 @@ class SMShell(CommonShell):
         :param args: Additional parameters
         :return: 0, to denote a successful compile and 1, to denote a failed compile
         """
+        if not args:
+            # Ignored (code coverage), as function is tested by passing in a known args
+            args = sys.argv[1:]  # pragma: no cover
         try:
             return cls.run(args)
         except CommonShellError as ex:
@@ -67,37 +70,13 @@ class SMShell(CommonShell):
             return 1
 
     @staticmethod
-    def run(argv: list[str] | None = None) -> int:
+    def run(argv: list[str]) -> int:
         """Build a shell and place it in the autobisectjs cache.
 
         :param argv: Additional parameters
         :return: 0, to denote a successful compile
         """
-        usage = "Usage: %prog [options]"
-        parser = optparse.OptionParser(usage)
-        parser.disable_interspersed_args()
-
-        parser.set_defaults(
-            build_opts="",
-        )
-
-        # Specify how the shell will be built.
-        parser.add_option(
-            "-b",
-            "--build",
-            dest="build_opts",
-            help='Specify build options, e.g. -b "--disable-debug --enable-optimize" '
-            "(python3 -m ocs.build_options --help)",
-        )
-
-        parser.add_option(
-            "-r",
-            "--rev",
-            dest="revision",
-            help="Specify revision to build",
-        )
-
-        options = parser.parse_args(argv)[0]
+        options = parse_args(argv)
         options.build_opts = build_options.parse_shell_opts(options.build_opts)
 
         with utils.LockDir(

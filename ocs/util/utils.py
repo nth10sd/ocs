@@ -8,7 +8,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from types import TracebackType
+from typing import Final
 
+PACKAGE_NAME: Final = __name__.split(".", maxsplit=1)[0]
 VERBOSE = False
 
 
