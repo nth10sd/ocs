@@ -829,8 +829,8 @@ jobs:
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
-    - name: Look for available LLVM versions
-      run: ls -l /usr/local/Cellar/llvm/
+    - name: Make sure LLVM is installed and look for available LLVM versions
+      run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
         echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
@@ -931,8 +931,8 @@ jobs:
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
-    - name: Look for available LLVM versions
-      run: ls -l /usr/local/Cellar/llvm/
+    - name: Make sure LLVM is installed and look for available LLVM versions
+      run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
         echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
@@ -1033,8 +1033,8 @@ jobs:
       if: steps.pip-cache.outputs.cache-hit != 'true'
       run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
 
-    - name: Look for available LLVM versions
-      run: ls -l /usr/local/Cellar/llvm/
+    - name: Make sure LLVM is installed and look for available LLVM versions
+      run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
     - name: Set macOS environment variables
       run: |
         echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
