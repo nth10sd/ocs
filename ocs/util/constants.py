@@ -16,7 +16,7 @@ COMPILATION_JOBS: int
 if cpu_count() <= 2:
     COMPILATION_JOBS = 3  # 3 only for single/dual core computers
 elif cpu_count() > cpu_count(logical=False):  # Some sort of hyperthreading is present
-    COMPILATION_JOBS = int(cpu_count(logical=False) * 1.25)
+    COMPILATION_JOBS = round(cpu_count(logical=False) * 1.25)
 else:
     COMPILATION_JOBS = cpu_count(logical=False)
 
