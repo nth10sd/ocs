@@ -56,6 +56,8 @@ if platform.system() == "Windows":
     WIN_ICU_VERS = [67]  # prior version
     WIN_ICU_VERS.append(68)  # m-c 581959 Fx91, 1st w/ ICU 68.2, see bug 1686052
     WIN_ICU_VERS.append(69)  # m-c 583213 Fx91, 1st w/ ICU 69.1, see bug 1714933
+    WIN_ICU_VERS.append(70)  # m-c 599344 Fx96, 1st w/ ICU 70.1, see bug 1738422
+    WIN_ICU_VERS.append(71)  # m-c 613773 Fx101, 1st w/ ICU 71.1, see bug 1763783
 
     # Search for changes to the versioning of the ICU files:
     # https://bit.ly/3jgrTSK
