@@ -84,7 +84,9 @@ if __name__ == "__main__":
         install_requires=[  # Include relevant types-* package, e.g. types-toml & toml
             "distro ~= 1.7.0",
             "mercurial ~= 6.1.2",
+            "psutil ~= 5.9.1",
             "setuptools >= 60.0.5",
+            "types-psutil==5.9.1",  # Bump types-* only with mypy
             "types-setuptools==57.4.16",  # Bump types-* only with mypy
             "types-toml==0.10.7",  # For (temp) infrastructure stuff of some packages
             "wheel >= 0.37.0",

@@ -6,15 +6,19 @@
 
 from __future__ import annotations
 
-import multiprocessing
 from pathlib import Path
 import platform
 
+from psutil import cpu_count
 from typing_extensions import Final
 
-COMPILATION_JOBS = (
-    multiprocessing.cpu_count() + 1 if multiprocessing.cpu_count() > 2 else 3
-)  # 3 only for single/dual core computers
+COMPILATION_JOBS: int
+if cpu_count() <= 2:
+    COMPILATION_JOBS = 3  # 3 only for single/dual core computers
+elif cpu_count() > cpu_count(logical=False):  # Some sort of hyperthreading is present
+    COMPILATION_JOBS = int(cpu_count(logical=False) * 1.25)
+else:
+    COMPILATION_JOBS = cpu_count(logical=False)
 
 ASAN_ERROR_EXIT_CODE: Final = 77
 DEFAULT_TREES_LOCATION: Final = Path.home() / "trees"
