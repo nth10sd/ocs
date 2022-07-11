@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from pathlib import Path
 import platform
+from typing import Final
 
 from psutil import cpu_count
-from typing_extensions import Final
 
 COMPILATION_JOBS: int
 if cpu_count() <= 2:
