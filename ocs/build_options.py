@@ -208,7 +208,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     :return: An immutable build_options object
     """
     parser, randomizer = add_parser_opts()
-    build_options = parser.parse_args(args.removeprefix('"').removesuffix('"').split())
+    build_options = parser.parse_args(args.split())
 
     if build_options.enableRandom:
         build_options = gen_rnd_cfgs(parser, randomizer)
