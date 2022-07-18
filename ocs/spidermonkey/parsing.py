@@ -28,8 +28,8 @@ def parse_args(args: list[str]) -> argparse.Namespace:
         "--revision",
         help="Specify revision to build",
     )
-    for argument in args:
-        if any(x in argument for x in ("-b", "--build-opts")) and "=" not in argument:
+    for arg in args:
+        if any(arg.startswith(x) for x in ("-b", "--build-opts")) and "=" not in arg:
             parser.error('"=" is needed for -b or --build-opts because of argparse')
 
     return parser.parse_args(args)
