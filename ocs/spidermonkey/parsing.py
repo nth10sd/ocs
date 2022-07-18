@@ -28,7 +28,7 @@ def parse_args(args: list[str]) -> argparse.Namespace:
         "--revision",
         help="Specify revision to build",
     )
-    for arg in args:
+    for arg in args:  # Must happen before parser.parse_args runs on args
         if any(arg.startswith(x) for x in ("-b", "--build-opts")) and "=" not in arg:
             parser.error('"=" is needed for -b or --build-opts because of argparse')
 
