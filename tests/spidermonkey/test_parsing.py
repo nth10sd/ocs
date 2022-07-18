@@ -16,11 +16,11 @@ def test_parser() -> None:
             "a5301180315c5a152c4173e6fc741e02f271d4ed",
         ]
     )
-    assert parser.build_opts == '"--enable-debug --enable-simulator=arm64"'
+    assert parser.build_opts == "--enable-debug --enable-simulator=arm64"
     assert parser.revision == "a5301180315c5a152c4173e6fc741e02f271d4ed"
 
     parser2 = parse_args(['--build-opts="--enable-address-sanitizer"'])
-    assert parser2.build_opts == '"--enable-address-sanitizer"'
+    assert parser2.build_opts == "--enable-address-sanitizer"
     assert not parser2.revision
 
     parser3 = parse_args([])
@@ -34,7 +34,7 @@ def test_parser_no_equals() -> None:
         parse_args(
             [
                 "-b",
-                '"--enable-debug --enable-simulator=arm64"',
+                "--enable-debug --enable-simulator=arm64",
                 "-r",
                 "a5301180315c5a152c4173e6fc741e02f271d4ed",
             ]
