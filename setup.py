@@ -46,7 +46,7 @@ EXTRAS = {
         "flake8-typing-imports ~= 1.12.0",
         "flynt ~= 0.76",
         "isort ~= 5.10.1",
-        "mypy==0.961",
+        "mypy==0.971",
         "pep8-naming ~= 0.13.0",
         "pylint ~= 2.14.1",
         "pytest ~= 7.1.2",
@@ -55,7 +55,7 @@ EXTRAS = {
         "pytest-cov ~= 3.0.0",
         "pytest-dependency ~= 0.5.1",
         "pytest-flake8 ~= 1.1.0",
-        "pytest-mypy ~= 0.9.0",
+        "pytest-mypy ~= 0.9.1",
         "pytest-pylint ~= 0.18.0",
         "pyupgrade-directories ~= 0.2.0",
         "sphinx ~= 5.0.1",
@@ -86,8 +86,8 @@ if __name__ == "__main__":
             "mercurial ~= 6.1.2",
             "psutil ~= 5.9.1",
             "setuptools >= 60.0.5",
-            "types-psutil==5.9.1",  # Bump types-* only with mypy
-            "types-setuptools==57.4.16",  # Bump types-* only with mypy
+            "types-psutil==5.9.2",  # Bump types-* only with mypy
+            "types-setuptools==63.2.0",  # Bump types-* only with mypy
             "types-toml==0.10.7",  # For (temp) infrastructure stuff of some packages
             "wheel >= 0.37.0",
         ],
