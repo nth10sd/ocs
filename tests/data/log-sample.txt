@@ -1,0 +1,2 @@
+test_log ERROR    {test_logging} [test_get_logger] This is a test error message different_terminator
+test_log INFO     {test_logging} [test_get_logger] This is a test info message different_terminator
