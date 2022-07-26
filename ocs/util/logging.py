@@ -58,7 +58,7 @@ def println(cmd: list[Path | str], cwd: Path, logger: logging.Logger) -> None:
         cmd,
         bufsize=0,
         cwd=cwd,
-        stderr=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
         stdout=subprocess.PIPE,
         text=True,
     ) as ps_:
