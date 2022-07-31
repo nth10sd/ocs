@@ -10,7 +10,7 @@ import pytest
 
 from ocs.util import hg_helpers
 
-from .constants import TREES_PATH
+from .constants_for_tests import TREES_PATH
 
 
 @pytest.mark.skipif(
