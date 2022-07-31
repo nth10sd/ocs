@@ -17,8 +17,8 @@ from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
 from ocs.util import hg_helpers
 
-from .util.constants import MC_PATH
-from .util.constants import SHELL_CACHE
+from .util.constants_for_tests import MC_PATH
+from .util.constants_for_tests import SHELL_CACHE
 
 
 @pytest.mark.slow()
