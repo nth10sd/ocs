@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from functools import lru_cache
+from functools import cache
 import os
 from pathlib import Path
 import platform
@@ -22,7 +22,7 @@ from .util.constants import SHELL_CACHE
 
 
 @pytest.mark.slow()
-@lru_cache(maxsize=None)
+@cache
 def test_shell_compile() -> Path:
     """Test compilation of shells depending on the specified environment variable.
 
