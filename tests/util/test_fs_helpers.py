@@ -27,12 +27,12 @@ def test_ensure_cache_dir() -> None:
     platform.system() != "Windows",
     reason="Test only applies to read-only files on Windows",
 )
-def test_rm_tree_incl_readonly_files(tmpdir: Path) -> None:
+def test_rm_tree_incl_readonly_files(tmp_path: Path) -> None:
     """Test that directory trees with readonly files can be removed.
 
-    :param tmpdir: Fixture from pytest for creating a temporary directory
+    :param tmp_path: Fixture from pytest for creating a temporary directory
     """
-    test_dir = Path(tmpdir) / "test_dir"
+    test_dir = tmp_path / "test_dir"
     read_only_dir = test_dir / "nested_read_only_dir"
     read_only_dir.mkdir(parents=True)
 
