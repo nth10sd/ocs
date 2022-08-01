@@ -82,7 +82,7 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
 
 def handle_rm_readonly_files(  # pylint: disable=useless-param-doc
     _func: Callable[..., None],
-    path_: Path,
+    path_: str,
     exc: tuple[
         type[BaseException] | None,
         type[BaseException] | None,
@@ -102,11 +102,10 @@ def handle_rm_readonly_files(  # pylint: disable=useless-param-doc
     """
     if platform.system() != "Windows":
         raise OSError("Only Windows operating systems supported")
-    if isinstance(exc[1], int) and exc[1].errno == errno.EACCES:
-        Path.chmod(path_, stat.S_IWRITE)
-        if not path_.is_file():
-            raise FileNotFoundError(f"{path_} is not a file")
-        path_.unlink()
+    file_path = Path(path_)
+    if isinstance(exc[1], PermissionError) and exc[1].errno == errno.EACCES:
+        file_path.chmod(stat.S_IWRITE)
+        file_path.unlink()
     else:
         raise OSError("Unable to handle read-only files.")
 
