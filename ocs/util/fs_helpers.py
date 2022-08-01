@@ -84,7 +84,7 @@ def handle_rm_readonly_files(
     path_: str,
     exc: tuple[PermissionError, PermissionError, TracebackType],
 ) -> None:
-    """Handle read-only files on Windows.
+    """Handle read-only files, especially on Windows.
 
     :param path_: Path name passed to function
     :param exc: Exception information returned by sys.exc_info()
