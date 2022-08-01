@@ -303,7 +303,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
 
     if platform.system() == "Windows":
-        # FIXME: Replace this with shlex's quote  # pylint: disable=fixme
+        # FIXME: Replace this with subprocess.list2cmdline  # pylint: disable=fixme
         counter = 0
         for entry in cfg_cmds:
             if os.sep in entry:
