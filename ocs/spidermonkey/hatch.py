@@ -27,11 +27,13 @@ from ocs.common.hatch import CommonShell
 from ocs.common.hatch import CommonShellError
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import constants
-from ocs.util import fs_helpers
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
 from ocs.util import utils
 from ocs.util.fs_helpers import bash_piping as piping
+from ocs.util.fs_helpers import env_with_path
+from ocs.util.fs_helpers import get_lock_dir_path
+from ocs.util.fs_helpers import handle_rm_readonly_files
 from ocs.util.logging import get_logger
 
 SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
@@ -80,7 +82,7 @@ class SMShell(CommonShell):
         options.build_opts = build_options.parse_shell_opts(options.build_opts)
 
         with utils.LockDir(
-            fs_helpers.get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
+            get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
         ):
             if options.revision:
                 shell = SMShell(options.build_opts, options.revision)
@@ -548,7 +550,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-complex
-    lock_dir = fs_helpers.get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
+    lock_dir = get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
     if not lock_dir.is_dir():
         raise FileNotFoundError(f"{lock_dir} is not a directory")
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
@@ -564,7 +566,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
         print("Found a cache dir without a successful/failed shell...")  # noqa: T001
-        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
+        shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
 
     shell.shell_cache_dir.mkdir()
 
@@ -595,10 +597,12 @@ def obtain_shell(  # pylint: disable=useless-param-doc
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
     except KeyboardInterrupt:
-        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir)
+        shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
-        fs_helpers.rm_tree_incl_readonly_files(shell.shell_cache_dir / "objdir-js")
+        shutil.rmtree(
+            shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
+        )
         if (
             shell.shell_cache_js_bin_path.is_file()
         ):  # Switch to contextlib.suppress when we are fully on Python 3
@@ -670,7 +674,7 @@ def test_binary(
     test_cmd = [str(shell_path)] + args
     utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
 
-    test_env = fs_helpers.env_with_path(str(shell_path.parent))
+    test_env = env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={constants.ASAN_ERROR_EXIT_CODE}"
     # Turn on LSan, Linux-only.
     # macOS non-support:

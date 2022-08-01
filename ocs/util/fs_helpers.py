@@ -11,7 +11,6 @@ import errno
 import os
 from pathlib import Path
 import platform
-import shutil
 import stat
 import subprocess
 from types import TracebackType
@@ -80,34 +79,19 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
     return ensure_cache_dir(cache_dir_base) / lockdir_name
 
 
-def handle_rm_readonly_files(  # pylint: disable=useless-param-doc
-    _func: Callable[..., None],
+def handle_rm_readonly_files(
+    _func: Callable[[], None],
     path_: str,
-    exc: tuple[
-        type[BaseException] | None,
-        type[BaseException] | None,
-        TracebackType | None,
-    ],
+    exc: tuple[PermissionError, PermissionError, TracebackType],
 ) -> None:
     """Handle read-only files on Windows.
-    Adapted from https://stackoverflow.com/a/21263493.
 
-    :param _func: Function which raised the exception
     :param path_: Path name passed to function
     :param exc: Exception information returned by sys.exc_info()
-
-    :raise OSError: If host operating system is not Windows
-    :raise FileNotFoundError: If input file is not a file after changing permissions
-    :raise OSError: If the read-only files are unable to be handled
     """
-    if platform.system() != "Windows":
-        raise OSError("Only Windows operating systems supported")
-    file_path = Path(path_)
     if isinstance(exc[1], PermissionError) and exc[1].errno == errno.EACCES:
-        file_path.chmod(stat.S_IWRITE)
-        file_path.unlink()
-    else:
-        raise OSError("Unable to handle read-only files.")
+        Path(path_).chmod(stat.S_IWRITE)  # On Windows, this unsets the read-only flag
+        Path(path_).unlink()  # Delete file immediately after adjusting file permissions
 
 
 def bash_piping(first_cmd: list[str], second_cmd: list[str]) -> str:
@@ -127,15 +111,3 @@ def bash_piping(first_cmd: list[str], second_cmd: list[str]) -> str:
             stdin=first_sbpr.stdout,
             stdout=subprocess.PIPE,
         ).stdout.decode("utf-8")
-
-
-def rm_tree_incl_readonly_files(dir_tree: Path) -> None:
-    """Remove a directory tree including all read-only files. Directories should not be
-    read-only.
-
-    :param dir_tree: Directory tree of files to be removed
-    """
-    shutil.rmtree(
-        str(dir_tree),
-        onerror=handle_rm_readonly_files if platform.system() == "Windows" else None,
-    )

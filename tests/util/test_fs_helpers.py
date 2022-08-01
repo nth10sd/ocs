@@ -7,10 +7,8 @@
 from __future__ import annotations
 
 from pathlib import Path
-import platform
+import shutil
 import stat
-
-import pytest
 
 from ocs.util import fs_helpers
 
@@ -23,12 +21,8 @@ def test_ensure_cache_dir() -> None:
     assert fs_helpers.ensure_cache_dir(Path.home()).is_dir()
 
 
-@pytest.mark.skipif(
-    platform.system() != "Windows",
-    reason="Test only applies to read-only files on Windows",
-)
-def test_rm_tree_incl_readonly_files(tmp_path: Path) -> None:
-    """Test that directory trees with readonly files can be removed.
+def test_handle_rm_readonly_files(tmp_path: Path) -> None:
+    """Test that directory trees with read-only files can be handled and removed.
 
     :param tmp_path: Fixture from pytest for creating a temporary directory
     """
@@ -41,5 +35,8 @@ def test_rm_tree_incl_readonly_files(tmp_path: Path) -> None:
         f.write("testing\n")
 
     Path.chmod(test_file, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+    shutil.rmtree(test_dir, onerror=fs_helpers.handle_rm_readonly_files)
 
-    fs_helpers.rm_tree_incl_readonly_files(test_dir)
+    assert not test_file.is_file()
+    assert not read_only_dir.is_dir()
+    assert not test_dir.is_dir()
