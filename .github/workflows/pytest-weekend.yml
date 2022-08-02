@@ -74,6 +74,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -173,6 +176,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -272,6 +278,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -371,6 +380,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -470,6 +482,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -569,6 +584,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -668,6 +686,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -767,6 +788,9 @@ jobs:
         run: flynt --dry-run --fail-on-change --transform-concats .
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
+      - name: Run with semgrep to find potential security issues with ERROR level
+        if: startsWith(runner.os, 'Linux')
+        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
@@ -1084,9 +1108,6 @@ jobs:
           python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: pyup_dirs --py310-plus --recursive .
-      - name: Run with vulture to find dead code
-        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
-        run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
           python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
