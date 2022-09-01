@@ -83,6 +83,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -288,6 +291,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -493,6 +499,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -698,6 +707,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -903,6 +915,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -1108,6 +1123,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -1313,6 +1331,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
@@ -1518,6 +1539,9 @@ jobs:
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
+      - name: Run pyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m pyright
       - name: Run pytype
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pytype --config=pytype.cfg
