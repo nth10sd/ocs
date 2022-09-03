@@ -33,9 +33,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -242,9 +263,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -451,9 +493,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -660,9 +723,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -869,9 +953,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -1078,9 +1183,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -1287,9 +1413,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -1496,9 +1643,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Set Linux environment variables
         run: |
@@ -1705,9 +1873,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -1888,9 +2077,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -2071,9 +2281,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -2254,9 +2485,30 @@ jobs:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip dependencies
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel && python -u -m pip install -r requirements.txt
+        run: |
+          python -u -m pip install --upgrade pip setuptools wheel ;
+          echo "" ;
+          echo "NOTE: Removing subdomain to make requirements.txt setup work in CI" ;
+          echo "" ;
+          echo "NOTE: Add additional backslash to escape double quotes in the following command for Powershell on Windows" ;
+          echo "" ;
+          python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ;
+          git diff ;
+          echo "" ;
+          pip install -r requirements.txt ;
+          echo "" ;
+          echo "NOTE: Reverting requirements.txt now" ;
+          git checkout -- requirements.txt ;
+          echo "" ;
+          echo "Installing this in development mode" ;
+          pip install --upgrade -e . ;
+          echo "" ;
 
       - name: Install ripgrep
         run: choco upgrade ripgrep
