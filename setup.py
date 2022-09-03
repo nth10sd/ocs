@@ -95,6 +95,7 @@ if __name__ == "__main__":
             "types-setuptools==63.2.0",  # Bump types-* only with mypy
             "types-toml==0.10.7",  # For (temp) infrastructure stuff of some packages
             "wheel >= 0.37.0",
+            "zzbase >= 0.0.1",
         ],
         extras_require=EXTRAS,
         python_requires=">= 3.10",
