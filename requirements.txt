@@ -1,1 +1,2 @@
+git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
 .[test]

@@ -17,6 +17,7 @@ from typing import IO
 
 import distro
 from packaging.version import parse
+from zzbase.util import utils
 
 from ocs import build_options
 from ocs.common.hatch import CommonShell
@@ -25,7 +26,6 @@ from ocs.spidermonkey.parsing import parse_args
 from ocs.util import constants
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
-from ocs.util import utils
 from ocs.util.fs_helpers import bash_piping as piping
 from ocs.util.fs_helpers import env_with_path
 from ocs.util.fs_helpers import get_lock_dir_path
