@@ -122,7 +122,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
 
-    misc_progs.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
+    utils.autoconf_run()
     configure_binary(shell)
     sm_compile(shell)
     verify_binary(shell)
@@ -175,8 +175,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         and parse(platform.mac_ver()[0]) >= parse("10.13")
         and not shell.build_opts.enable32
     ):
-        if shutil.which("brew"):
-            cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
         if shell.build_opts.enableSimulatorArm64:
