@@ -273,14 +273,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append("--with-ccache")
     cfg_cmds.append("--enable-gczeal")
     cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
-    # Use --disable-bootstrap if repository revision is on/after:
-    #   m-c rev 563494:c69826ee93e91671fd5c87f01ac7bd2b483c991f, Fx86
-    if not hg_helpers.exists_and_is_ancestor(
-        shell.build_opts.repo_dir,
-        shell.hg_hash,
-        "parents(c69826ee93e91671fd5c87f01ac7bd2b483c991f)",
-    ):
-        cfg_cmds.append("--disable-bootstrap")
     cfg_cmds.append("--disable-tests")
 
     if (
