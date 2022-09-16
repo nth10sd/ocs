@@ -10,7 +10,7 @@ on:
 
 jobs:
   codeql:
-    runs-on: ubuntu-20.04 # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.10"]
