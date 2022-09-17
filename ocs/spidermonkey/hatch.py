@@ -292,7 +292,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
     # Use --disable-bootstrap if repository revision is on/after:
     #   m-c rev 563494:c69826ee93e91671fd5c87f01ac7bd2b483c991f, Fx86
-    if not hg_helpers.exists_and_is_ancestor(
+    # but before:
+    #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
+    # See bug 1787977. m-c rev has been bumped to account for known broken ranges
+    if hg_helpers.exists_and_is_ancestor(
+        shell.build_opts.repo_dir,
+        shell.hg_hash,
+        "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+    ) and not hg_helpers.exists_and_is_ancestor(
         shell.build_opts.repo_dir,
         shell.hg_hash,
         "parents(c69826ee93e91671fd5c87f01ac7bd2b483c991f)",
