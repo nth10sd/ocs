@@ -123,6 +123,15 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
 
+    # Run autoconf 2.13 only on non-Windows platforms if repository revision is before:
+    #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
+    # See bug 1787977. m-c rev has been bumped to account for known broken ranges
+    if not platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+        shell.build_opts.repo_dir,
+        shell.hg_hash,
+        "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+    ):
+        utils.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
     configure_binary(shell)
     sm_compile(shell)
     verify_binary(shell)
@@ -175,6 +184,15 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         and parse(platform.mac_ver()[0]) >= parse("10.13")
         and not shell.build_opts.enable32
     ):
+        # Add the AUTOCONF env variable if repository revision is before:
+        #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
+        # See bug 1787977. m-c rev has been bumped to account for known broken ranges
+        if shutil.which("brew") and hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+        ):
+            cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
         cfg_cmds.append(str(shell.js_cfg_path))
         if shell.build_opts.enableSimulatorArm64:
