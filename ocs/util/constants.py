@@ -26,7 +26,6 @@ RUN_PLC_LIB = ""
 RUN_TESTPLUG_LIB = ""
 
 if platform.system() == "Windows":
-    MAKE_BINARY = "mozmake"
     CLANG_VER: Final = "12.0.0"
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
 
@@ -89,7 +88,6 @@ if platform.system() == "Windows":
         ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}d{icu_ver}.dll")
         ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}d.dll")
 else:
-    MAKE_BINARY = "make"
     SSE2_FLAGS: Final = "-msse2 -mfpmath=sse"  # See bug 948321
 
     if platform.system() == "Darwin":

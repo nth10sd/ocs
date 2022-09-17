@@ -17,6 +17,7 @@ from typing import IO
 
 import distro
 from packaging.version import parse
+from zzbase.util import constants as zzconstants
 from zzbase.util import utils
 
 from ocs import build_options
@@ -209,8 +210,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             raise FileNotFoundError(
                 f"llvm-config.exe not found at: {win_mozbuild_clang_bin_path}",
             )
-        cfg_env["LIBCLANG_PATH"] = str(win_mozbuild_clang_bin_path)
-        cfg_env["MAKE"] = "mozmake"  # Workaround for bug 948534
+        if zzconstants.IS_MOZILLABUILD_3_OR_OLDER:
+            cfg_env["LIBCLANG_PATH"] = str(win_mozbuild_clang_bin_path)
+            cfg_env["MAKE"] = "mozmake"  # Workaround for bug 948534
         if shell.build_opts.enableAddressSanitizer:
             cfg_env["LDFLAGS"] = (
                 "clang_rt.asan_dynamic-x86_64.lib "
@@ -462,7 +464,7 @@ def sm_compile(shell: SMShell) -> Path:
     :return: Path to the compiled shell
     """
     cmd_list = [
-        constants.MAKE_BINARY,
+        str(zzconstants.MAKE_BINARY_PATH),
         "-C",
         str(shell.js_objdir),
         f"-j{constants.COMPILATION_JOBS}",
@@ -534,7 +536,7 @@ def sm_compile(shell: SMShell) -> Path:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(f"{constants.MAKE_BINARY} did not result in a js shell:")  # noqa: T001
+        print(f"{constants.MAKE_BINARY_PATH} did not result in a js shell:")  # noqa: T001
         with open(
             str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"),
             "a",
@@ -546,7 +548,7 @@ def sm_compile(shell: SMShell) -> Path:
                 f"failed with the following output:\n",
             )
             f.write(out)
-        raise OSError(f"{constants.MAKE_BINARY} did not result in a js shell.")
+        raise OSError(f"{constants.MAKE_BINARY_PATH} did not result in a js shell.")
 
     return shell.shell_compiled_path
 
