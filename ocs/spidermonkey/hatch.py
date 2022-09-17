@@ -560,6 +560,9 @@ def obtain_shell(  # pylint: disable=useless-param-doc
 
     shell.shell_cache_dir.mkdir()
 
+    mozbuild_base_py_file = (
+        shell.build_opts.repo_dir / "python" / "mozbuild" / "mozbuild" / "base.py"
+    )
     try:  # pylint: disable=too-many-try-statements
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
@@ -583,13 +586,17 @@ def obtain_shell(  # pylint: disable=useless-param-doc
                 timeout=9999,
             )
 
+        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file)
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
+        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
     except KeyboardInterrupt:
+        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
+        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
