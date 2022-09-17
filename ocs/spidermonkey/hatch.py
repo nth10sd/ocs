@@ -126,7 +126,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     # Run autoconf 2.13 only if repository revision is before:
     #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
     # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if hg_helpers.exists_and_is_ancestor(
+    if zzconstants.IS_MOZILLABUILD_3_OR_OLDER and hg_helpers.exists_and_is_ancestor(
         shell.build_opts.repo_dir,
         shell.hg_hash,
         "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
@@ -187,7 +187,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         # Add the AUTOCONF env variable if repository revision is before:
         #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
         # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-        if shutil.which("brew") and hg_helpers.exists_and_is_ancestor(
+        if zzconstants.IS_MOZILLABUILD_3_OR_OLDER and shutil.which("brew") and hg_helpers.exists_and_is_ancestor(
             shell.build_opts.repo_dir,
             shell.hg_hash,
             "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
