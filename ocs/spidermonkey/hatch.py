@@ -187,10 +187,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         # Add the AUTOCONF env variable if repository revision is before:
         #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
         # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-        if zzconstants.IS_MOZILLABUILD_3_OR_OLDER and shutil.which("brew") and hg_helpers.exists_and_is_ancestor(
-            shell.build_opts.repo_dir,
-            shell.hg_hash,
-            "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+        if (
+            zzconstants.IS_MOZILLABUILD_3_OR_OLDER
+            and shutil.which("brew")
+            and hg_helpers.exists_and_is_ancestor(
+                shell.build_opts.repo_dir,
+                shell.hg_hash,
+                "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+            )
         ):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.append("sh")
@@ -297,14 +301,18 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     # but before:
     #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
     # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if zzconstants.IS_MOZILLABUILD_3_OR_OLDER or hg_helpers.exists_and_is_ancestor(
-        shell.build_opts.repo_dir,
-        shell.hg_hash,
-        "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
-    ) and not hg_helpers.exists_and_is_ancestor(
-        shell.build_opts.repo_dir,
-        shell.hg_hash,
-        "parents(c69826ee93e91671fd5c87f01ac7bd2b483c991f)",
+    if (
+        zzconstants.IS_MOZILLABUILD_3_OR_OLDER
+        or hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+        )
+        and not hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(c69826ee93e91671fd5c87f01ac7bd2b483c991f)",
+        )
     ):
         cfg_cmds.append("--disable-bootstrap")
     cfg_cmds.append("--disable-tests")
@@ -536,7 +544,9 @@ def sm_compile(shell: SMShell) -> Path:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(f"{constants.MAKE_BINARY_PATH} did not result in a js shell:")  # noqa: T001
+        print(  # noqa: T001
+            f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell:"
+        )
         with open(
             str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"),
             "a",
@@ -548,7 +558,7 @@ def sm_compile(shell: SMShell) -> Path:
                 f"failed with the following output:\n",
             )
             f.write(out)
-        raise OSError(f"{constants.MAKE_BINARY_PATH} did not result in a js shell.")
+        raise OSError(f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell.")
 
     return shell.shell_compiled_path
 
