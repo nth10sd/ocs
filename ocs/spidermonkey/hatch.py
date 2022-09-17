@@ -574,12 +574,16 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     :param update_to_rev: Specified revision to be updated to
     :param _update_latest_txt: Whether latest .txt should be updated (likely obsolete)
 
+    :raise RuntimeError: If MozillaBuild versions prior to 4.0 are used
     :raise FileNotFoundError: If lock dir is not a directory
     :raise OSError: When a cached failed-compile shell was found, or when compile failed
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-complex
+    if zzconstants.IS_MOZILLABUILD_3_OR_OLDER:
+        raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
+
     lock_dir = get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
     if not lock_dir.is_dir():
         raise FileNotFoundError(f"{lock_dir} is not a directory")
