@@ -603,18 +603,45 @@ def obtain_shell(  # pylint: disable=useless-param-doc
                 stderr=subprocess.DEVNULL,
                 timeout=9999,
             )
-
-        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file)
+        # Patch only on Windows platforms if repository revision is before:
+        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+        ):
+            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file)
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
-        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+        # Patch only on Windows platforms if repository revision is before:
+        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+        ):
+            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
     except KeyboardInterrupt:
-        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+        # Patch only on Windows platforms if repository revision is before:
+        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+        ):
+            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
-        utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+        # Patch only on Windows platforms if repository revision is before:
+        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+            shell.build_opts.repo_dir,
+            shell.hg_hash,
+            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+        ):
+            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
