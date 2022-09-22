@@ -554,7 +554,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    # pylint: disable=too-complex
+    # pylint: disable=too-complex,too-many-branches
     if zzconstants.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
