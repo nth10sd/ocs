@@ -510,7 +510,6 @@ def sm_compile(shell: SMShell) -> Path:
         jspc_new_file_path = shell.js_objdir / "js" / "src" / "build" / "js.pc"
         with open(
             str(jspc_new_file_path),
-            mode="r",
             encoding="utf-8",
             errors="replace",
         ) as f:
