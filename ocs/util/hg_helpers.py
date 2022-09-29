@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import configparser
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -35,7 +34,7 @@ def exists_and_is_ancestor(
             "--template={node|short}",
         ],
         check=False,
-        cwd=os.getcwd(),
+        cwd=Path.cwd(),
         stderr=subprocess.STDOUT,
         stdout=subprocess.PIPE,
         timeout=999,
@@ -71,7 +70,7 @@ def get_repo_hash_and_id(
     ]
     hg_id_full = subprocess.run(
         hg_log_template_cmds,
-        cwd=os.getcwd(),
+        cwd=Path.cwd(),
         check=True,
         stdout=subprocess.PIPE,
         timeout=99,
@@ -103,7 +102,7 @@ def get_repo_hash_and_id(
             raise ValueError("Invalid choice.")
         hg_id_full = subprocess.run(
             hg_log_template_cmds,
-            cwd=os.getcwd(),
+            cwd=Path.cwd(),
             check=True,
             stdout=subprocess.PIPE,
             timeout=99,

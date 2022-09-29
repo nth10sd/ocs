@@ -159,7 +159,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     :raise CalledProcessError: If the shell failed to compile
     """
     # pylint: disable=too-many-statements
-    cfg_cmds = []
+    cfg_cmds: list[str] = []
     cfg_env = dict(os.environ.copy())
     orig_cfg_env = dict(os.environ.copy())
     if platform.system() != "Windows":
@@ -172,10 +172,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         # Also run this: `rustup target add i686-unknown-linux-gnu`
         cfg_env["CC"] = f"clang {constants.SSE2_FLAGS}"
         cfg_env["CXX"] = f"clang++ {constants.SSE2_FLAGS}"
-        cfg_cmds.append("sh")
-        cfg_cmds.append(str(shell.js_cfg_path))
-        cfg_cmds.append("--host=x86_64-pc-linux-gnu")
-        cfg_cmds.append("--target=i686-pc-linux")
+        cfg_cmds.extend(
+            (
+                "sh",
+                str(shell.js_cfg_path),
+                "--host=x86_64-pc-linux-gnu",
+                "--target=i686-pc-linux",
+            )
+        )
         if shell.build_opts.enableSimulatorArm32:
             cfg_cmds.append("--enable-simulator=arm")
     # 64-bit shell on macOS 10.13 El Capitan and greater
@@ -193,8 +197,12 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
         ):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
-        cfg_cmds.append("sh")
-        cfg_cmds.append(str(shell.js_cfg_path))
+        cfg_cmds.extend(
+            (
+                "sh",
+                str(shell.js_cfg_path),
+            )
+        )
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
@@ -238,21 +246,37 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                     f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
                 )
             cfg_env["LIB"] = cfg_env.get("LIB", "") + cfg_env["CLANG_LIB_DIR"]
-        cfg_cmds.append("sh")
-        cfg_cmds.append(str(shell.js_cfg_path))
+        cfg_cmds.extend(
+            (
+                "sh",
+                str(shell.js_cfg_path),
+            )
+        )
         if shell.build_opts.enable32:
-            cfg_cmds.append("--host=x86_64-pc-mingw32")
-            cfg_cmds.append("--target=i686-pc-mingw32")
+            cfg_cmds.extend(
+                (
+                    "--host=x86_64-pc-mingw32",
+                    "--target=i686-pc-mingw32",
+                )
+            )
             if shell.build_opts.enableSimulatorArm32:
                 cfg_cmds.append("--enable-simulator=arm")
         else:
-            cfg_cmds.append("--host=x86_64-pc-mingw32")
-            cfg_cmds.append("--target=x86_64-pc-mingw32")
+            cfg_cmds.extend(
+                (
+                    "--host=x86_64-pc-mingw32",
+                    "--target=x86_64-pc-mingw32",
+                )
+            )
             if shell.build_opts.enableSimulatorArm64:
                 cfg_cmds.append("--enable-simulator=arm64")
     else:
-        cfg_cmds.append("sh")
-        cfg_cmds.append(str(shell.js_cfg_path))
+        cfg_cmds.extend(
+            (
+                "sh",
+                str(shell.js_cfg_path),
+            )
+        )
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
@@ -278,18 +302,30 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append("--without-intl-api")
 
     if shell.build_opts.enableAddressSanitizer:
-        cfg_cmds.append("--enable-address-sanitizer")
-        cfg_cmds.append("--disable-jemalloc")
+        cfg_cmds.extend(
+            (
+                "--enable-address-sanitizer",
+                "--disable-jemalloc",
+            )
+        )
     if shell.build_opts.enableValgrind:
-        cfg_cmds.append("--enable-valgrind")
-        cfg_cmds.append("--disable-jemalloc")
+        cfg_cmds.extend(
+            (
+                "--enable-valgrind",
+                "--disable-jemalloc",
+            )
+        )
 
     # We add the following flags by default.
     if os.name == "posix":
         cfg_cmds.append("--with-ccache")
-    cfg_cmds.append("--enable-gczeal")
-    cfg_cmds.append("--enable-debug-symbols")  # gets debug symbols on opt shells
-    cfg_cmds.append("--disable-tests")
+    cfg_cmds.extend(
+        (
+            "--enable-gczeal",
+            "--enable-debug-symbols",  # gets debug symbols on opt shells
+            "--disable-tests",
+        )
+    )
 
     if (
         platform.system() == "Linux"
@@ -313,17 +349,17 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             counter += 1
 
     # Print whatever we added to the environment
-    env_vars = []
+    env_vars: list[str] = []
     for env_var in set(cfg_env.keys()) - set(orig_cfg_env.keys()):
         str_to_be_appended = (
-            f'{env_var}="{cfg_env[str(env_var)]}"'
-            if " " in cfg_env[str(env_var)]
-            else f"{env_var}={cfg_env[str(env_var)]}"
+            f'{env_var}="{cfg_env[env_var]}"'
+            if " " in cfg_env[env_var]
+            else f"{env_var}={cfg_env[env_var]}"
         )
         env_vars.append(str_to_be_appended)
     utils.vdump(
-        f'Command to be run is: {" ".join(quote(str(x)) for x in env_vars)} '
-        f'{" ".join(quote(str(x)) for x in cfg_cmds)}',
+        f'Command to be run is: {" ".join(quote(x) for x in env_vars)} '
+        f'{" ".join(quote(x) for x in cfg_cmds)}',
     )
 
     if not shell.js_objdir.is_dir():
@@ -404,7 +440,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
     elif platform.system() == "Windows":
         fmconf_os = "windows"
 
-    with open(str(log_), "a", encoding="utf-8", errors="replace") as f:
+    with log_.open("a", encoding="utf-8", errors="replace") as f:
         f.write("# Information about shell:\n# \n")
 
         f.write("# Create another shell in shell-cache like this one:\n")
@@ -418,8 +454,8 @@ def env_dump(shell: SMShell, log_: Path) -> None:
 
         f.write("# Full configuration command with needed environment variables is:\n")
         f.write(
-            f'# {" ".join(quote(str(x)) for x in shell.env_added)} '
-            f'{" ".join(quote(str(x)) for x in shell.cfg_cmd_excl_env)}\n# \n',
+            f'# {" ".join(quote(x) for x in shell.env_added)} '
+            f'{" ".join(quote(x) for x in shell.cfg_cmd_excl_env)}\n# \n',
         )
 
         # .fuzzmanagerconf details
@@ -465,7 +501,7 @@ def sm_compile(shell: SMShell) -> Path:
     ).stdout.decode("utf-8", errors="replace")
 
     if not shell.shell_compiled_path.is_file():
-        if (platform.system() == "Linux" or platform.system() == "Darwin") and (
+        if platform.system() in {"Linux", "Darwin"} and (
             "internal compiler error: Killed (program cc1plus)" in out
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
@@ -508,11 +544,7 @@ def sm_compile(shell: SMShell) -> Path:
             )
 
         jspc_new_file_path = shell.js_objdir / "js" / "src" / "build" / "js.pc"
-        with open(
-            str(jspc_new_file_path),
-            encoding="utf-8",
-            errors="replace",
-        ) as f:
+        with jspc_new_file_path.open(encoding="utf-8", errors="replace") as f:
             for line in f:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
@@ -598,7 +630,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
                     update_to_rev,
                 ],
                 check=True,
-                cwd=os.getcwd(),
+                cwd=Path.cwd(),
                 stderr=subprocess.DEVNULL,
                 timeout=9999,
             )
@@ -648,7 +680,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
             shell.shell_cache_js_bin_path.is_file()
         ):  # Switch to contextlib.suppress when we are fully on Python 3
             shell.shell_cache_js_bin_path.unlink()
-        with open(str(cached_no_shell), "a", encoding="utf-8", errors="replace") as f:
+        with cached_no_shell.open("a", encoding="utf-8", errors="replace") as f:
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
@@ -669,7 +701,7 @@ def arch_of_binary(binary: Path) -> str:
     unsplit_file_type = subprocess.run(
         ["file", str(binary)],
         check=True,
-        cwd=os.getcwd(),
+        cwd=Path.cwd(),
         stdout=subprocess.PIPE,
         timeout=99,
     ).stdout.decode("utf-8", errors="replace")
@@ -713,7 +745,7 @@ def test_binary(
     if use_vg:
         print("Using Valgrind to test...")  # noqa: T001
     test_cmd = [str(shell_path)] + args
-    utils.vdump(f'The testing command is: {" ".join(quote(str(x)) for x in test_cmd)}')
+    utils.vdump(f'The testing command is: {" ".join(quote(x) for x in test_cmd)}')
 
     test_env = env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={constants.ASAN_ERROR_EXIT_CODE}"
@@ -736,7 +768,7 @@ def test_binary(
     test_cmd_result = subprocess.run(
         test_cmd,
         check=False,
-        cwd=os.getcwd(),
+        cwd=Path.cwd(),
         env=test_env,
         stderr=stderr,
         stdout=subprocess.PIPE,

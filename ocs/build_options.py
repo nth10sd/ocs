@@ -279,8 +279,12 @@ def compute_shell_type(  # pylint: disable=too-complex
         file_name.append("armsim32")
     if build_options.enableSimulatorArm64:
         file_name.append("armsim64")
-    file_name.append(platform.system().lower())
-    file_name.append(platform.machine().lower())
+    file_name.extend(
+        (
+            platform.system().lower(),
+            platform.machine().lower(),
+        )
+    )
 
     if "" in file_name:
         raise ValueError(f'Filename "{file_name!r}" should not have empty elements.')

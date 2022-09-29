@@ -46,11 +46,14 @@ if platform.system() == "Windows":
         RUN_TESTPLUG_LIB,
     ]
 
-    # Needs to be updated when the earliest known working revision changes. Currently:
-    # m-c 599232 Fx96, 1st w/ working Windows builds using SDK 10.0.19041.0
-    WIN_ICU_VERS = [69]  # prior version
-    WIN_ICU_VERS.append(70)  # m-c 599344 Fx96, 1st w/ ICU 70.1, see bug 1738422
-    WIN_ICU_VERS.append(71)  # m-c 613773 Fx101, 1st w/ ICU 71.1, see bug 1763783
+    # Needs to be updated when the earliest known working revision changes
+    WIN_ICU_VERS: list[int] = []  # Current earliest known working rev: m-c 633690 Fx106
+    WIN_ICU_VERS.extend(
+        (
+            71,  # prior version
+            # 72,  # m-c ?????? Fx???
+        )
+    )
 
     # Search for changes to the versioning of the ICU files:
     # https://bit.ly/3jgrTSK
@@ -64,29 +67,28 @@ if platform.system() == "Windows":
     # Debug builds seem to have their debug "d" notation *before* the ICU version.
     # https://searchfox.org/mozilla-central/search?q=%24%28IcuBinOutputDir%29%5Cicudt
     for icu_ver in WIN_ICU_VERS:
-        ALL_RUN_LIBS.append(f"{RUN_ICUUC_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUUC_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUUC_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-        ALL_RUN_LIBS.append(f"{RUN_ICUIN_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUIN_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUIN_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-        ALL_RUN_LIBS.append(f"{RUN_ICUIO_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUIO_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUIO_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-        ALL_RUN_LIBS.append(f"{RUN_ICUDT_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUDT_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUDT_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-        ALL_RUN_LIBS.append(f"{RUN_ICUTEST_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUTEST_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUTEST_LIB_EXCL_EXT}{icu_ver}d.dll")
-
-        ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}d{icu_ver}.dll")
-        ALL_RUN_LIBS.append(f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}d.dll")
+        ALL_RUN_LIBS.extend(
+            (
+                f"{RUN_ICUUC_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUUC_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUUC_LIB_EXCL_EXT}{icu_ver}d.dll",
+                f"{RUN_ICUIN_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUIN_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUIN_LIB_EXCL_EXT}{icu_ver}d.dll",
+                f"{RUN_ICUIO_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUIO_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUIO_LIB_EXCL_EXT}{icu_ver}d.dll",
+                f"{RUN_ICUDT_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUDT_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUDT_LIB_EXCL_EXT}{icu_ver}d.dll",
+                f"{RUN_ICUTEST_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUTEST_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUTEST_LIB_EXCL_EXT}{icu_ver}d.dll",
+                f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}.dll",
+                f"{RUN_ICUTU_LIB_EXCL_EXT}d{icu_ver}.dll",
+                f"{RUN_ICUTU_LIB_EXCL_EXT}{icu_ver}d.dll",
+            )
+        )
 else:
     SSE2_FLAGS: Final = "-msse2 -mfpmath=sse"  # See bug 948321
 
