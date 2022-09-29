@@ -212,7 +212,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
         build_options.build_options_str = args
         valid = are_args_valid(build_options)
         if not valid[0]:
-            print(  # noqa: T001
+            print(  # noqa: T201
                 "WARNING: This set of build options is not tested well "
                 f"because: {valid[1]}",
             )
@@ -432,21 +432,21 @@ def gen_rnd_cfgs(
 
 def main() -> None:
     """Main build_options function, generates sample random build configurations."""
-    print(  # noqa: T001
+    print(  # noqa: T201
         "Here are some sample random build configurations that can be generated:",
     )
     parser, randomizer = add_parser_opts()
 
     for _ in range(30):
         build_options = gen_rnd_cfgs(parser, randomizer)
-        print(build_options.build_options_str)  # noqa: T001
+        print(build_options.build_options_str)  # noqa: T201
 
-    print()  # noqa: T001
-    print(  # noqa: T001
+    print()  # noqa: T201
+    print(  # noqa: T201
         "Running this file directly doesn't do anything, "
         "but here's our subparser help:",
     )
-    print()  # noqa: T001
+    print()  # noqa: T201
     parser.parse_args()
 
 

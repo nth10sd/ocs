@@ -20,7 +20,7 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
         / "gflags.exe"
     )
     if gflags_bin_path.is_file() and shell_path.is_file():
-        print(  # noqa: T001
+        print(  # noqa: T201
             subprocess.run(
                 [
                     str(gflags_bin_path),

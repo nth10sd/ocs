@@ -82,7 +82,7 @@ def get_repo_hash_and_id(
         )
         update_default = update_default.strip()
         if update_default == "a":
-            print("Aborting...")  # noqa: T001
+            print("Aborting...")  # noqa: T201
             sys.exit(0)
         elif update_default == "d":
             subprocess.run(["hg", "-R", str(repo_dir), "update", "default"], check=True)

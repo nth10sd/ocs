@@ -64,7 +64,7 @@ class SMShell(CommonShell):
         try:
             return cls.run(args)
         except CommonShellError as ex:
-            print(repr(ex))  # noqa: T001
+            print(repr(ex))  # noqa: T201
             # SM_HATCH_LOG.error(ex)
             return 1
 
@@ -90,7 +90,7 @@ class SMShell(CommonShell):
                 shell = SMShell(options.build_opts, local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
-            print(shell.shell_cache_js_bin_path)  # noqa: T001
+            print(shell.shell_cache_js_bin_path)  # noqa: T201
 
         return 0
 
@@ -116,7 +116,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     :param shell: Potential compiled shell object
     """
-    print(  # noqa: T001  # Print *with* a trailing newline to stop breaking other stuff
+    print(  # noqa: T201  # Print *with* a trailing newline to stop breaking other stuff
         "Compiling...",
     )
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
@@ -506,7 +506,7 @@ def sm_compile(shell: SMShell) -> Path:
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
         ):  # Clang running out of memory
-            print(  # noqa: T001
+            print(  # noqa: T201
                 "Trying once more due to the compiler running out of memory...",
             )
             out = subprocess.run(
@@ -519,7 +519,7 @@ def sm_compile(shell: SMShell) -> Path:
             ).stdout.decode("utf-8", errors="replace")
         # `make` can return a non-zero error, but later a shell still gets compiled.
         if shell.shell_compiled_path.is_file():
-            print(  # noqa: T001
+            print(  # noqa: T201
                 "A shell was compiled even though there was a non-zero exit code. "
                 "Continuing...",
             )
@@ -549,7 +549,7 @@ def sm_compile(shell: SMShell) -> Path:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(  # noqa: T001
+        print(  # noqa: T201
             f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell:"
         )
         with open(
@@ -595,7 +595,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
-        print("Found cached shell...")  # noqa: T001
+        print("Found cached shell...")  # noqa: T201
         # Assuming that since binary is present, others (e.g. symbols) are also present
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
@@ -604,7 +604,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
-        print("Found a cache dir without a successful/failed shell...")  # noqa: T001
+        print("Found a cache dir without a successful/failed shell...")  # noqa: T201
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
 
     shell.shell_cache_dir.mkdir()
@@ -615,7 +615,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
     try:  # pylint: disable=too-many-try-statements
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
-            print(  # noqa: T001
+            print(  # noqa: T201
                 f"Updating to rev {update_to_rev} in the "
                 f"{shell.build_opts.repo_dir} repository...",
             )
@@ -684,7 +684,7 @@ def obtain_shell(  # pylint: disable=useless-param-doc
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
-        print(f"Compilation failed ({ex}) (details in {cached_no_shell})")  # noqa: T001
+        print(f"Compilation failed ({ex}) (details in {cached_no_shell})")  # noqa: T201
         raise
 
 
@@ -743,7 +743,7 @@ def test_binary(
     :return: Tuple comprising the stdout of the run command and its return code
     """
     if use_vg:
-        print("Using Valgrind to test...")  # noqa: T001
+        print("Using Valgrind to test...")  # noqa: T201
     test_cmd = [str(shell_path)] + args
     utils.vdump(f'The testing command is: {" ".join(quote(x) for x in test_cmd)}')
 
