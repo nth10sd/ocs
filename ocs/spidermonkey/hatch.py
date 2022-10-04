@@ -568,16 +568,13 @@ def sm_compile(shell: SMShell) -> Path:
     return shell.shell_compiled_path
 
 
-def obtain_shell(  # pylint: disable=useless-param-doc
-    shell: SMShell,
-    update_to_rev: str | None = None,
-    _update_latest_txt: bool = False,
+def obtain_shell(
+    shell: SMShell, update_to_rev: str | None = None, _update_latest_txt: bool = False
 ) -> None:
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols.
 
     :param shell: Potential compiled shell object
     :param update_to_rev: Specified revision to be updated to
-    :param _update_latest_txt: Whether latest .txt should be updated (likely obsolete)
 
     :raise RuntimeError: If MozillaBuild versions prior to 4.0 are used
     :raise FileNotFoundError: If lock dir is not a directory
