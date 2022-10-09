@@ -305,7 +305,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             (
                 "--enable-address-sanitizer",
+                "--enable-fuzzing",
                 "--disable-jemalloc",
+                "--disable-stdcxx-compat",
             )
         )
     if shell.build_opts.enableValgrind:
@@ -321,8 +323,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append("--with-ccache")
     cfg_cmds.extend(
         (
+            "--enable-ctypes",
+            # gets debug symbols on opt shells
+            "--enable-debug-symbols=-gline-tables-only -gdwarf-2",
             "--enable-gczeal",
-            "--enable-debug-symbols",  # gets debug symbols on opt shells
+            # Look at js/src/devtools/automation/variants/fuzzing as of 2022-10-09:
+            # m-c rev c4bdea458a08b975ffd70faed4a2f6fbe1e563bc
+            "--enable-nspr-build",
+            "--enable-rust-simd",
             "--disable-tests",
         )
     )
