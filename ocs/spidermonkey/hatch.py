@@ -339,10 +339,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         )
     )
 
-    if (
-        platform.system() == "Linux"
-        and distro.linux_distribution(full_distribution_name=False)[0] == "gentoo"
-    ):
+    if platform.system() == "Linux" and distro.id() == "gentoo":
         path_to_libclang = (
             "/usr/lib/llvm/"
             f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
