@@ -323,12 +323,16 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.append("--with-ccache")
     # Building with NSPR is standard on upstream. However, local 32-bit builds need NSPR
     # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
-    # set, so this is probably not worth the effort.
+    # set, so this is probably not worth the effort. Also, ctypes has 32-bit issues.
     if not shell.build_opts.enable32:
-        cfg_cmds.append("--enable-nspr-build")
+        cfg_cmds.extend(
+            (
+                "--enable-nspr-build",
+                "--enable-ctypes",
+            )
+        )
     cfg_cmds.extend(
         (
-            "--enable-ctypes",
             # gets debug symbols on opt shells
             "--enable-debug-symbols",
             "--enable-gczeal",
