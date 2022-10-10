@@ -394,7 +394,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 env=cfg_env,
                 stderr=subprocess.STDOUT,
                 stdout=subprocess.PIPE,
-            ).stdout.decode("utf-8", errors="replace")
+            )
         else:
             subprocess.run(
                 cfg_cmds,
@@ -403,7 +403,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 env=cfg_env,
                 stderr=subprocess.STDOUT,
                 stdout=subprocess.PIPE,
-            ).stdout.decode("utf-8", errors="replace")
+            )
     except subprocess.CalledProcessError as ex:
         with open(
             str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"),
