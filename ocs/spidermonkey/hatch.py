@@ -321,6 +321,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     # We add the following flags by default.
     if os.name == "posix":
         cfg_cmds.append("--with-ccache")
+    # Building with NSPR is standard on upstream. However, local 32-bit builds need NSPR
+    # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
+    # set, so this is probably not worth the effort.
+    if not shell.build_opts.enable32:
+        cfg_cmds.append("--enable-nspr-build")
     cfg_cmds.extend(
         (
             "--enable-ctypes",
@@ -329,7 +334,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             "--enable-gczeal",
             # Look at js/src/devtools/automation/variants/fuzzing as of 2022-10-09:
             # m-c rev c4bdea458a08b975ffd70faed4a2f6fbe1e563bc
-            "--enable-nspr-build",
             "--enable-rust-simd",
             "--disable-tests",
         )
