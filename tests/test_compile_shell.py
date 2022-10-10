@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from functools import cache
 import os
 from pathlib import Path
@@ -73,6 +74,7 @@ def test_shell_compile() -> Path:
         js_bin_path = js_bin_path.with_suffix(".exe")
     assert js_bin_path.is_file()
 
-    SHELL_CACHE.rmdir()  # Cleanup shell-cache test directory
+    with contextlib.suppress(OSError):
+        SHELL_CACHE.rmdir()  # Cleanup shell-cache test directory only if empty
 
     return js_bin_path
