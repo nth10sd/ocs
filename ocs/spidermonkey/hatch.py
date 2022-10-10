@@ -325,7 +325,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         (
             "--enable-ctypes",
             # gets debug symbols on opt shells
-            "--enable-debug-symbols=-gline-tables-only -gdwarf-2",
+            "--enable-debug-symbols",
             "--enable-gczeal",
             # Look at js/src/devtools/automation/variants/fuzzing as of 2022-10-09:
             # m-c rev c4bdea458a08b975ffd70faed4a2f6fbe1e563bc
