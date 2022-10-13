@@ -7,8 +7,10 @@ from functools import cache
 import os
 from pathlib import Path
 import platform
+import sys
 
 import pytest
+from zzbase.patching.common import patch_files
 
 from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
@@ -29,6 +31,27 @@ def test_shell_compile() -> Path:
     assert MC_PATH.is_dir()
     # Change the repository location by uncommenting this line and specifying the
     # correct one: "-R ~/trees/mozilla-central/")
+
+    # Look for custom coverage.py patch
+    venv_site_packages = (
+        next((Path(sys.executable).parents[1] / "lib").glob("*")) / "site-packages"
+    )
+    patch_files(
+        venv_site_packages,
+        (
+            venv_site_packages
+            / "zzbase"
+            / "data"
+            / "pypi_library_patches"
+            / "coverage"
+            / "64130ee5-patch-for-m-c-to-work.diff"
+        ),
+        1,
+    )
+    assert (
+        "Monkeypatching coverage rev"
+        in (venv_site_packages / "coverage" / "inorout.py").read_text()
+    )
 
     default_parameters_debug = (
         "--enable-debug --disable-optimize --enable-oom-breakpoint"
