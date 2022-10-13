@@ -15,6 +15,7 @@ build-backend = "setuptools.build_meta"
 # Ensure bandit_targets under [tool.pytest.ini_options] is set as the package name
 
 [tool.coverage.run]
+concurrency = ["multiprocessing"]
 omit = [
     "*/__main__.py",
     "*/build/*",
@@ -22,6 +23,8 @@ omit = [
     "*/.tox/*",
     "*/.egg/*",
 ]
+parallel = true
+sigterm = true
 source = [
     "ocs/",
     "tests/",
