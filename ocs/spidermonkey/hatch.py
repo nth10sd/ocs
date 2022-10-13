@@ -17,6 +17,7 @@ from typing import IO
 
 import distro
 from packaging.version import parse
+from zzbase.patching.mozilla.windows import patch_mozbuild_base_py_file
 from zzbase.util import constants as zzconstants
 from zzbase.util import utils
 
@@ -651,7 +652,7 @@ def obtain_shell(
             shell.hg_hash,
             "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
         ):
-            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file)
+            patch_mozbuild_base_py_file(mozbuild_base_py_file)
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
@@ -662,7 +663,7 @@ def obtain_shell(
             shell.hg_hash,
             "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
         ):
-            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+            patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
     except KeyboardInterrupt:
         # Patch only on Windows platforms if repository revision is before:
         #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
@@ -671,7 +672,7 @@ def obtain_shell(
             shell.hg_hash,
             "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
         ):
-            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+            patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
@@ -682,7 +683,7 @@ def obtain_shell(
             shell.hg_hash,
             "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
         ):
-            utils.patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+            patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
