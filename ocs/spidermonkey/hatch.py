@@ -20,6 +20,7 @@ from packaging.version import parse
 from zzbase.patching.mozilla.windows import patch_mozbuild_base_py_file
 from zzbase.util import constants as zzconstants
 from zzbase.util import utils
+from zzbase.util.logging import get_logger
 
 from ocs import build_options
 from ocs.common.hatch import CommonShell
@@ -32,7 +33,6 @@ from ocs.util.fs_helpers import bash_piping as piping
 from ocs.util.fs_helpers import env_with_path
 from ocs.util.fs_helpers import get_lock_dir_path
 from ocs.util.fs_helpers import handle_rm_readonly_files
-from ocs.util.logging import get_logger
 
 SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
 SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
