@@ -220,7 +220,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 f"llvm-config.exe not found at: {win_mozbuild_clang_bin_path}",
             )
         if shell.build_opts.enableAddressSanitizer:
-            cfg_env["LDFLAGS"] = (
+            cfg_env["LIBS"] = (
                 "clang_rt.asan_dynamic-x86_64.lib "
                 "clang_rt.asan_dynamic_runtime_thunk-x86_64.lib"
             )
