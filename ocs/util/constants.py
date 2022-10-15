@@ -23,7 +23,6 @@ RUN_MOZGLUE_LIB = ""
 RUN_NSPR_LIB = ""
 RUN_PLDS_LIB = ""
 RUN_PLC_LIB = ""
-RUN_TESTPLUG_LIB = ""
 
 if platform.system() == "Windows":
     CLANG_VER: Final = "12.0.0"
@@ -34,7 +33,6 @@ if platform.system() == "Windows":
     RUN_NSPR_LIB = "nspr4.dll"
     RUN_PLDS_LIB = "plds4.dll"
     RUN_PLC_LIB = "plc4.dll"
-    RUN_TESTPLUG_LIB = "testplug.dll"
 
     # These include running the js shell (mozglue) and should be in dist/bin.
     # At least Windows required the ICU libraries.
@@ -43,7 +41,6 @@ if platform.system() == "Windows":
         RUN_NSPR_LIB,
         RUN_PLDS_LIB,
         RUN_PLC_LIB,
-        RUN_TESTPLUG_LIB,
     ]
 
     # Needs to be updated when the earliest known working revision changes
