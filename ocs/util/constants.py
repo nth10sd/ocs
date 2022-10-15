@@ -25,7 +25,7 @@ RUN_PLDS_LIB = ""
 RUN_PLC_LIB = ""
 
 if platform.system() == "Windows":
-    CLANG_VER: Final = "12.0.0"
+    CLANG_VER: Final = "14.0.5"
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
 
     # Library-related
