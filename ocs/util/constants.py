@@ -94,6 +94,9 @@ else:
 
     if platform.system() == "Darwin":
         RUN_MOZGLUE_LIB = "libmozglue.dylib"
+        RUN_NSPR_LIB = "libnspr4.dylib"
+        RUN_PLDS_LIB = "libplds4.dylib"
+        RUN_PLC_LIB = "libplc4.dylib"
     elif platform.system() == "Linux":
         RUN_MOZGLUE_LIB = "libmozglue.so"
     else:
