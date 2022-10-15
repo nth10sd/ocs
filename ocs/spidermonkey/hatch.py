@@ -18,6 +18,7 @@ from typing import IO
 import distro
 from packaging.version import parse
 from zzbase.patching.mozilla.windows import patch_mozbuild_base_py_file
+from zzbase.patching.mozilla.windows import patch_windowsdllmain
 from zzbase.util import constants as zzconstants
 from zzbase.util import utils
 from zzbase.util.logging import get_logger
@@ -597,7 +598,7 @@ def obtain_shell(
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    # pylint: disable=too-complex,too-many-branches
+    # pylint: disable=too-complex,too-many-branches,too-many-statements
     if zzconstants.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
@@ -624,6 +625,9 @@ def obtain_shell(
     mozbuild_base_py_file = (
         shell.build_opts.repo_dir / "python" / "mozbuild" / "mozbuild" / "base.py"
     )
+    windowsdllmain_file = (
+        shell.build_opts.repo_dir / "mozglue" / "misc" / "WindowsDllMain.cpp"
+    )
     try:  # pylint: disable=too-many-try-statements
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
@@ -646,25 +650,30 @@ def obtain_shell(
                 stderr=subprocess.DEVNULL,
                 timeout=9999,
             )
-        # Patch only on Windows platforms if repository revision is before:
-        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
-        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
-            shell.build_opts.repo_dir,
-            shell.hg_hash,
-            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
-        ):
-            patch_mozbuild_base_py_file(mozbuild_base_py_file)
+        if platform.system() == "Windows":
+            if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
+                patch_windowsdllmain(windowsdllmain_file)
+            if hg_helpers.exists_and_is_ancestor(
+                shell.build_opts.repo_dir,
+                shell.hg_hash,
+                "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+            ):
+                # Patch only on Windows platforms if repository revision is before:
+                #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+                patch_mozbuild_base_py_file(mozbuild_base_py_file)
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
-        # Patch only on Windows platforms if repository revision is before:
-        #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
-        if platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
-            shell.build_opts.repo_dir,
-            shell.hg_hash,
-            "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
-        ):
-            patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
+            if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
+                patch_windowsdllmain(windowsdllmain_file, revert=True)
+            if hg_helpers.exists_and_is_ancestor(
+                shell.build_opts.repo_dir,
+                shell.hg_hash,
+                "parents(8e4ceab106b12c3816163829494ac5e7938a6be6)",
+            ):
+                # Patch only on Windows platforms if repository revision is before:
+                #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
+                patch_mozbuild_base_py_file(mozbuild_base_py_file, revert=True)
     except KeyboardInterrupt:
         # Patch only on Windows platforms if repository revision is before:
         #   m-c rev 635941:8e4ceab106b12c3816163829494ac5e7938a6be6, Fx107
