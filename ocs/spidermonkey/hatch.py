@@ -308,9 +308,10 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 "--enable-address-sanitizer",
                 "--enable-fuzzing",
                 "--disable-jemalloc",
-                "--disable-stdcxx-compat",
             )
         )
+        if platform.system() == "Linux":
+            cfg_cmds.append("--disable-stdcxx-compat")
     if shell.build_opts.enableValgrind:
         cfg_cmds.extend(
             (
