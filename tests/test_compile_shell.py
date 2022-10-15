@@ -59,12 +59,12 @@ def test_shell_compile() -> Path:
     )
 
     default_parameters_debug = (
-        "--enable-debug --disable-optimize --enable-oom-breakpoint"
+        "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
     )
     if platform.system() == "Linux":
         default_parameters_debug += " --enable-valgrind"
-    # Remember to update the corresponding BUILD build parameters in .travis.yml as well
-    build_opts = os.getenv("BUILD", default_parameters_debug)
+    # Remember to update the corresponding BUILDSM build parameters in CI as well
+    build_opts = os.getenv("BUILDSM", default_parameters_debug)
 
     opts_parsed = build_options.parse_shell_opts(build_opts)
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
@@ -78,16 +78,16 @@ def test_shell_compile() -> Path:
     if default_parameters_debug in build_opts:
         # Test compiling a debug shell w/OOM breakpoint support - Valgrind only on Linux
         file_name = (
-            f"js-dbg-optDisabled-64{valgrind_name_param}-oombp-"
+            f"js-dbg-optDisabled-64{valgrind_name_param}-oombp-intlDisabled-"
             f"{platform.system().lower()}-{platform.machine().lower()}-"
             f"{hg_hash_of_default}"
         )
-    elif "--disable-debug --disable-profiling --without-intl-api" in build_opts:
-        # Test compilation of an opt shell with both profiling and Intl support disabled
-        # This set of builds should also have the following:
-        # 32-bit with ARM, with asan, and with clang
+    elif (
+        "--disable-debug --disable-profiling --enable-address-sanitizer"
+    ) in build_opts:
+        # Test compilation of an opt ASan shell with profiling disabled
         file_name = (
-            f"js-64-profDisabled-intlDisabled-{platform.system().lower()}-"
+            f"js-64-profDisabled-asan-{platform.system().lower()}-"
             f"{platform.machine().lower()}-"
             f"{hg_hash_of_default}"
         )
