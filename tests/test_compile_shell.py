@@ -11,6 +11,7 @@ import sys
 
 import pytest
 from zzbase.patching.common import patch_files
+from zzbase.util.constants import MOZILLABUILD_VERSION
 
 from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
@@ -34,7 +35,11 @@ def test_shell_compile() -> Path:
 
     # Look for custom coverage.py patch
     venv_site_packages = (
-        next((Path(sys.executable).parents[1] / "lib").glob("*")) / "site-packages"
+        (Path(sys.executable).parent / "lib") / "site-packages"
+        if MOZILLABUILD_VERSION
+        else (
+            next((Path(sys.executable).parents[1] / "lib").glob("*")) / "site-packages"
+        )
     )
     patch_files(
         venv_site_packages,
