@@ -17,7 +17,7 @@ from typing import IO
 
 import distro
 from packaging.version import parse
-from zzbase.patching.mozilla.windows import patch_windowsdllmain
+from zzbase.patching.common import patch_files
 from zzbase.util import constants as zzconstants
 from zzbase.util import utils
 from zzbase.util.logging import get_logger
@@ -621,9 +621,6 @@ def obtain_shell(
 
     shell.shell_cache_dir.mkdir()
 
-    windowsdllmain_file = (
-        shell.build_opts.repo_dir / "mozglue" / "misc" / "WindowsDllMain.cpp"
-    )
     try:  # pylint: disable=too-many-try-statements
         if update_to_rev:
             # Print *with* a trailing newline to avoid breaking other stuff
@@ -647,16 +644,65 @@ def obtain_shell(
                 timeout=9999,
             )
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            patch_windowsdllmain(windowsdllmain_file)  # See bug 1791945
+            assert patch_files(  # See bug 1791945
+                shell.build_opts.repo_dir,
+                (
+                    zzconstants.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "windowsdllmain.diff"
+                ),
+                1,
+            )
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
             if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
-                patch_windowsdllmain(windowsdllmain_file, revert=True)
+                assert patch_files(  # See bug 1791945
+                    shell.build_opts.repo_dir,
+                    (
+                        zzconstants.VENV_SITE_PKGS
+                        / "zzbase"
+                        / "data"
+                        / "source_repos"
+                        / "mozilla-central"
+                        / "windowsdllmain.diff"
+                    ),
+                    1,
+                    revert=True,
+                )
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
+        assert patch_files(  # See bug 1791945
+            shell.build_opts.repo_dir,  # We should always try to revert this patch
+            (
+                zzconstants.VENV_SITE_PKGS
+                / "zzbase"
+                / "data"
+                / "source_repos"
+                / "mozilla-central"
+                / "windowsdllmain.diff"
+            ),
+            1,
+            revert=True,
+        )
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
+        assert patch_files(  # See bug 1791945
+            shell.build_opts.repo_dir,  # We should always try to revert this patch
+            (
+                zzconstants.VENV_SITE_PKGS
+                / "zzbase"
+                / "data"
+                / "source_repos"
+                / "mozilla-central"
+                / "windowsdllmain.diff"
+            ),
+            1,
+            revert=True,
+        )
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
