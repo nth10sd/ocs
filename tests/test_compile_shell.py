@@ -41,22 +41,21 @@ def test_shell_compile() -> Path:
             next((Path(sys.executable).parents[1] / "lib").glob("*")) / "site-packages"
         )
     )
-    patch_files(
-        venv_site_packages,
-        (
-            venv_site_packages
-            / "zzbase"
-            / "data"
-            / "pypi_library_patches"
-            / "coverage"
-            / "64130ee5-patch-for-m-c-to-work.diff"
-        ),
-        1,
-    )
-    assert (
-        "Monkeypatching coverage rev"
-        in (venv_site_packages / "coverage" / "inorout.py").read_text()
-    )
+    inorout_contents = (venv_site_packages / "coverage" / "inorout.py").read_text()
+    if "Monkeypatching coverage rev" not in inorout_contents:
+        patch_files(  # Do not assert, as we do not care if patch is already applied
+            venv_site_packages,
+            (
+                venv_site_packages
+                / "zzbase"
+                / "data"
+                / "pypi_library_patches"
+                / "coverage"
+                / "64130ee5-patch-for-m-c-to-work.diff"
+            ),
+            1,
+        )
+    assert "Monkeypatching coverage rev" in inorout_contents
 
     default_parameters_debug = (
         "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
