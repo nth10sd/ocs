@@ -1172,6 +1172,109 @@ jobs:
           fail_ci_if_error: true # optional (default = false)
           verbose: true
 
+  dbg-optDisabled-64-darwin:
+    runs-on: macos-11 # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Get pip cache dir
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+      - name: pip cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+      - name: Install pip prerequisites
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -u -m pip install --upgrade pip setuptools wheel ;
+      - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
+        if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
+        if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
+        run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Install requirements from possibly-changed requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install -r requirements.txt ;
+      - name: Revert requirements.txt if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- requirements.txt ;
+      - name: Install package in development mode
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install --upgrade -e . ;
+
+      - name: Make sure LLVM is installed and look for available LLVM versions
+        run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
+      - name: Set macOS environment variables
+        run: |
+          echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+          echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+      - name: Set macOS llvm-config and llvm-symbolizer symlinks
+        run: |
+          sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
+          sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
+      - name: Check versions
+        run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+      - name: Install 32/64-bit SpiderMonkey prerequisites
+        run: brew install autoconf@2.13 ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib
+      - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
+
+      - name: Lint with flake8 only checking for Python syntax errors or undefined names
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Run with pyupgrade to find code that can be written in a more modern way
+        run: python -u -m pyupgrade_directories --py310-plus --recursive .
+      - name: Run with vulture to find dead code
+        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
+        run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
+      - name: Run tools using pytest, and also non-slow tests under code coverage
+        run: |
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+
+      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+        run: |
+          mkdir -p "$HOME"/trees && hg --version -q ;
+          until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
+            echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+            rm -rf "$HOME"/trees/mozilla-central/ ;
+            sleep 2 ;
+          done
+
+      - name: Compile a "--enable-debug --disable-optimize" build
+        run: time python -u -m ocs -b="--enable-debug --disable-optimize"
+      - name: Print the .busted log, if any, when any previous compile steps fail
+        if: ${{ failure() }}
+        run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+      - name: Create a tarball and SHA-256 checksum
+        run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
+      - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+        uses: kittaakos/upload-artifact-as-is@v0
+        with:
+          path: "~/shell-cache/*.tzst*"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          env_vars: OS,PYTHON
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true
+
   dbg-optDisabled-64-armsim64-darwin:
     runs-on: macos-11 # Do not use matrix because if a build fails on one OS, it errors out the other as well
     strategy:
