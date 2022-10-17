@@ -7,11 +7,10 @@ from functools import cache
 import os
 from pathlib import Path
 import platform
-import sys
 
 import pytest
 from zzbase.patching.common import patch_files
-from zzbase.util.constants import MOZILLABUILD_VERSION
+from zzbase.util.constants import VENV_SITE_PKGS
 
 from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
@@ -34,19 +33,12 @@ def test_shell_compile() -> Path:
     # correct one: "-R ~/trees/mozilla-central/")
 
     # Look for custom coverage.py patch
-    venv_site_packages = (
-        (Path(sys.executable).parent / "lib") / "site-packages"
-        if MOZILLABUILD_VERSION
-        else (
-            next((Path(sys.executable).parents[1] / "lib").glob("*")) / "site-packages"
-        )
-    )
-    inorout_contents = (venv_site_packages / "coverage" / "inorout.py").read_text()
+    inorout_contents = (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()
     if "Monkeypatching coverage rev" not in inorout_contents:
         patch_files(  # Do not assert, as we do not care if patch is already applied
-            venv_site_packages,
+            VENV_SITE_PKGS,
             (
-                venv_site_packages
+                VENV_SITE_PKGS
                 / "zzbase"
                 / "data"
                 / "pypi_library_patches"
