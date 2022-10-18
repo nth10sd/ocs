@@ -675,34 +675,36 @@ def obtain_shell(
                 )
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
-        assert patch_files(  # See bug 1791945
-            shell.build_opts.repo_dir,  # We should always try to revert this patch
-            (
-                zzconstants.VENV_SITE_PKGS
-                / "zzbase"
-                / "data"
-                / "source_repos"
-                / "mozilla-central"
-                / "windowsdllmain.diff"
-            ),
-            1,
-            revert=True,
-        )
+        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
+            assert patch_files(  # See bug 1791945
+                shell.build_opts.repo_dir,
+                (
+                    zzconstants.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "windowsdllmain.diff"
+                ),
+                1,
+                revert=True,
+            )
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
-        assert patch_files(  # See bug 1791945
-            shell.build_opts.repo_dir,  # We should always try to revert this patch
-            (
-                zzconstants.VENV_SITE_PKGS
-                / "zzbase"
-                / "data"
-                / "source_repos"
-                / "mozilla-central"
-                / "windowsdllmain.diff"
-            ),
-            1,
-            revert=True,
-        )
+        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
+            assert patch_files(  # See bug 1791945
+                shell.build_opts.repo_dir,
+                (
+                    zzconstants.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "windowsdllmain.diff"
+                ),
+                1,
+                revert=True,
+            )
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
