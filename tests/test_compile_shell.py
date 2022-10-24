@@ -33,8 +33,10 @@ def test_shell_compile() -> Path:
     # correct one: "-R ~/trees/mozilla-central/")
 
     # Look for custom coverage.py patch
-    inorout_contents = (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()
-    if "Monkeypatching coverage rev" not in inorout_contents:
+    if (
+        "Monkeypatching coverage rev"
+        not in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()
+    ):
         patch_files(  # Do not assert, as we do not care if patch is already applied
             VENV_SITE_PKGS,
             (
@@ -47,7 +49,10 @@ def test_shell_compile() -> Path:
             ),
             1,
         )
-    assert "Monkeypatching coverage rev" in inorout_contents
+    assert (
+        "Monkeypatching coverage rev"
+        in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()  # Re-read again
+    )
 
     default_parameters_debug = (
         "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
