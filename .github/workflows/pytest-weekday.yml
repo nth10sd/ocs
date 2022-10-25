@@ -34,7 +34,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -166,7 +166,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -298,7 +298,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -430,7 +430,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -562,7 +562,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -694,7 +694,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -826,7 +826,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -958,7 +958,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -1090,7 +1090,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -1193,7 +1193,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -1296,7 +1296,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.5.4
+        uses: webfactory/ssh-agent@v0.7.0
         with:
             ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
@@ -1399,7 +1399,7 @@ jobs:
   #         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
   #         restore-keys: ${{ runner.os }}-pip-
   #     - name: Use deploy key
-  #       uses: webfactory/ssh-agent@v0.5.4
+  #       uses: webfactory/ssh-agent@v0.7.0
   #       with:
   #           ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
   #     - name: Install pip prerequisites
