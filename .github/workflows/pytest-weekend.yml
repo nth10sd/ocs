@@ -28,7 +28,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -160,7 +160,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -292,7 +292,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -424,7 +424,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -556,7 +556,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -688,7 +688,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -820,7 +820,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -952,7 +952,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -1084,7 +1084,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -1187,7 +1187,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -1290,7 +1290,7 @@ jobs:
         id: pip-cache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
@@ -1378,67 +1378,69 @@ jobs:
           fail_ci_if_error: true # optional (default = false)
           verbose: true
 
-  # windows-non-slow-only:
-  #   runs-on: windows-latest # Do not use matrix because if a build fails on one OS, it errors out the other as well
-  #   strategy:
-  #     matrix:
-  #       python-version: ["3.10"]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Set up Python ${{ matrix.python-version }}
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
-  #     - name: Get pip cache dir
-  #       id: pip-cache
-  #       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-  #     - name: pip cache
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: ${{ steps.pip-cache.outputs.dir }}
-  #         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
-  #         restore-keys: ${{ runner.os }}-pip-
-  #     - name: Use deploy key
-  #       uses: webfactory/ssh-agent@v0.7.0
-  #       with:
-  #           ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
-  #     - name: Install pip prerequisites
-  #       if: steps.pip-cache.outputs.cache-hit != 'true'
-  #       run: python -u -m pip install --upgrade pip setuptools wheel ;
-  #     - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
-  #       if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
-  #       run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
-  #     - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
-  #       if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
-  #       run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
-  #     - name: Install requirements from possibly-changed requirements.txt
-  #       if: steps.pip-cache.outputs.cache-hit != 'true'
-  #       run: pip install -r requirements.txt ;
-  #     - name: Revert requirements.txt if changed
-  #       if: steps.pip-cache.outputs.cache-hit != 'true'
-  #       run: git checkout -- requirements.txt ;
-  #     - name: Install package in development mode
-  #       if: steps.pip-cache.outputs.cache-hit != 'true'
-  #       run: pip install --upgrade -e . ;
+  windows-non-slow-only:
+    runs-on: windows-latest # Do not use matrix because if a build fails on one OS, it errors out the other as well
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      # - name: Get pip cache dir
+      #   id: pip-cache
+      #   run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+      - name: pip cache
+        uses: actions/cache@v3
+        with:
+          # 20221026 This only worked w/set-output in the pip cache dir step on Win
+          # path: ${{ steps.pip-cache.outputs.dir }}
+          path: ~\AppData\Local\pip\Cache
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          restore-keys: ${{ runner.os }}-pip-
+      - name: Use deploy key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+      - name: Install pip prerequisites
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -u -m pip install --upgrade pip setuptools wheel ;
+      - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
+        if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
+        if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
+        run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Install requirements from possibly-changed requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install -r requirements.txt ;
+      - name: Revert requirements.txt if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- requirements.txt ;
+      - name: Install package in development mode
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install --upgrade -e . ;
 
-  #     - name: Install ripgrep
-  #       run: choco upgrade ripgrep
+      - name: Install ripgrep
+        run: choco upgrade ripgrep
 
-  #     - name: Lint with flake8 only checking for Python syntax errors or undefined names
-  #       run: |
-  #         # stop the build if there are Python syntax errors or undefined names
-  #         python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-  #     - name: Run with pyupgrade to find code that can be written in a more modern way
-  #       run: python -u -m pyupgrade_directories --py310-plus --recursive .
-  #     - name: Run tools using pytest, and also non-slow tests under code coverage
-  #       run: |
-  #         python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+      - name: Lint with flake8 only checking for Python syntax errors or undefined names
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Run with pyupgrade to find code that can be written in a more modern way
+        run: python -u -m pyupgrade_directories --py310-plus --recursive .
+      - name: Run tools using pytest, and also non-slow tests under code coverage
+        run: |
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
 
-  #     - name: Upload coverage to Codecov
-  #       uses: codecov/codecov-action@v3
-  #       continue-on-error: true # codecov limits number of uploads allowed for each commit
-  #       with:
-  #         # token: ${{ secrets.CODECOV_TOKEN }}
-  #         env_vars: OS,PYTHON
-  #         fail_ci_if_error: true # optional (default = false)
-  #         verbose: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
+        with:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          env_vars: OS,PYTHON
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true
