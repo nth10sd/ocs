@@ -113,7 +113,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -245,7 +245,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -377,7 +377,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -509,7 +509,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -641,7 +641,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -773,7 +773,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -905,7 +905,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -1037,7 +1037,7 @@ jobs:
         run: python -u -m pytype --config=pytype.cfg
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -1140,7 +1140,7 @@ jobs:
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -1243,7 +1243,7 @@ jobs:
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -1346,7 +1346,7 @@ jobs:
         run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -1434,7 +1434,7 @@ jobs:
         run: python -u -m pyupgrade_directories --py310-plus --recursive .
       - name: Run tools using pytest, and also non-slow tests under code coverage
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow" --cov-report=term-missing --cov-report=xml
+          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
