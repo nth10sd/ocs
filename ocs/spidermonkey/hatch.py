@@ -326,7 +326,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     # Building with NSPR is standard on upstream. However, local 32-bit builds need NSPR
     # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
     # set, so this is probably not worth the effort. Also, ctypes has 32-bit issues.
-    if not shell.build_opts.enable32:
+    # NSPR (and ctypes, which seems to need NSPR) does not seem to support aarch64 Linux
+    if not (
+        shell.build_opts.enable32
+        or (platform.system() == "Linux" and platform.machine() == "aarch64")
+    ):
         cfg_cmds.extend(
             (
                 "--enable-nspr-build",
