@@ -367,8 +367,6 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
             )
         if platform.system() == "Windows" and args.enable32:
             return False, "ASan is explicitly not supported in 32-bit Windows builds."
-        if platform.system() == "Linux" and platform.machine() == "aarch64":
-            return False, "Disabled due to bug 1799250"
 
     if args.enableSimulatorArm32 or args.enableSimulatorArm64:
         if platform.system() == "Windows" and args.enableSimulatorArm32:
