@@ -308,6 +308,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 "--enable-address-sanitizer",
                 "--enable-fuzzing",
                 "--disable-jemalloc",
+                "--without-sysroot",  # Needed or else ASan builds have corrupted stack
             )
         )
         if platform.system() == "Linux":
