@@ -359,12 +359,6 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
                 "32-bit ASan builds fail on 18.04 due to "
                 "https://github.com/google/sanitizers/issues/954.",
             )
-        if platform.system() == "Linux" and "Microsoft" in platform.release():
-            return (
-                False,
-                "Linux ASan builds cannot yet work in WSL "
-                "though there may be workarounds.",
-            )
         if platform.system() == "Windows" and args.enable32:
             return False, "ASan is explicitly not supported in 32-bit Windows builds."
 
