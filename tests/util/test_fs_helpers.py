@@ -27,7 +27,7 @@ def test_handle_rm_readonly_files(tmp_path: Path) -> None:
     read_only_dir.mkdir(parents=True)
 
     test_file = read_only_dir / "test.txt"
-    with open(test_file, "w", encoding="utf-8", errors="replace") as f:
+    with test_file.open("w", encoding="utf-8", errors="replace") as f:
         f.write("testing\n")
 
     Path.chmod(test_file, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
