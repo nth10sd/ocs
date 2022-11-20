@@ -1,6 +1,6 @@
 # For more information on GitHub Actions for Python projects, see: https://git.io/JtENw
 
-name: pytest-weekday
+name: pytest
 
 on:
   schedule:
