@@ -99,6 +99,6 @@ else:
     elif platform.system() == "Linux":
         RUN_MOZGLUE_LIB = "libmozglue.so"
     else:
-        raise RuntimeError("Unsupported platform")
+        raise RuntimeError("Unsupported platform")  # pragma: no cover
 
     ALL_RUN_LIBS = [RUN_MOZGLUE_LIB, RUN_NSPR_LIB, RUN_PLDS_LIB, RUN_PLC_LIB]
