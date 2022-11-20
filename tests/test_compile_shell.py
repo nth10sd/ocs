@@ -67,32 +67,7 @@ def test_shell_compile() -> Path:
     # Ensure exit code is 0
     assert not SMShell(opts_parsed, hg_hash_of_default).run([f"-b={build_opts}"])
 
-    file_name = ""
-    valgrind_name_param = ""
-    if platform.system() == "Linux":
-        valgrind_name_param += "-vg"
-    if default_parameters_debug in build_opts:
-        # Test compiling a debug shell w/OOM breakpoint support - Valgrind only on Linux
-        file_name = (
-            f"js-dbg-optDisabled-64{valgrind_name_param}-oombp-intlDisabled-"
-            f"{platform.system().lower()}-{platform.machine().lower()}-"
-            f"{hg_hash_of_default}"
-        )
-    elif (
-        "--disable-debug --disable-profiling --enable-address-sanitizer"
-    ) in build_opts:
-        # Test compilation of an opt ASan shell with profiling disabled
-        file_name = (
-            f"js-64-profDisabled-asan-{platform.system().lower()}-"
-            f"{platform.machine().lower()}-"
-            f"{hg_hash_of_default}"
-        )
-    else:
-        raise ValueError(
-            f'default_parameters_debug "{default_parameters_debug}"'
-            f' is not in build_opts "{build_opts}"',
-        )
-
+    file_name = build_options.compute_shell_name(opts_parsed, hg_hash_of_default)
     js_bin_path = SHELL_CACHE / file_name / file_name
     if platform.system() == "Windows":
         js_bin_path = js_bin_path.with_suffix(".exe")
