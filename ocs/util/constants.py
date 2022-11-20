@@ -8,13 +8,15 @@ from typing import Final
 
 from psutil import cpu_count
 
-COMPILATION_JOBS: int
-if cpu_count() <= 2:
-    COMPILATION_JOBS = 3  # 3 only for single/dual core computers
-elif cpu_count() > cpu_count(logical=False):  # Some sort of hyperthreading is present
-    COMPILATION_JOBS = round(cpu_count(logical=False) * 1.25)
-else:
-    COMPILATION_JOBS = cpu_count(logical=False)
+COMPILATION_JOBS = (
+    3  # Set to 3 only for single/dual core computers
+    if cpu_count() <= 2
+    else (
+        round(cpu_count(logical=False) * 1.25)  # Some sort of hyperthreading is present
+        if cpu_count() > cpu_count(logical=False)
+        else cpu_count(logical=False)
+    )
+)
 
 ASAN_ERROR_EXIT_CODE: Final = 77
 DEFAULT_TREES_LOCATION: Final = Path.home() / "trees"
