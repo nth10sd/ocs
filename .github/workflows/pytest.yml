@@ -329,7 +329,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Install prerequisites
-        run: choco upgrade mozillabuild ripgrep
+        run: choco upgrade ripgrep
 
       - name: Lint with flake8 only checking for Python syntax errors or undefined names
         run: |
