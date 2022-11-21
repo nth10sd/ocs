@@ -155,11 +155,11 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Create a tarball and SHA-256 checksum
-        run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
+        run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
         uses: kittaakos/upload-artifact-as-is@v0
         with:
-          path: "~/shell-cache/*.tzst*"
+          path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         continue-on-error: true # codecov limits number of uploads allowed for each commit
@@ -264,11 +264,11 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Create a tarball and SHA-256 checksum
-        run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tzst && shasum -a 256 -b "$f".tzst | tee "$f".tzst.sha256; done; popd
+        run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
         uses: kittaakos/upload-artifact-as-is@v0
         with:
-          path: "~/shell-cache/*.tzst*"
+          path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         continue-on-error: true # codecov limits number of uploads allowed for each commit
