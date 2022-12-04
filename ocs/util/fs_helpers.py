@@ -18,9 +18,7 @@ def ensure_cache_dir(base_dir: Path) -> Path:
     :param base_dir: Base directory to create the cache directory in
     :return: Full shell-cache path
     """
-    if not base_dir:
-        base_dir = Path.home()
-    cache_dir = base_dir / "shell-cache"
+    cache_dir = (base_dir if base_dir else Path.home()) / "shell-cache"
     cache_dir.mkdir(exist_ok=True)
     return cache_dir
 
@@ -44,11 +42,9 @@ def env_with_path(
     elif platform.system() == "Darwin":
         lib_path = "DYLD_LIBRARY_PATH"
         path_sep = ":"
-    elif platform.system() == "Windows":
+    else:  # Windows (or other unknown platforms)
         lib_path = "PATH"
         path_sep = ";"
-    else:
-        raise OSError(f"Unsupported operating system: {platform.system()}")
 
     env = curr_env.copy()
     if lib_path in env:
@@ -69,10 +65,9 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
 
     :return: Full path to the shell cache lock directory
     """
-    lockdir_name = f"shell-{repo_dir.name}-lock"
-    if tbox_id:
-        lockdir_name += f"-{tbox_id}"
-    return ensure_cache_dir(cache_dir_base) / lockdir_name
+    return ensure_cache_dir(cache_dir_base) / (
+        f"shell-{repo_dir.name}-lock" + (f"-{tbox_id}" if tbox_id else "")
+    )
 
 
 def handle_rm_readonly_files(
