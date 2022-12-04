@@ -69,8 +69,11 @@ def test_shell_compile() -> Path:
 
     file_name = build_options.compute_shell_name(opts_parsed, hg_hash_of_default)
     js_bin_path = SHELL_CACHE / file_name / file_name
-    if platform.system() == "Windows":
-        js_bin_path = js_bin_path.with_suffix(".exe")
+    js_bin_path = (
+        js_bin_path.with_suffix(".exe")
+        if platform.system() == "Windows"
+        else js_bin_path
+    )
     assert js_bin_path.is_file()
 
     with contextlib.suppress(OSError):
