@@ -66,7 +66,7 @@ def get_lock_dir_path(cache_dir_base: Path, repo_dir: Path, tbox_id: str = "") -
     :return: Full path to the shell cache lock directory
     """
     return ensure_cache_dir(cache_dir_base) / (
-        f"shell-{repo_dir.name}-lock" + (f"-{tbox_id}" if tbox_id else "")
+        f'shell-{repo_dir.name}-lock{f"-{tbox_id}" if tbox_id else ""}'
     )
 
 
