@@ -178,6 +178,7 @@ jobs:
           "",
           "--enable-debug --disable-optimize",
           "--enable-debug --disable-optimize --enable-simulator=arm64",
+          "--enable-address-sanitizer",
         ]
         python-version: ["3.10"]
     steps:
