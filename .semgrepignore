@@ -1,0 +1,29 @@
+# Default entries from https://github.com/returntocorp/semgrep/blob/39d66a5cceb0a78b9a4abf6ed244f0fa0f589748/cli/src/semgrep/templates/.semgrepignore
+
+# START default entries
+# Common large paths
+node_modules/
+build/
+dist/
+vendor/
+.env/
+.venv/
+.tox/
+*.min.js
+.npm/
+
+# Common test paths
+test/
+tests/
+*_test.go
+
+# Semgrep rules folder
+.semgrep
+
+# Semgrep-action log folder
+.semgrep_logs/
+# END default entries
+
+# Semgrep does not like PowerShell syntax in YAML files
+.github/workflows/pytest.yml
+
