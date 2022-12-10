@@ -17,18 +17,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build-type: [
-          "",
-          "--enable-address-sanitizer",
-          "--enable-debug",
-          "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api --disable-profiling",
-          "--enable-debug --disable-optimize --enable-simulator=arm64",
-          "--disable-debug --enable-simulator=arm64",
-          "--enable-valgrind",
-          "--32",
-          "--enable-debug --disable-optimize --32",
-          "--enable-debug --disable-optimize --enable-simulator=arm --32",
-        ]
+        build-type:
+          [
+            "",
+            "--enable-address-sanitizer",
+            "--enable-debug",
+            "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api --disable-profiling",
+            "--enable-debug --disable-optimize --enable-simulator=arm64",
+            "--disable-debug --enable-simulator=arm64",
+            "--enable-valgrind",
+            "--32",
+            "--enable-debug --disable-optimize --32",
+            "--enable-debug --disable-optimize --enable-simulator=arm --32",
+          ]
         python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
@@ -48,7 +49,7 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
@@ -174,12 +175,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build-type: [
-          "",
-          "--enable-debug --disable-optimize",
-          "--enable-debug --disable-optimize --enable-simulator=arm64",
-          "--enable-address-sanitizer",
-        ]
+        build-type:
+          [
+            "",
+            "--enable-debug --disable-optimize",
+            "--enable-debug --disable-optimize --enable-simulator=arm64",
+            "--enable-address-sanitizer",
+          ]
         python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
@@ -199,7 +201,7 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
@@ -285,10 +287,10 @@ jobs:
       fail-fast: false
       matrix:
         build-type: [
-          "",
-          # "--enable-address-sanitizer",
-          "--enable-debug --disable-optimize",
-        ]
+            "",
+            # "--enable-address-sanitizer",
+            "--enable-debug --disable-optimize",
+          ]
         python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
@@ -310,7 +312,7 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;

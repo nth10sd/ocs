@@ -32,7 +32,7 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-            ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
