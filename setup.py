@@ -90,7 +90,7 @@ if __name__ == "__main__":
         install_requires=[
             "distro ~= 1.7.0",
             "mercurial ~= 6.2.1",
-            "packaging ~= 22.0",
+            "packaging ~= 21.3",
             "psutil ~= 5.9.1",
             "setuptools >= 60.0.5",
             "types-psutil==5.9.5",  # Bump types-* only with mypy
