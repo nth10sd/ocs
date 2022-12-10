@@ -339,6 +339,21 @@ jobs:
           python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: python -u -m pyupgrade_directories --py310-plus --recursive .
+      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+        run: |
+          mkdir -p $HOME/trees && hg --version -q ;
+          while ($True) {
+            try {
+              Measure-Command {
+                hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/ | Out-Default
+              }
+              break
+            } catch {
+              echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
+              rm $HOME/trees/mozilla-central/ -r -fo ;
+              sleep 2 ;
+            }
+          }
 
       - name: Run tools using pytest under code coverage
         env:
