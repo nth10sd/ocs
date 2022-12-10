@@ -304,13 +304,10 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     if shell.build_opts.enableAddressSanitizer:
         cfg_cmds.extend(
-            (
-                "--enable-address-sanitizer",
-                "--enable-fuzzing",
-                "--disable-jemalloc",
-                "--without-sysroot",  # Needed or else ASan builds have corrupted stack
-            )
+            ("--enable-address-sanitizer", "--enable-fuzzing", "--disable-jemalloc")
         )
+        if not platform.system() == "Darwin":  # macOS ASan builds fail to compile
+            cfg_cmds.append("--without-sysroot")  # Else ASan builds have corrupt stack
         if platform.system() == "Linux":
             cfg_cmds.append("--disable-stdcxx-compat")
     if shell.build_opts.enableValgrind:
