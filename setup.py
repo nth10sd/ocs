@@ -28,7 +28,7 @@ with open(
 EXTRAS = {
     "test": [
         "bandit ~= 1.7.0",
-        "black ~= 22.10.0",
+        "black ~= 22.12.0",
         "coverage[toml] ~= 6.5.0",
         "flake8 ~= 4.0.1",
         "flake8-bugbear ~= 22.12.6",
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         install_requires=[
             "distro ~= 1.7.0",
             "mercurial ~= 6.2.1",
-            "packaging ~= 21.3",
+            "packaging ~= 22.0",
             "psutil ~= 5.9.1",
             "setuptools >= 60.0.5",
             "types-psutil==5.9.5",  # Bump types-* only with mypy
