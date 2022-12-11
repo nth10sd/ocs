@@ -385,10 +385,10 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
             return False, "Nobody runs the ARM64 simulators on ARM64 macOS."
         if (
             platform.system() == "Windows"
-            and platform.machine() == "arm64"
+            and platform.machine() == "AMD64"
             and args.enableSimulatorArm64
         ):
-            return False, "Nobody runs the ARM64 simulators on ARM64 macOS."
+            return False, "Nobody runs the ARM64 simulators on ARM64 Windows."
         if args.enableSimulatorArm32 and not args.enable32:
             return (
                 False,
