@@ -289,7 +289,10 @@ jobs:
       fail-fast: false
       matrix:
         build-type: [
-            "",
+            # Empty space needed only for Win CI, will be .rstrip() later
+            # The "" null string cannot seem to propagate properly from
+            # PowerShell -> batch script -> bash
+            " ",
             # "--enable-address-sanitizer",  # Win ASan is even more version-sensitive
             "--enable-debug --disable-optimize",
             "--enable-debug --disable-optimize --enable-simulator=arm64",

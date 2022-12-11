@@ -60,7 +60,9 @@ def test_shell_compile() -> Path:
     if platform.system() == "Linux":
         default_parameters_debug += " --enable-valgrind"
     # Remember to update the corresponding BUILDSM build parameters in CI as well
-    build_opts = os.getenv("BUILDSM", default_parameters_debug)
+    # .rstrip() is required, as we pass in " " (empty space) on Win CI. The "" null
+    # string cannot seem to propagate properly from PowerShell -> batch script -> bash
+    build_opts = os.getenv("BUILDSM", default_parameters_debug).rstrip()
 
     opts_parsed = build_options.parse_shell_opts(build_opts)
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
