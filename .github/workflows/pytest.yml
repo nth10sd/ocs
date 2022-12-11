@@ -110,6 +110,8 @@ jobs:
         run: |
           # stop the build if there are Python syntax errors or undefined names
           python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Run shellcheck
+        run: rg -t sh --files | xargs shellcheck
       - name: Run with yesqa to find obsolete flake8 ignores
         if: startsWith(runner.os, 'Linux')
         run: rg -t py --files | xargs python -u -m yesqa
@@ -281,14 +283,14 @@ jobs:
           fail_ci_if_error: true # optional (default = false)
           verbose: true
 
-  Windows-non-slow-only:
-    runs-on: windows-latest
+  Windows:
+    runs-on: windows-2019 # Mozilla build tools are very version-sensitive
     strategy:
       fail-fast: false
       matrix:
         build-type: [
             "",
-            # "--enable-address-sanitizer",
+            # "--enable-address-sanitizer",  # Win ASan is even more version-sensitive
             "--enable-debug --disable-optimize",
           ]
         python-version: ["3.10"]
@@ -332,15 +334,57 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
 
-      - name: Install prerequisites
-        run: choco upgrade ripgrep
-
       - name: Lint with flake8 only checking for Python syntax errors or undefined names
         run: |
           # stop the build if there are Python syntax errors or undefined names
           python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - name: Run with pyupgrade to find code that can be written in a more modern way
         run: python -u -m pyupgrade_directories --py310-plus --recursive .
+
+      - name: Install prerequisites
+        run: |
+          while ($True) {
+            try {
+              choco upgrade ripgrep ; choco install mozillabuild sd-cli
+              break
+            } catch {
+              echo "Error installing via choco, retrying in 2 seconds..." ;
+              sleep 2 ;
+            }
+          }
+      - name: Download WinPython (hardcoded version for MozillaBuild, separate from Python in GitHub Actions)
+        run: |
+          while ($True) {
+            try {
+              Invoke-WebRequest -Uri https://github.com/winpython/winpython/releases/download/5.0.20221030final/Winpython64-3.10.8.0dot.exe -OutFile C:\mozilla-build\winpython.exe
+              break
+            } catch {
+              echo "Error downloading WinPython, retrying in 2 seconds..." ;
+              sleep 2 ;
+            }
+          }
+      - name: Verify WinPython hash checksum
+        run: |
+          if (-Not ((Get-FileHash -Algorithm SHA256 C:\mozilla-build\winpython.exe).Hash -eq "bd454f8df90d6ea6405780e6da71decb96ddfbbb0a5d5a33461203a7a5995651")) { throw ; }
+      - name: Use 7-Zip to extract WinPython
+        run: |
+          & ${env:ProgramFiles}\7-Zip\7z.exe x C:\mozilla-build\winpython.exe "-oC:\mozilla-build\" -y
+      - name: Remove WinPython installer
+        run: rm C:\mozilla-build\winpython.exe
+      - name: Remove Python from MozillaBuild
+        run: rm C:\mozilla-build\python3 -r -fo
+      - name: Move WinPython into the correct MozillaBuild location
+        run: mv C:\mozilla-build\WPy64-*\python-*.amd64 C:\mozilla-build\python3
+      - name: Remove remainder of WinPython
+        run: rm C:\mozilla-build\WPy64-*\ -r -fo
+      - name: Copy Python binary to python3.exe to make Mozilla build process happy
+        run: cp C:\mozilla-build\python3\python.exe C:\mozilla-build\python3\python3.exe
+      - name: Copy custom MozillaBuild autostart script to mozilla-build location
+        run: cp scripts/mozillabuild/autostart.sh C:\mozilla-build\
+      - name: Amend MozillaBuild start command
+        run: |
+          sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
+
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p $HOME/trees && hg --version -q ;
@@ -357,14 +401,27 @@ jobs:
             }
           }
 
-      - name: Run tools using pytest under code coverage
+      - name: Create deploy key file
         env:
-          BUILDSM: ${{ matrix.build-type }}
+          DEPLOY_KEY: ${{ secrets.ZZBASE_TOKEN }}
+        run: echo "$env:DEPLOY_KEY" > ~/.ssh/id_ed25519_RO_zzbase
+      - name: Convert deploy key CRLF to LF
         run: |
-          # Update name of this Windows run as well when changing this
-          # python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint -m "not slow"
+          ((Get-Content ~/.ssh/id_ed25519_RO_zzbase) -join "`n") + "`n" | Set-Content -NoNewline ~/.ssh/id_ed25519_RO_zzbase
+      - name: Run tools using pytest under code coverage via MozillaBuild
+        env:
+          PYTEST_STATUS_FILE: "~/pytest-failure.txt"
+        run: C:\mozilla-build\start-shell.bat ; if (Test-Path "$env:PYTEST_STATUS_FILE") { cat "$env:PYTEST_STATUS_FILE" ; throw }
 
+      - name: Print the .busted log, if any, when any previous compile steps fail
+        if: ${{ failure() }}
+        run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+
+      # Creation of tarball and SHA-256 checksum happens in autostart.sh
+      - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+        uses: nth10sd/upload-artifact-as-is@v0
+        with:
+          path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         continue-on-error: true # codecov limits number of uploads allowed for each commit
