@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import platform
+import subprocess
 from typing import Final
 
 from psutil import cpu_count
@@ -27,8 +28,18 @@ RUN_PLDS_LIB = ""
 RUN_PLC_LIB = ""
 
 if platform.system() == "Windows":
-    CLANG_VER: Final = "14.0.5"
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
+    clang_cl_version = (
+        subprocess.run(
+            [WIN_MOZBUILD_CLANG_PATH / "bin" / "clang-cl.exe", "--version"],
+            capture_output=True,
+            check=True,
+        )
+        .stdout.decode("utf-8", errors="surrogateescape")
+        .split(" (", maxsplit=1)[0]
+        .removeprefix("clang version ")
+    )
+    CLANG_VER: Final = clang_cl_version
 
     # Library-related
     RUN_MOZGLUE_LIB = "mozglue.dll"
