@@ -395,9 +395,7 @@ jobs:
           mkdir -p $HOME/trees && hg --version -q ;
           while ($True) {
             try {
-              Measure-Command {
-                hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/ | Out-Default
-              }
+              hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/
               break
             } catch {
               echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
