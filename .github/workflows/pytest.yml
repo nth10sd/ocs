@@ -418,7 +418,7 @@ jobs:
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
-        run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
+        run: cat $HOME/shell-cache/*/*.busted* -Tail 100
 
       # Creation of tarball and SHA-256 checksum happens in autostart.sh
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
