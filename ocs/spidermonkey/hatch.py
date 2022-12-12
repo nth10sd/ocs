@@ -308,9 +308,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         )
         if platform.system() == "Linux":
             cfg_cmds.extend(
-                "--disable-stdcxx-compat",
-                # macOS & Win ASan builds fail to compile using --without-sysroot
-                "--without-sysroot",  # Else ASan builds have corrupt stack
+                (
+                    "--disable-stdcxx-compat",
+                    # macOS & Win ASan builds fail to compile using --without-sysroot
+                    "--without-sysroot",  # Else ASan builds have corrupt stack
+                )
             )
     if shell.build_opts.enableValgrind:
         cfg_cmds.extend(
