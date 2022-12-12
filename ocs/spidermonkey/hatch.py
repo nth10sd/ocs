@@ -662,7 +662,6 @@ def obtain_shell(
             )
         configure_js_shell_compile(shell)
         if platform.system() == "Windows":
-            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
             if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
                 assert patch_files(  # See bug 1791945
                     shell.build_opts.repo_dir,
@@ -677,6 +676,7 @@ def obtain_shell(
                     1,
                     revert=True,
                 )
+            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
