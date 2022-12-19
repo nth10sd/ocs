@@ -39,8 +39,15 @@ if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
     hg -R ~/trees/mozilla-central/ diff ;
 fi ;
 
+echo "=== pytest attempt: 1 ===" ;
 if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
-    date > "$HOME"/pytest-failure.txt ;
+    echo "=== pytest attempt: 2 ===" ;
+    if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
+        echo "=== pytest attempt: 3 ===" ;
+        if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
+            date > "$HOME"/pytest-failure.txt ;
+        fi ;
+    fi ;
 fi ;
 unset BUILDSM
 popd || exit ;
