@@ -29,17 +29,15 @@ RUN_PLC_LIB = ""
 
 if platform.system() == "Windows":
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
-    clang_cl_version = (
-        subprocess.run(
-            [WIN_MOZBUILD_CLANG_PATH / "bin" / "clang-cl.exe", "--version"],
-            capture_output=True,
-            check=True,
+    WIN_CLANG_CL: Final = WIN_MOZBUILD_CLANG_PATH / "bin" / "clang-cl.exe"
+    if WIN_CLANG_CL.is_file():
+        clang_cl_version = (
+            subprocess.run([WIN_CLANG_CL, "--version"], capture_output=True, check=True)
+            .stdout.decode("utf-8", errors="surrogateescape")
+            .split(" (", maxsplit=1)[0]
+            .removeprefix("clang version ")
         )
-        .stdout.decode("utf-8", errors="surrogateescape")
-        .split(" (", maxsplit=1)[0]
-        .removeprefix("clang version ")
-    )
-    CLANG_VER: Final = clang_cl_version
+        CLANG_VER: Final = clang_cl_version
 
     # Library-related
     RUN_MOZGLUE_LIB = "mozglue.dll"
