@@ -168,6 +168,7 @@ bandit_targets = "ocs"
 markers = [
     "slow",
 ]
+xfail_strict = true
 
 [tool.pytype]
 inputs = [
