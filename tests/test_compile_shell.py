@@ -66,8 +66,9 @@ def test_shell_compile() -> Path:
 
     opts_parsed = build_options.parse_shell_opts(build_opts)
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
+    smshell = SMShell(opts_parsed, hg_hash_of_default)
     # Ensure exit code is 0
-    assert not SMShell(opts_parsed, hg_hash_of_default).run([f"-b={build_opts}"])
+    assert not smshell.run([f"-b={build_opts}"])
 
     file_name = build_options.compute_shell_name(opts_parsed, hg_hash_of_default)
     js_bin_path = SHELL_CACHE / file_name / file_name
