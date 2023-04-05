@@ -47,7 +47,7 @@ def test_shell_compile() -> Path:
                     r'if original_filename.startswith\("<"\):',
                     "if original_filename.startswith('<'):",
                 ]
-                if bool(shutil.which("sd"))
+                if shutil.which("sd")
                 else [
                     "sed",
                     "-i",
