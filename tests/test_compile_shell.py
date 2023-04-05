@@ -41,10 +41,21 @@ def test_shell_compile() -> Path:
     ):
         # Start temporary section until https://bit.ly/3Kf6gjL gets released ###
         subprocess.run(
-            (["sd"] if bool(shutil.which("sd")) else ["sed", "-i"])
+            (
+                [
+                    "sd",
+                    r'if original_filename.startswith\("<"\):',
+                    "if original_filename.startswith('<'):",
+                ]
+                if bool(shutil.which("sd"))
+                else [
+                    "sed",
+                    "-i",
+                    r's/if original_filename.startswith("<"):/'
+                    "if original_filename.startswith('<'):/g",
+                ]
+            )
             + [
-                r'if original_filename.startswith\("<"\):',
-                "if original_filename.startswith('<'):",
                 (
                     VENV_SITE_PKGS
                     / "zzbase"
@@ -73,6 +84,7 @@ def test_shell_compile() -> Path:
         "Monkeypatching coverage rev"
         in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()  # Re-read again
     )
+
     default_parameters_debug = (
         "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
     )
