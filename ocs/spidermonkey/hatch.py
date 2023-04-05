@@ -127,7 +127,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     # Run autoconf 2.13 only on non-Windows platforms if repository revision is before:
     #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
     # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if not platform.system() == "Windows" and hg_helpers.exists_and_is_ancestor(
+    if platform.system() != "Windows" and hg_helpers.exists_and_is_ancestor(
         shell.build_opts.repo_dir,
         shell.hg_hash,
         "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
@@ -363,11 +363,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     if platform.system() == "Windows":
         # FIXME: Replace this with subprocess.list2cmdline  # pylint: disable=fixme
-        counter = 0
-        for entry in cfg_cmds:
+        for counter, entry in enumerate(cfg_cmds):
             if os.sep in entry:
                 cfg_cmds[counter] = cfg_cmds[counter].replace(os.sep, "//")
-            counter += 1
 
     # Print whatever we added to the environment
     env_vars: list[str] = []
@@ -417,8 +415,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 stdout=subprocess.PIPE,
             )
     except subprocess.CalledProcessError as ex:
-        with open(
-            str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"),
+        with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
             "a",
             encoding="utf-8",
             errors="replace",
@@ -573,8 +570,7 @@ def sm_compile(shell: SMShell) -> Path:
         print(  # noqa: T201
             f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell:"
         )
-        with open(
-            str(shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted"),
+        with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
             "a",
             encoding="utf-8",
             errors="replace",
@@ -590,7 +586,10 @@ def sm_compile(shell: SMShell) -> Path:
 
 
 def obtain_shell(
-    shell: SMShell, update_to_rev: str | None = None, _update_latest_txt: bool = False
+    shell: SMShell,
+    update_to_rev: str | None = None,
+    *,
+    _update_latest_txt: bool = False,
 ) -> None:
     """Obtain a js shell. Keep the objdir for now, especially .a files, for symbols.
 
@@ -769,7 +768,8 @@ def arch_of_binary(binary: Path) -> str:
 def test_binary(
     shell_path: Path,
     args: list[str],
-    use_vg: bool,
+    *,
+    use_vg: bool = False,
     stderr: int | IO[bytes] | None = subprocess.STDOUT,
 ) -> tuple[str, int]:
     """Test the given shell with the given args.
@@ -828,17 +828,16 @@ def query_build_cfg(shell_path: Path, parameter: str) -> str:
     :param parameter: Parameter that will be tested
     :return: Whether the parameter is supported by the shell
     """
-    result: str = json.loads(
+    return json.loads(
         test_binary(
             shell_path,
             ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
-            False,
+            use_vg=False,
             stderr=subprocess.DEVNULL,
         )[0]
         .rstrip()
         .lower(),
     )
-    return result
 
 
 def verify_binary(shell: SMShell) -> None:

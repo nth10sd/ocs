@@ -5,7 +5,6 @@ from __future__ import annotations
 import configparser
 from pathlib import Path
 import subprocess
-import sys
 
 
 def exists_and_is_ancestor(
@@ -85,7 +84,8 @@ def get_repo_hash_and_id(
         if update_default == "a":
             print("Aborting...")  # noqa: T201
             raise SystemExit(0)
-        elif update_default == "d":
+
+        if update_default == "d":
             subprocess.run(["hg", "-R", str(repo_dir), "update", "default"], check=True)
             is_on_default = True
         elif update_default == "u":

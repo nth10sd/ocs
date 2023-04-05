@@ -6,7 +6,6 @@ import argparse
 from pathlib import Path
 import platform
 import random
-import sys
 from typing import Any
 
 from ocs.util.constants import DEFAULT_TREES_LOCATION
