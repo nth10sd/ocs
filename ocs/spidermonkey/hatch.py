@@ -828,17 +828,21 @@ def query_build_cfg(shell_path: Path, parameter: str) -> str:
     :param parameter: Parameter that will be tested
     :return: Whether the parameter is supported by the shell
     """
-    return str(
-        json.loads(
-            test_binary(
-                shell_path,
-                ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
-                use_vg=False,
-                stderr=subprocess.DEVNULL,
-            )[0]
-            .rstrip()
-            .lower(),
-        )[0]
+    return (
+        str(
+            json.loads(
+                test_binary(
+                    shell_path,
+                    ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
+                    use_vg=False,
+                    stderr=subprocess.DEVNULL,
+                )[0]
+                .rstrip()
+                .lower(),
+            )
+        )
+        .rstrip()
+        .removesuffix(",")
     )
 
 
