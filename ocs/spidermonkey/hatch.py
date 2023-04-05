@@ -899,5 +899,8 @@ def verify_binary(shell: SMShell) -> None:
 
 
 def main() -> None:
-    """Execute main() function in SMShell class."""
-    sys.exit(SMShell.main())
+    """Execute main() function in SMShell class.
+
+    :raise SystemExit: When the main function of SMShell finishes execution
+    """
+    raise SystemExit(SMShell.main())

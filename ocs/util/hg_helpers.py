@@ -55,6 +55,7 @@ def get_repo_hash_and_id(
     :param repo_dir: Full path to the repository
     :param repo_rev: Intended Mercurial changeset details to retrieve
     :raise ValueError: Raises if the input is invalid
+    :raise SystemExit: When abort is selected
     :return: Changeset hash, local numerical ID, whether repository is on default tip
     """
     # This will return null if the repository is not on default.
@@ -83,7 +84,7 @@ def get_repo_hash_and_id(
         update_default = update_default.strip()
         if update_default == "a":
             print("Aborting...")  # noqa: T201
-            sys.exit(0)
+            raise SystemExit(0)
         elif update_default == "d":
             subprocess.run(["hg", "-R", str(repo_dir), "update", "default"], check=True)
             is_on_default = True

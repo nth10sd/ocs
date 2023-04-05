@@ -201,6 +201,9 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     :param args: Arguments to be parsed
     :raise FileNotFoundError: If repos not found when searching default tree locations
     :raise FileNotFoundError: If repos not found when tree locations specified
+    :raise SystemExit: If repo_dir is not specified, and a default repository location
+                       cannot be confirmed
+    :raise SystemExit: If DEFAULT_TREES_LOCATION is not found at the desired location
     :return: An immutable build_options object
     """
     parser, randomizer = add_parser_opts()
@@ -226,7 +229,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
             build_options.repo_dir = DEFAULT_TREES_LOCATION / "mozilla-central"
 
             if not build_options.repo_dir.is_dir():
-                sys.exit(
+                raise SystemExit(
                     "repo_dir is not specified, and a default repository location "
                     "cannot be confirmed. Exiting...",
                 )
@@ -242,7 +245,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
                 f"Repository not found at: {build_options.repo_dir}",
             )
     else:
-        sys.exit(
+        raise SystemExit(
             "DEFAULT_TREES_LOCATION not found at: "
             f"{DEFAULT_TREES_LOCATION}. Exiting...",
         )
