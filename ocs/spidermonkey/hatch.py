@@ -838,7 +838,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> str:
             )[0]
             .rstrip()
             .lower(),
-        )
+        )[0]
     )
 
 
