@@ -48,12 +48,14 @@ def test_shell_compile() -> Path:
                     "if original_filename.startswith('<'):",
                 ]
                 if shutil.which("sd")
-                else [
-                    "sed",
-                    "-i",
-                    r's/if original_filename.startswith("<"):/'
-                    "if original_filename.startswith('<'):/g",
-                ]
+                else (
+                    ["sed", "-i"]
+                    + (['""', "-e"] if platform.system() == "Darwin" else [])
+                    + [
+                        r's/if original_filename.startswith("<"):/'
+                        "if original_filename.startswith('<'):/g",
+                    ]
+                )
             )
             + [
                 (
