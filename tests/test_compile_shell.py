@@ -7,8 +7,6 @@ from functools import cache
 import os
 from pathlib import Path
 import platform
-import shutil
-import subprocess
 
 import pytest
 from zzbase.patching.common import patch_files
@@ -39,37 +37,6 @@ def test_shell_compile() -> Path:
         "Monkeypatching coverage rev"
         not in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()
     ):
-        # Start temporary section until https://bit.ly/3Kf6gjL gets released ###
-        subprocess.run(
-            (
-                [
-                    "sd",
-                    r'if original_filename.startswith\("<"\):',
-                    "if original_filename.startswith('<'):",
-                ]
-                if shutil.which("sd")
-                else (
-                    ["sed", "-i"]
-                    + (['""', "-e"] if platform.system() == "Darwin" else [])
-                    + [
-                        r's/if original_filename.startswith("<"):/'
-                        "if original_filename.startswith('<'):/g",
-                    ]
-                )
-            )
-            + [
-                (
-                    VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "pypi_library_patches"
-                    / "coverage"
-                    / "64130ee5-patch-for-m-c-to-work.diff"
-                ),
-            ],
-            check=True,
-        )
-        # End temporary section until https://bit.ly/3Kf6gjL gets released ###
         patch_files(  # Do not assert, as we do not care if patch is already applied
             VENV_SITE_PKGS,
             (
