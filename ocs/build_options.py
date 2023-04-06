@@ -17,7 +17,7 @@ def chance(i: float) -> bool:
     :param i: Intended probability.
     :return: Result based on the input probability
     """
-    return random.random() < i
+    return random.random() < i  # noqa: DUO102
 
 
 class Randomizer:
