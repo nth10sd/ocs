@@ -96,15 +96,15 @@ jobs:
 
       - name: Search for existing linter ignore lines in Python
         run: |
-          rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+          rg -t py --stats "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
             $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") || true
       - name: Ensure we are not increasing the number of ignore lines as a guideline
         run: |
           if [ $(rg -t py --stats \
-                    "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[A-Z][0-9][0-9][0-9])| Any|REPLACEME)" \
+                    "(?:(?:flake8|noqa|pylint|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
                     $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") \
                       | awk "/ matches/ && "\!"/ contained matches/" \
-                      | cut -d" " -f1) -lt 39 ] ;
+                      | cut -d " " -f1) -lt 39 ] ;
           then exit 0 ; else exit 1 ; fi ;
       - name: Lint with flake8 only checking for Python syntax errors or undefined names
         run: |
