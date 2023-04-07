@@ -182,7 +182,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             (
                 "sh",
-                str(shell.js_cfg_path),
+                str(shell.js_cfg_path.as_posix()),
                 "--host=x86_64-pc-linux-gnu",
                 "--target=i686-pc-linux",
             )
@@ -207,7 +207,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             (
                 "sh",
-                str(shell.js_cfg_path),
+                str(shell.js_cfg_path.as_posix()),
             )
         )
         if shell.build_opts.enableSimulatorArm64:
@@ -256,7 +256,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             (
                 "sh",
-                str(shell.js_cfg_path),
+                str(shell.js_cfg_path.as_posix()),
             )
         )
         if shell.build_opts.enable32:
@@ -281,7 +281,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             (
                 "sh",
-                str(shell.js_cfg_path),
+                str(shell.js_cfg_path.as_posix()),
             )
         )
         if shell.build_opts.enableSimulatorArm64:
@@ -358,20 +358,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     )
 
     if platform.system() == "Linux" and distro.id() == "gentoo":
-        path_to_libclang = (
+        path_to_libclang = Path(
             "/usr/lib/llvm/"
             f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
             "/lib64"
         )
-        if not Path(path_to_libclang).is_dir():
+        if not path_to_libclang.is_dir():
             raise FileNotFoundError(f"{path_to_libclang} is not a directory")
-        cfg_cmds.append(f"--with-libclang-path={path_to_libclang}")
-
-    if platform.system() == "Windows":
-        # FIXME: Replace this with subprocess.list2cmdline  # pylint: disable=fixme
-        for counter, entry in enumerate(cfg_cmds):
-            if os.sep in entry:
-                cfg_cmds[counter] = cfg_cmds[counter].replace(os.sep, "//")
+        cfg_cmds.append(f"--with-libclang-path={path_to_libclang.as_posix()}")
 
     # Dump whatever we added to the environment
     env_vars: list[str] = []
@@ -391,19 +385,6 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
 
     if not shell.js_objdir.is_dir():
         raise FileNotFoundError(f"{shell.js_objdir} is not a directory")
-
-    if platform.system() == "Windows":
-        changed_cfg_cmds = []
-        for entry in cfg_cmds:
-            # For JS, quoted from :glandium:
-            # "the way icu subconfigure is called is what changed.
-            #   but really, the whole thing likes forward slashes way better"
-            # See bug 1038590 comment 9.
-            if "\\" in entry:
-                entry = entry.replace("\\", "/")  # pylint: disable=redefined-loop-name
-            changed_cfg_cmds.append(entry)
-
-        cfg_cmds = changed_cfg_cmds
 
     try:
         subprocess.run(
