@@ -384,36 +384,28 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     if not shell.js_objdir.is_dir():
         raise FileNotFoundError(f"{shell.js_objdir} is not a directory")
 
-    try:  # pylint: disable=too-many-try-statements
-        if platform.system() == "Windows":
-            changed_cfg_cmds = []
-            for entry in cfg_cmds:
-                # For JS, quoted from :glandium:
-                # "the way icu subconfigure is called is what changed.
-                #   but really, the whole thing likes forward slashes way better"
-                # See bug 1038590 comment 9.
-                if "\\" in entry:
-                    entry = entry.replace(  # pylint: disable=redefined-loop-name
-                        "\\", "/"
-                    )
-                changed_cfg_cmds.append(entry)
-            subprocess.run(
-                changed_cfg_cmds,
-                check=True,
-                cwd=shell.js_objdir,
-                env=cfg_env,
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-            )
-        else:
-            subprocess.run(
-                cfg_cmds,
-                check=True,
-                cwd=shell.js_objdir,
-                env=cfg_env,
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-            )
+    if platform.system() == "Windows":
+        changed_cfg_cmds = []
+        for entry in cfg_cmds:
+            # For JS, quoted from :glandium:
+            # "the way icu subconfigure is called is what changed.
+            #   but really, the whole thing likes forward slashes way better"
+            # See bug 1038590 comment 9.
+            if "\\" in entry:
+                entry = entry.replace("\\", "/")  # pylint: disable=redefined-loop-name
+            changed_cfg_cmds.append(entry)
+
+        cfg_cmds = changed_cfg_cmds
+
+    try:
+        subprocess.run(
+            cfg_cmds,
+            check=True,
+            cwd=shell.js_objdir,
+            env=cfg_env,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+        )
     except subprocess.CalledProcessError as ex:
         with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
             "a",
@@ -626,58 +618,43 @@ def obtain_shell(
 
     shell.shell_cache_dir.mkdir()
 
-    try:  # pylint: disable=too-many-try-statements
-        if update_to_rev:
-            # Print *with* a trailing newline to avoid breaking other stuff
-            print(  # noqa: T201
-                f"Updating to rev {update_to_rev} in the "
-                f"{shell.build_opts.repo_dir} repository...",
-            )
-            subprocess.run(
-                [
-                    "hg",
-                    "-R",
-                    str(shell.build_opts.repo_dir),
-                    "update",
-                    "-C",
-                    "-r",
-                    update_to_rev,
-                ],
-                check=True,
-                cwd=Path.cwd(),
-                stderr=subprocess.DEVNULL,
-                timeout=9999,
-            )
-        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1791945
-                shell.build_opts.repo_dir,
-                (
-                    zzconstants.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "windowsdllmain.diff"
-                ),
-                1,
-            )
+    if update_to_rev:
+        # Print *with* a trailing newline to avoid breaking other stuff
+        print(  # noqa: T201
+            f"Updating to rev {update_to_rev} in the "
+            f"{shell.build_opts.repo_dir} repository...",
+        )
+        subprocess.run(
+            [
+                "hg",
+                "-R",
+                str(shell.build_opts.repo_dir),
+                "update",
+                "-C",
+                "-r",
+                update_to_rev,
+            ],
+            check=True,
+            cwd=Path.cwd(),
+            stderr=subprocess.DEVNULL,
+            timeout=9999,
+        )
+    if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
+        assert patch_files(  # See bug 1791945
+            shell.build_opts.repo_dir,
+            (
+                zzconstants.VENV_SITE_PKGS
+                / "zzbase"
+                / "data"
+                / "source_repos"
+                / "mozilla-central"
+                / "windowsdllmain.diff"
+            ),
+            1,
+        )
+
+    try:
         configure_js_shell_compile(shell)
-        if platform.system() == "Windows":
-            if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
-                assert patch_files(  # See bug 1791945
-                    shell.build_opts.repo_dir,
-                    (
-                        zzconstants.VENV_SITE_PKGS
-                        / "zzbase"
-                        / "data"
-                        / "source_repos"
-                        / "mozilla-central"
-                        / "windowsdllmain.diff"
-                    ),
-                    1,
-                    revert=True,
-                )
-            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
@@ -723,6 +700,23 @@ def obtain_shell(
             f.write(f"{traceback.format_exc()}\n")
         print(f"Compilation failed ({ex}) (details in {cached_no_shell})")  # noqa: T201
         raise
+
+    if platform.system() == "Windows":
+        if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
+            assert patch_files(  # See bug 1791945
+                shell.build_opts.repo_dir,
+                (
+                    zzconstants.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "windowsdllmain.diff"
+                ),
+                1,
+                revert=True,
+            )
+        misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
 
 
 def arch_of_binary(binary: Path) -> str:
