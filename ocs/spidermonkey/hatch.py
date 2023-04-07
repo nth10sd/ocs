@@ -34,11 +34,14 @@ from ocs.util.fs_helpers import env_with_path
 from ocs.util.fs_helpers import get_lock_dir_path
 from ocs.util.fs_helpers import handle_rm_readonly_files
 
-SM_HATCH_LOG = get_logger(__name__, fmt="%(message)s")
+SM_HATCH_LOG = get_logger(
+    __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
+)
 SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
-# class SMShellError(CommonShellError):
-#     """Error class unique to SMShell objects."""
+
+class SMShellError(CommonShellError):
+    """Error class unique to SMShell objects."""
 
 
 class SMShell(CommonShell):
@@ -57,6 +60,7 @@ class SMShell(CommonShell):
         """Main function of CommonShell class.
 
         :param args: Additional parameters
+        :raise SMShellError: When the run function encounters an error
         :return: 0, to denote a successful compile and 1, to denote a failed compile
         """
         if not args:
@@ -64,10 +68,9 @@ class SMShell(CommonShell):
             args = sys.argv[1:]  # pragma: no cover
         try:
             return cls.run(args)
-        except CommonShellError as ex:
-            print(repr(ex))  # noqa: T201
-            # SM_HATCH_LOG.error(ex)
-            return 1
+        except SMShellError:
+            SM_HATCH_LOG.exception("The run function encountered an error")
+            raise
 
     @staticmethod
     def run(argv: list[str]) -> int:
@@ -91,7 +94,7 @@ class SMShell(CommonShell):
                 shell = SMShell(options.build_opts, local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
-            print(shell.shell_cache_js_bin_path)  # noqa: T201
+            SM_HATCH_LOG.info(shell.shell_cache_js_bin_path)
 
         return 0
 
@@ -117,9 +120,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     :param shell: Potential compiled shell object
     """
-    print(  # noqa: T201  # Print *with* a trailing newline to stop breaking other stuff
-        "Compiling...",
-    )
+    SM_HATCH_LOG.info("Compiling...")
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
@@ -367,7 +368,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             if os.sep in entry:
                 cfg_cmds[counter] = cfg_cmds[counter].replace(os.sep, "//")
 
-    # Print whatever we added to the environment
+    # Dump whatever we added to the environment
     env_vars: list[str] = []
     for env_var in set(cfg_env.keys()) - set(orig_cfg_env.keys()):
         str_to_be_appended = (
@@ -376,9 +377,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             else f"{env_var}={cfg_env[env_var]}"
         )
         env_vars.append(str_to_be_appended)
-    utils.vdump(
-        f'Command to be run is: {" ".join(quote(x) for x in env_vars)} '
-        f'{" ".join(quote(x) for x in cfg_cmds)}',
+
+    SM_HATCH_LOG.debug(
+        "Command to be run is: %s %s",
+        " ".join(quote(x) for x in env_vars),
+        " ".join(quote(x) for x in cfg_cmds),
     )
 
     if not shell.js_objdir.is_dir():
@@ -516,8 +519,8 @@ def sm_compile(shell: SMShell) -> Path:
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
         ):  # Clang running out of memory
-            print(  # noqa: T201
-                "Trying once more due to the compiler running out of memory...",
+            SM_HATCH_LOG.info(
+                "Trying once more due to the compiler running out of memory..."
             )
             out = subprocess.run(
                 cmd_list,
@@ -529,7 +532,7 @@ def sm_compile(shell: SMShell) -> Path:
             ).stdout.decode("utf-8", errors="replace")
         # `make` can return a non-zero error, but later a shell still gets compiled.
         if shell.shell_compiled_path.is_file():
-            print(  # noqa: T201
+            SM_HATCH_LOG.info(
                 "A shell was compiled even though there was a non-zero exit code. "
                 "Continuing...",
             )
@@ -559,8 +562,8 @@ def sm_compile(shell: SMShell) -> Path:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        print(  # noqa: T201
-            f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell:"
+        SM_HATCH_LOG.warning(
+            "%s did not result in a js shell:", zzconstants.MAKE_BINARY_PATH
         )
         with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
             "a",
@@ -604,7 +607,7 @@ def obtain_shell(
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
-        print("Found cached shell...")  # noqa: T201
+        SM_HATCH_LOG.info("Found cached shell...")
         # Assuming that since binary is present, others (e.g. symbols) are also present
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
@@ -613,16 +616,16 @@ def obtain_shell(
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
-        print("Found a cache dir without a successful/failed shell...")  # noqa: T201
+        SM_HATCH_LOG.info("Found a cache dir without a successful/failed shell...")
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
 
     shell.shell_cache_dir.mkdir()
 
     if update_to_rev:
-        # Print *with* a trailing newline to avoid breaking other stuff
-        print(  # noqa: T201
-            f"Updating to rev {update_to_rev} in the "
-            f"{shell.build_opts.repo_dir} repository...",
+        SM_HATCH_LOG.info(
+            "Updating to rev %s in the %s repository...",
+            update_to_rev,
+            shell.build_opts.repo_dir,
         )
         subprocess.run(
             [
@@ -698,7 +701,7 @@ def obtain_shell(
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
-        print(f"Compilation failed ({ex}) (details in {cached_no_shell})")  # noqa: T201
+        SM_HATCH_LOG.exception("Compilation failure details in: %s", cached_no_shell)
         raise
 
     if platform.system() == "Windows":
@@ -775,9 +778,11 @@ def test_binary(
     :return: Tuple comprising the stdout of the run command and its return code
     """
     if use_vg:
-        print("Using Valgrind to test...")  # noqa: T201
+        SM_HATCH_LOG.info("Using Valgrind to test...")
     test_cmd = [str(shell_path)] + args
-    utils.vdump(f'The testing command is: {" ".join(quote(x) for x in test_cmd)}')
+    SM_HATCH_LOG.debug(
+        "The testing command is: %s", " ".join(quote(x) for x in test_cmd)
+    )
 
     test_env = env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={constants.ASAN_ERROR_EXIT_CODE}"
@@ -810,7 +815,7 @@ def test_binary(
         test_cmd_result.stdout.decode("utf-8", errors="replace"),
         test_cmd_result.returncode,
     )
-    utils.vdump(f"The exit code is: {return_code}")
+    SM_HATCH_LOG.debug("The exit code is: %s", return_code)
     return out, return_code
 
 

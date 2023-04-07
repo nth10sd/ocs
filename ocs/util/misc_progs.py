@@ -2,9 +2,17 @@
 
 from __future__ import annotations
 
+from logging import INFO as INFO_LOG_LEVEL
 import os
 from pathlib import Path
-import subprocess
+
+from zzbase.util.logging import get_logger
+from zzbase.util.logging import println
+
+MISC_LOG = get_logger(
+    __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
+)
+MISC_LOG.setLevel(INFO_LOG_LEVEL)
 
 
 def verify_full_win_pageheap(shell_path: Path) -> None:
@@ -20,17 +28,8 @@ def verify_full_win_pageheap(shell_path: Path) -> None:
         / "gflags.exe"
     )
     if gflags_bin_path.is_file() and shell_path.is_file():
-        print(  # noqa: T201
-            subprocess.run(
-                [
-                    str(gflags_bin_path),
-                    "-p",
-                    "/enable",
-                    str(shell_path),
-                    "/full",
-                ],
-                check=True,
-                stderr=subprocess.STDOUT,
-                stdout=subprocess.PIPE,
-            ).stdout,
+        println(
+            [str(gflags_bin_path), "-p", "/enable", str(shell_path), "/full"],
+            shell_path,
+            MISC_LOG,
         )

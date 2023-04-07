@@ -3,12 +3,20 @@
 from __future__ import annotations
 
 import argparse
+from logging import INFO as INFO_LOG_LEVEL
 from pathlib import Path
 import platform
 import random
 from typing import Any
 
+from zzbase.util.logging import get_logger
+
 from ocs.util.constants import DEFAULT_TREES_LOCATION
+
+BUILD_OPTIONS_LOG = get_logger(
+    __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
+)
+BUILD_OPTIONS_LOG.setLevel(INFO_LOG_LEVEL)
 
 
 def chance(i: float) -> bool:
@@ -214,9 +222,9 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
         build_options.build_options_str = args
         valid = are_args_valid(build_options)
         if not valid[0]:
-            print(  # noqa: T201
-                "WARNING: This set of build options is not tested well "
-                f"because: {valid[1]}",
+            BUILD_OPTIONS_LOG.warning(
+                "This set of build options is not tested well because: %s",
+                valid[1],
             )
 
     # Ensures releng machines do not enter the if block and assumes m-c always exists
@@ -432,21 +440,19 @@ def gen_rnd_cfgs(
 
 def main() -> None:
     """Main build_options function, generates sample random build configurations."""
-    print(  # noqa: T201
+    BUILD_OPTIONS_LOG.info(
         "Here are some sample random build configurations that can be generated:",
     )
     parser, randomizer = add_parser_opts()
 
     for _ in range(30):
         build_options = gen_rnd_cfgs(parser, randomizer)
-        print(build_options.build_options_str)  # noqa: T201
+        BUILD_OPTIONS_LOG.info(build_options.build_options_str)
 
-    print()  # noqa: T201
-    print(  # noqa: T201
-        "Running this file directly doesn't do anything, "
-        "but here's our subparser help:",
+    BUILD_OPTIONS_LOG.info(
+        "\nRunning this file directly doesn't do anything, "
+        "but here's our subparser help:\n",
     )
-    print()  # noqa: T201
     parser.parse_args()
 
 
