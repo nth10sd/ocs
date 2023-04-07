@@ -94,7 +94,12 @@ class SMShell(CommonShell):
                 shell = SMShell(options.build_opts, local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
-            SM_HATCH_LOG.info(shell.shell_cache_js_bin_path)
+
+            shell_cache_abs_dir = shell.shell_cache_js_bin_path.parents[-3]
+            SM_HATCH_LOG.info(  # Output with "~" instead of the full absolute dir
+                "Desired shell is at:\n\n~/%s",
+                shell.shell_cache_js_bin_path.relative_to(shell_cache_abs_dir),
+            )
 
         return 0
 
