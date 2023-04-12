@@ -37,7 +37,12 @@ if platform.system() == "Windows":
             .split(" (", maxsplit=1)[0]
             .removeprefix("clang version ")
         )
-        CLANG_VER: Final = clang_cl_version
+        clang_cl_major_version = clang_cl_version.split(".", maxsplit=1)[0]
+        CLANG_VER: Final = (
+            clang_cl_major_version  # It was 15.0.5 but changed to only 16
+            if int(clang_cl_major_version) >= 16
+            else clang_cl_version
+        )
 
     # Library-related
     RUN_MOZGLUE_LIB = "mozglue.dll"
