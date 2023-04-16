@@ -99,9 +99,7 @@ if __name__ == "__main__":
             "distro ~= 1.7.0",
             "mercurial ~= 6.2.1",
             "packaging ~= 23.0",
-            "psutil ~= 5.9.1",
             "setuptools >= 65.6.3",
-            "types-psutil==5.9.5.6",  # Bump types-* only with mypy
             "types-setuptools==67.2.0.1",  # Bump types-* only with mypy
             'types-toml==0.10.8.3; python_version <= "3.10"',
             "wheel >= 0.38.4",

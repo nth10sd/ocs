@@ -10,13 +10,13 @@ import platform
 
 import pytest
 from zzbase.patching.common import patch_files
+from zzbase.util.constants import MC_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
 
 from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell
 from ocs.util import hg_helpers
 
-from .util.constants_for_tests import MC_PATH
 from .util.constants_for_tests import SHELL_CACHE
 
 

@@ -18,7 +18,7 @@ from typing import IO
 import distro
 from packaging.version import parse
 from zzbase.patching.common import patch_files
-from zzbase.util import constants as zzconstants
+from zzbase.util import constants as zzconsts
 from zzbase.util import utils
 from zzbase.util.logging import get_logger
 
@@ -481,10 +481,10 @@ def sm_compile(shell: SMShell) -> Path:
     :return: Path to the compiled shell
     """
     cmd_list = [
-        str(zzconstants.MAKE_BINARY_PATH),
+        str(zzconsts.MAKE_BINARY_PATH),
         "-C",
         str(shell.js_objdir),
-        f"-j{constants.COMPILATION_JOBS}",
+        f"-j{zzconsts.COMPILATION_JOBS}",
         "-s",
     ]
     # Note that having a non-zero exit code does not mean that the operation did not
@@ -549,7 +549,7 @@ def sm_compile(shell: SMShell) -> Path:
                     shell.version = line.split(": ")[1].rstrip()
     else:
         SM_HATCH_LOG.warning(
-            "%s did not result in a js shell:", zzconstants.MAKE_BINARY_PATH
+            "%s did not result in a js shell:", zzconsts.MAKE_BINARY_PATH
         )
         with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
             "a",
@@ -561,7 +561,7 @@ def sm_compile(shell: SMShell) -> Path:
                 f"failed with the following output:\n",
             )
             f.write(out)
-        raise OSError(f"{zzconstants.MAKE_BINARY_PATH} did not result in a js shell.")
+        raise OSError(f"{zzconsts.MAKE_BINARY_PATH} did not result in a js shell.")
 
     return shell.shell_compiled_path
 
@@ -584,7 +584,7 @@ def obtain_shell(
     :raise CalledProcessError: When shell compilation failed
     """
     # pylint: disable=too-complex,too-many-branches
-    if zzconstants.IS_MOZILLABUILD_3_OR_OLDER:
+    if zzconsts.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
     lock_dir = get_lock_dir_path(Path.home(), shell.build_opts.repo_dir)
@@ -632,7 +632,7 @@ def obtain_shell(
         assert patch_files(  # See bug 1791945
             shell.build_opts.repo_dir,
             (
-                zzconstants.VENV_SITE_PKGS
+                zzconsts.VENV_SITE_PKGS
                 / "zzbase"
                 / "data"
                 / "source_repos"
@@ -650,7 +650,7 @@ def obtain_shell(
             assert patch_files(  # See bug 1791945
                 shell.build_opts.repo_dir,
                 (
-                    zzconstants.VENV_SITE_PKGS
+                    zzconsts.VENV_SITE_PKGS
                     / "zzbase"
                     / "data"
                     / "source_repos"
@@ -666,7 +666,7 @@ def obtain_shell(
             assert patch_files(  # See bug 1791945
                 shell.build_opts.repo_dir,
                 (
-                    zzconstants.VENV_SITE_PKGS
+                    zzconsts.VENV_SITE_PKGS
                     / "zzbase"
                     / "data"
                     / "source_repos"
@@ -695,7 +695,7 @@ def obtain_shell(
             assert patch_files(  # See bug 1791945
                 shell.build_opts.repo_dir,
                 (
-                    zzconstants.VENV_SITE_PKGS
+                    zzconsts.VENV_SITE_PKGS
                     / "zzbase"
                     / "data"
                     / "source_repos"
@@ -771,7 +771,7 @@ def test_binary(
     )
 
     test_env = env_with_path(str(shell_path.parent))
-    asan_options = f"exitcode={constants.ASAN_ERROR_EXIT_CODE}"
+    asan_options = f"exitcode={zzconsts.ASAN_ERROR_EXIT_CODE}"
     # Turn on LSan, Linux-only.
     # macOS non-support:
     # https://github.com/google/sanitizers/issues/1026

@@ -9,9 +9,8 @@ import platform
 import random
 from typing import Any
 
+from zzbase.util.constants import TREES_PATH
 from zzbase.util.logging import get_logger
-
-from ocs.util.constants import DEFAULT_TREES_LOCATION
 
 BUILD_OPTIONS_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
@@ -210,7 +209,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     :raise FileNotFoundError: If repos not found when tree locations specified
     :raise SystemExit: If repo_dir is not specified, and a default repository location
                        cannot be confirmed
-    :raise SystemExit: If DEFAULT_TREES_LOCATION is not found at the desired location
+    :raise SystemExit: If TREES_PATH is not found at the desired location
     :return: An immutable build_options object
     """
     parser, randomizer = add_parser_opts()
@@ -228,12 +227,12 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
             )
 
     # Ensures releng machines do not enter the if block and assumes m-c always exists
-    if DEFAULT_TREES_LOCATION.is_dir():
+    if TREES_PATH.is_dir():
         # Repositories do not get randomized if a repository is specified.
         if build_options.repo_dir:
             build_options.repo_dir = build_options.repo_dir.expanduser()
         else:
-            build_options.repo_dir = DEFAULT_TREES_LOCATION / "mozilla-central"
+            build_options.repo_dir = TREES_PATH / "mozilla-central"
 
             if not build_options.repo_dir.is_dir():
                 raise SystemExit(
@@ -252,10 +251,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
                 f"Repository not found at: {build_options.repo_dir}",
             )
     else:
-        raise SystemExit(
-            "DEFAULT_TREES_LOCATION not found at: "
-            f"{DEFAULT_TREES_LOCATION}. Exiting...",
-        )
+        raise SystemExit(f"TREES_PATH not found at: {TREES_PATH}")
 
     return build_options
 

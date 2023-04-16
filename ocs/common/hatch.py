@@ -6,8 +6,9 @@ import argparse
 from pathlib import Path
 import platform
 
+from zzbase.util.constants import ALL_LIBS
+
 from ocs import build_options
-from ocs.util import constants
 from ocs.util import fs_helpers
 
 
@@ -147,10 +148,7 @@ class CommonShell:
 
         :return: Original libraries' location of the binary compiled in the shell cache
         """
-        return [
-            self._js_objdir / "dist" / "bin" / runlib
-            for runlib in constants.ALL_RUN_LIBS
-        ]
+        return [self._js_objdir / "dist" / "bin" / runlib for runlib in ALL_LIBS]
 
     @property
     def shell_name_with_ext(self) -> str:

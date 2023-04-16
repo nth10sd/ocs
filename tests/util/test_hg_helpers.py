@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import pytest
+from zzbase.util.constants import TREES_PATH
 
 from ocs.util import hg_helpers
-
-from .constants_for_tests import TREES_PATH
 
 
 @pytest.mark.skipif(
