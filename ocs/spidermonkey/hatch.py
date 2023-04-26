@@ -139,6 +139,21 @@ def configure_js_shell_compile(shell: SMShell) -> None:
         "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
     ):
         utils.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
+
+
+    if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
+        # A .dll needs to be copied, for ASan builds
+        shutil.copy2(
+            constants.WIN_MOZBUILD_CLANG_PATH
+            / "lib"
+            / "clang"
+            / constants.CLANG_VER
+            / "lib"
+            / "windows"
+            / "clang_rt.asan_dynamic-x86_64.dll",
+            constants.WIN_MOZBUILD_CLANG_PATH / "bin",
+        )
+
     configure_binary(shell)
     sm_compile(shell)
     verify_binary(shell)
@@ -238,20 +253,15 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 / "lib"
                 / "windows",
             )
-            # Not sure if the following line works.
-            # One seems to need to first copy a .dll to ~/.mozbuild/clang/bin
-            # <clang DLL name> is: clang_rt.asan_dynamic-x86_64.dll
-            # MB is ~/.mozbuild
-            # cp MB/clang/lib/clang/*/lib/windows/<clang DLL name> MB/clang/bin/
-            # cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = str(
-            #     constants.WIN_MOZBUILD_CLANG_PATH
-            #     / "bin"
-            #     / "clang_rt.asan_dynamic-x86_64.dll",
-            # )
-            # if not Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file():
-            #     raise FileNotFoundError(
-            #         f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
-            #     )
+            cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = str(
+                constants.WIN_MOZBUILD_CLANG_PATH
+                / "bin"
+                / "clang_rt.asan_dynamic-x86_64.dll",
+            )
+            if not Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file():
+                raise FileNotFoundError(
+                    f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
+                )
             cfg_env["LIB"] = cfg_env.get("LIB", "") + cfg_env["CLANG_LIB_DIR"]
         cfg_cmds.extend(
             (
