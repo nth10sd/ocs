@@ -189,5 +189,5 @@ ignore = [
 
 [tool.tryceratops]
 ignore = [
-    "TC003",
+    "TRY003",
 ]
