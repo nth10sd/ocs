@@ -629,7 +629,19 @@ def obtain_shell(
             timeout=9999,
         )
     if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-        assert patch_files(  # See bug 1791945
+        assert patch_files(  # See bug 1802675
+            shell.build_opts.repo_dir,
+            (
+                zzconsts.VENV_SITE_PKGS
+                / "zzbase"
+                / "data"
+                / "source_repos"
+                / "mozilla-central"
+                / "mozalloc.diff"
+            ),
+            1,
+        )
+        assert patch_files(  # See bug 1751561
             shell.build_opts.repo_dir,
             (
                 zzconsts.VENV_SITE_PKGS
@@ -647,7 +659,20 @@ def obtain_shell(
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1791945
+            assert patch_files(  # See bug 1802675
+                shell.build_opts.repo_dir,
+                (
+                    zzconsts.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "mozalloc.diff"
+                ),
+                1,
+                revert=True,
+            )
+            assert patch_files(  # See bug 1751561
                 shell.build_opts.repo_dir,
                 (
                     zzconsts.VENV_SITE_PKGS
@@ -663,7 +688,20 @@ def obtain_shell(
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
         if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1791945
+            assert patch_files(  # See bug 1802675
+                shell.build_opts.repo_dir,
+                (
+                    zzconsts.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "mozalloc.diff"
+                ),
+                1,
+                revert=True,
+            )
+            assert patch_files(  # See bug 1751561
                 shell.build_opts.repo_dir,
                 (
                     zzconsts.VENV_SITE_PKGS
@@ -691,8 +729,21 @@ def obtain_shell(
         raise
 
     if platform.system() == "Windows":
-        if shell.build_opts.enableAddressSanitizer:  # See bug 1791945
-            assert patch_files(  # See bug 1791945
+        if shell.build_opts.enableAddressSanitizer:
+            assert patch_files(  # See bug 1802675
+                shell.build_opts.repo_dir,
+                (
+                    zzconsts.VENV_SITE_PKGS
+                    / "zzbase"
+                    / "data"
+                    / "source_repos"
+                    / "mozilla-central"
+                    / "mozalloc.diff"
+                ),
+                1,
+                revert=True,
+            )
+            assert patch_files(  # See bug 1751561
                 shell.build_opts.repo_dir,
                 (
                     zzconsts.VENV_SITE_PKGS

@@ -33,10 +33,6 @@ if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
       /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/
     # MSVC 2022:
     #   /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Enterprise/VC/Tools/MSVC/14.34.31933/bin/HostX64/x64/
-
-    # Patch m-c bug 1802675
-    sed -i 's/if CONFIG\["OS_TARGET"\] == "WINNT":/if CONFIG["MOZ_MEMORY"] and CONFIG["OS_TARGET"] == "WINNT":/' ~/trees/mozilla-central/memory/mozalloc/moz.build ;
-    hg -R ~/trees/mozilla-central/ diff ;
 fi ;
 
 echo "=== pytest attempt: 1 ===" ;
