@@ -140,19 +140,6 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     ):
         utils.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
 
-    if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-        # A .dll needs to be copied, for ASan builds
-        shutil.copy2(
-            constants.WIN_MOZBUILD_CLANG_PATH
-            / "lib"
-            / "clang"
-            / constants.CLANG_VER
-            / "lib"
-            / "windows"
-            / "clang_rt.asan_dynamic-x86_64.dll",
-            constants.WIN_MOZBUILD_CLANG_PATH / "bin",
-        )
-
     configure_binary(shell)
     sm_compile(shell)
     verify_binary(shell)
