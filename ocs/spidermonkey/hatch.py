@@ -464,12 +464,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write("[Metadata]\n")
         f.write(f"buildFlags = {shell.build_opts.build_options_str}\n")
         f.write(f'majorVersion = {shell.version.split(".")[0]}\n')
-        path_prefix = (
-            shell.build_opts.repo_dir.as_uri()
-            if platform.system() == "Windows"
-            else shell.build_opts.repo_dir
-        )
-        f.write(f"pathPrefix = {path_prefix}/\n")
+        f.write(f"pathPrefix = {shell.build_opts.repo_dir}/\n")
         f.write(f"version = {shell.version}\n")
 
 
