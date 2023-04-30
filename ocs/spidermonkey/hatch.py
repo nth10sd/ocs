@@ -244,19 +244,18 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 "clang_rt.asan_dynamic-x86_64.lib "
                 "clang_rt.asan_dynamic_runtime_thunk-x86_64.lib"
             )
-            cfg_env["CLANG_LIB_DIR"] = str(
+            clang_lib_path = (
                 constants.WIN_MOZBUILD_CLANG_PATH
                 / "lib"
                 / "clang"
                 / constants.CLANG_VER
                 / "lib"
-                / "windows",
+                / "windows"
             )
-            cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = str(
-                constants.WIN_MOZBUILD_CLANG_PATH
-                / "bin"
-                / "clang_rt.asan_dynamic-x86_64.dll",
-            )
+            cfg_env["CLANG_LIB_DIR"] = clang_lib_path.as_posix()
+            cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = (
+                clang_lib_path / "clang_rt.asan_dynamic-x86_64.dll"
+            ).as_posix()
             if not Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file():
                 raise FileNotFoundError(
                     f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
