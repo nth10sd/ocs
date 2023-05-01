@@ -5,8 +5,8 @@ from __future__ import annotations
 import contextlib
 from functools import cache
 import os
-from pathlib import Path
 import platform
+from typing import TYPE_CHECKING
 
 import pytest
 from zzbase.patching.common import patch_files
@@ -18,6 +18,9 @@ from ocs.spidermonkey.hatch import SMShell
 from ocs.util import hg_helpers
 
 from .util.constants_for_tests import SHELL_CACHE
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @pytest.mark.slow()

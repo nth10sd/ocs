@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import errno
 import os
 from pathlib import Path
 import platform
 import stat
 import subprocess
-from types import TracebackType
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from types import TracebackType
 
 
 def ensure_cache_dir(base_dir: Path) -> Path:
