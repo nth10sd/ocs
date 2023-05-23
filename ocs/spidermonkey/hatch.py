@@ -17,7 +17,6 @@ from typing import IO
 
 import distro
 from packaging.version import parse
-from zzbase.patching.common import patch_files
 from zzbase.util import constants as zzconsts
 from zzbase.util import utils
 from zzbase.util.logging import get_logger
@@ -578,7 +577,7 @@ def obtain_shell(
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    # pylint: disable=too-complex,too-many-branches
+    # pylint: disable=too-complex
     if zzconsts.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
@@ -623,92 +622,13 @@ def obtain_shell(
             stderr=subprocess.DEVNULL,
             timeout=9999,
         )
-    if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-        assert patch_files(  # See bug 1802675
-            shell.build_opts.repo_dir,
-            (
-                zzconsts.VENV_SITE_PKGS
-                / "zzbase"
-                / "data"
-                / "source_repos"
-                / "mozilla-central"
-                / "mozalloc.diff"
-            ),
-            1,
-        )
-        assert patch_files(  # See bug 1751561
-            shell.build_opts.repo_dir,
-            (
-                zzconsts.VENV_SITE_PKGS
-                / "zzbase"
-                / "data"
-                / "source_repos"
-                / "mozilla-central"
-                / "windowsdllmain.diff"
-            ),
-            1,
-        )
 
     try:
         configure_js_shell_compile(shell)
     except KeyboardInterrupt:
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
-        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1802675
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "mozalloc.diff"
-                ),
-                1,
-                revert=True,
-            )
-            assert patch_files(  # See bug 1751561
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "windowsdllmain.diff"
-                ),
-                1,
-                revert=True,
-            )
         raise
     except (subprocess.CalledProcessError, OSError) as ex:
-        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1802675
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "mozalloc.diff"
-                ),
-                1,
-                revert=True,
-            )
-            assert patch_files(  # See bug 1751561
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "windowsdllmain.diff"
-                ),
-                1,
-                revert=True,
-            )
         shutil.rmtree(
             shell.shell_cache_dir / "objdir-js", onerror=handle_rm_readonly_files
         )
@@ -724,33 +644,6 @@ def obtain_shell(
         raise
 
     if platform.system() == "Windows":
-        if shell.build_opts.enableAddressSanitizer:
-            assert patch_files(  # See bug 1802675
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "mozalloc.diff"
-                ),
-                1,
-                revert=True,
-            )
-            assert patch_files(  # See bug 1751561
-                shell.build_opts.repo_dir,
-                (
-                    zzconsts.VENV_SITE_PKGS
-                    / "zzbase"
-                    / "data"
-                    / "source_repos"
-                    / "mozilla-central"
-                    / "windowsdllmain.diff"
-                ),
-                1,
-                revert=True,
-            )
         misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
 
 
