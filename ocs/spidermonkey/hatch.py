@@ -253,7 +253,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 str(shell.js_cfg_path.as_posix()),
             )
         )
-        if shell.build_opts.enable32:
+        if platform.machine() == "ARM64":
+            cfg_cmds.append("--target=aarch64")
+        elif shell.build_opts.enable32:
             cfg_cmds.extend(
                 (
                     "--host=x86_64-pc-mingw32",
