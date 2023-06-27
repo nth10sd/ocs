@@ -253,8 +253,14 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
                 str(shell.js_cfg_path.as_posix()),
             )
         )
-        if platform.machine() == "ARM64":
-            cfg_cmds.append("--target=aarch64")
+        # Cross-compile ARM64 binary using x86_64 Python and toolchain on ARM64 host
+        if Path("C:/Program Files (Arm)/").is_dir():
+            cfg_cmds.extend(
+                (
+                    "--host=x86_64-pc-mingw32",
+                    "--target=aarch64",
+                )
+            )
         elif shell.build_opts.enable32:
             cfg_cmds.extend(
                 (
