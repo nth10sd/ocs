@@ -5,11 +5,11 @@ from __future__ import annotations
 import contextlib
 from functools import cache
 import os
-import platform
 from typing import TYPE_CHECKING
 
 import pytest
 from zzbase.patching.common import patch_files
+from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.constants import MC_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
 
@@ -60,7 +60,7 @@ def test_shell_compile() -> Path:
     default_parameters_debug = (
         "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
     )
-    if platform.system() == "Linux":
+    if Hp.IS_LINUX:
         default_parameters_debug += " --enable-valgrind"
     # Remember to update the corresponding BUILDSM build parameters in CI as well
     # .rstrip() is required, as we pass in " " (empty space) on Win CI. The "" null
@@ -75,11 +75,7 @@ def test_shell_compile() -> Path:
 
     file_name = build_options.compute_shell_name(opts_parsed, hg_hash_of_default)
     js_bin_path = SHELL_CACHE / file_name / file_name
-    js_bin_path = (
-        js_bin_path.with_suffix(".exe")
-        if platform.system() == "Windows"
-        else js_bin_path
-    )
+    js_bin_path = js_bin_path.with_suffix(".exe") if Hp.IS_WIN_MB else js_bin_path
     assert js_bin_path.is_file()
 
     with contextlib.suppress(OSError):

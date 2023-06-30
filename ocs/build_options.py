@@ -9,6 +9,7 @@ import platform
 import random
 from typing import Any
 
+from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.constants import TREES_PATH
 from zzbase.util.logging import get_logger
 
@@ -288,7 +289,7 @@ def compute_shell_type(  # pylint: disable=too-complex
     file_name.extend(
         (
             platform.system().lower(),
-            platform.machine().lower(),
+            "aarch64" if Hp.IS_WIN_MB_AARCH64 else platform.machine().lower(),
         )
     )
 
@@ -324,9 +325,9 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
     if not args.enableDbg and args.disableOpt:
         return False, "Making a non-debug, non-optimized build would be kind of silly."
 
-    if platform.system() == "Darwin" and args.enable32:
+    if Hp.IS_MAC and args.enable32:
         return False, "We are no longer going to ship 32-bit Mac binaries."
-    if platform.machine() == "aarch64" and args.enable32:
+    if (Hp.IS_LINUX_AARCH64 | Hp.IS_MAC | Hp.IS_WIN_MB_AARCH64) and args.enable32:
         return False, "ARM64 systems cannot seem to compile 32-bit binaries properly."
     if "Microsoft" in platform.release() and args.enable32:
         return False, "WSL does not seem to support 32-bit Linux binaries yet."
@@ -350,9 +351,9 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
         #     return False, "One should not compile with both Valgrind flags and "
         #     "ASan flags."
 
-        # if platform.system() == "Windows":
+        # if Hp.IS_WIN_MB:
         #     return False, "Valgrind does not work on Windows."
-        # if platform.system() == "Darwin":
+        # if Hp.IS_MAC:
         #     return False, "Valgrind does not work well with Mac OS X 10.10 Yosemite."
 
     if args.runWithVg and not args.enableValgrind:
@@ -365,35 +366,19 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
                 "32-bit ASan builds fail on 18.04 due to "
                 "https://github.com/google/sanitizers/issues/954.",
             )
-        if platform.system() == "Windows" and args.enable32:
+        if Hp.IS_WIN_MB and args.enable32:
             return False, "ASan is explicitly not supported in 32-bit Windows builds."
 
     if args.enableSimulatorArm32 or args.enableSimulatorArm64:
-        if platform.system() == "Windows" and args.enableSimulatorArm32:
+        if Hp.IS_WIN_MB and args.enableSimulatorArm32:
             return False, "Nobody runs the ARM32 simulators on Windows."
-        if (
-            platform.system() == "Linux"
-            and platform.machine() == "aarch64"
-            and args.enableSimulatorArm32
-        ):
+        if Hp.IS_LINUX_AARCH64 and args.enableSimulatorArm32:
             return False, "Nobody runs the ARM32 simulators on ARM64 Linux."
-        if (
-            platform.system() == "Linux"
-            and platform.machine() == "aarch64"
-            and args.enableSimulatorArm64
-        ):
+        if Hp.IS_LINUX_AARCH64 and args.enableSimulatorArm64:
             return False, "Nobody runs the ARM64 simulators on ARM64 Linux."
-        if (
-            platform.system() == "Darwin"
-            and platform.machine() == "arm64"
-            and args.enableSimulatorArm64
-        ):
+        if Hp.IS_MAC and platform.machine() == "arm64" and args.enableSimulatorArm64:
             return False, "Nobody runs the ARM64 simulators on ARM64 macOS."
-        if (
-            platform.system() == "Windows"
-            and platform.machine() == "AMD64"
-            and args.enableSimulatorArm64
-        ):
+        if Hp.IS_WIN_MB_AARCH64 and args.enableSimulatorArm64:
             return False, "Nobody runs the ARM64 simulators on ARM64 Windows."
         if args.enableSimulatorArm32 and not args.enable32:
             return (

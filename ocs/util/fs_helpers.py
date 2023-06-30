@@ -5,10 +5,11 @@ from __future__ import annotations
 import errno
 import os
 from pathlib import Path
-import platform
 import stat
 import subprocess
 from typing import TYPE_CHECKING
+
+from zzbase.util.constants import HostPlatform as Hp
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -39,20 +40,11 @@ def env_with_path(
     """
     if not curr_env:
         curr_env = os.environ.copy()
-    if platform.system() == "Linux":
-        lib_path = "LD_LIBRARY_PATH"
-        path_sep = ":"
-    elif platform.system() == "Darwin":
-        lib_path = "DYLD_LIBRARY_PATH"
-        path_sep = ":"
-    else:  # Windows (or other unknown platforms)
-        lib_path = "PATH"
-        path_sep = ";"
 
+    lib_path = "PATH" if Hp.IS_WIN_MB else f'{"DY" if Hp.IS_MAC else ""}LD_LIBRARY_PATH'
     env = curr_env.copy()
-    if lib_path in env:
-        if path not in env[lib_path]:
-            env[lib_path] += path_sep + path
+    if lib_path in env and path not in env[lib_path]:
+        env[lib_path] += (";" if Hp.IS_WIN_MB else ":") + path
     else:
         env[lib_path] = path
 

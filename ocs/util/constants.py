@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-import platform
 import subprocess
 from typing import Final
 
 from zzbase.shell_compile_prereqs.spidermonkey import find_latest_icu_version
 from zzbase.util import constants as zzconsts
 
-if platform.system() == "Windows":
+if zzconsts.HostPlatform.IS_WIN_MB:
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
     WIN_CLANG_CL: Final = WIN_MOZBUILD_CLANG_PATH / "bin" / "clang-cl.exe"
     if WIN_CLANG_CL.is_file():

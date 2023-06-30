@@ -19,6 +19,7 @@ import distro
 from packaging.version import parse
 from zzbase.util import constants as zzconsts
 from zzbase.util import utils
+from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.logging import get_logger
 
 from ocs import build_options
@@ -132,7 +133,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     # Run autoconf 2.13 only on non-Windows platforms if repository revision is before:
     #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
     # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if platform.system() != "Windows" and hg_helpers.exists_and_is_ancestor(
+    if not Hp.IS_WIN_MB and hg_helpers.exists_and_is_ancestor(
         shell.build_opts.repo_dir,
         shell.hg_hash,
         "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
@@ -169,9 +170,9 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     cfg_cmds: list[str] = []
     cfg_env = dict(os.environ.copy())
     orig_cfg_env = dict(os.environ.copy())
-    if platform.system() != "Windows":
+    if Hp.IS_LINUX | Hp.IS_MAC:
         cfg_env["AR"] = "ar"
-    if shell.build_opts.enable32 and platform.system() == "Linux":
+    if Hp.IS_LINUX and shell.build_opts.enable32:
         # 32-bit shell on 32/64-bit x86 Linux
         cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
         # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first,
@@ -191,7 +192,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
             cfg_cmds.append("--enable-simulator=arm")
     # 64-bit shell on macOS 10.13 El Capitan and greater
     elif (  # pylint: disable=confusing-consecutive-elif
-        platform.system() == "Darwin"
+        Hp.IS_MAC
         and parse(platform.mac_ver()[0]) >= parse("10.13")
         and not shell.build_opts.enable32
     ):
@@ -213,7 +214,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         if shell.build_opts.enableSimulatorArm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
-    elif platform.system() == "Windows":  # pylint: disable=confusing-consecutive-elif
+    elif Hp.IS_WIN_MB:  # pylint: disable=confusing-consecutive-elif
         win_mozbuild_clang_bin_path = constants.WIN_MOZBUILD_CLANG_PATH / "bin"
         if not win_mozbuild_clang_bin_path.is_dir():
             raise FileNotFoundError('Please first run "./mach bootstrap".')
@@ -314,7 +315,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         cfg_cmds.extend(
             ("--enable-address-sanitizer", "--enable-fuzzing", "--disable-jemalloc")
         )
-        if platform.system() == "Linux":
+        if Hp.IS_LINUX:
             cfg_cmds.extend(
                 (
                     "--disable-stdcxx-compat",
@@ -331,16 +332,13 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         )
 
     # We add the following flags by default.
-    if os.name == "posix":
+    if Hp.IS_LINUX | Hp.IS_MAC:
         cfg_cmds.append("--with-ccache")
     # Building with NSPR is standard on upstream. However, local 32-bit builds need NSPR
     # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
     # set, so this is probably not worth the effort. Also, ctypes has 32-bit issues.
     # NSPR (and ctypes, which seems to need NSPR) does not seem to support aarch64 Linux
-    if not (
-        shell.build_opts.enable32
-        or (platform.system() == "Linux" and platform.machine() == "aarch64")
-    ):
+    if not (Hp.IS_LINUX_AARCH64 or shell.build_opts.enable32):
         cfg_cmds.extend(
             (
                 "--enable-nspr-build",
@@ -359,7 +357,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         )
     )
 
-    if platform.system() == "Linux" and distro.id() == "gentoo":
+    if Hp.IS_LINUX and distro.id() == "gentoo":
         path_to_libclang = Path(
             "/usr/lib/llvm/"
             f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
@@ -425,20 +423,19 @@ def env_dump(shell: SMShell, log_: Path) -> None:
     #   https://wiki.mozilla.org/Security/CrashSignatures
     if shell.build_opts.enable32:
         fmconf_platform = "x86"  # 32-bit Intel-only, we do not support 32-bit ARM hosts
-    elif platform.system() == "Windows":
-        if platform.machine() == "ARM64":
-            fmconf_platform = "aarch64"  # platform.machine() returns "ARM64" on Windows
-        else:
-            fmconf_platform = "x86_64"  # platform.machine() returns "AMD64" on Windows
+    elif Hp.IS_WIN_MB_AARCH64:
+        fmconf_platform = "aarch64"
+    elif Hp.IS_WIN_MB_X86_64:
+        fmconf_platform = "x86_64"
     else:
         fmconf_platform = platform.machine()
 
     fmconf_os = ""
-    if platform.system() == "Linux":
+    if Hp.IS_LINUX:
         fmconf_os = "linux"
-    elif platform.system() == "Darwin":
+    elif Hp.IS_MAC:
         fmconf_os = "macosx"
-    elif platform.system() == "Windows":
+    elif Hp.IS_WIN_MB:
         fmconf_os = "windows"
 
     with log_.open("a", encoding="utf-8", errors="replace") as f:
@@ -502,7 +499,7 @@ def sm_compile(shell: SMShell) -> Path:
     ).stdout.decode("utf-8", errors="replace")
 
     if not shell.shell_compiled_path.is_file():
-        if platform.system() in {"Linux", "Darwin"} and (
+        if (Hp.IS_LINUX | Hp.IS_MAC) and (
             "internal compiler error: Killed (program cc1plus)" in out
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
@@ -530,7 +527,7 @@ def sm_compile(shell: SMShell) -> Path:
         for run_lib in shell.shell_compiled_runlibs_path:
             if run_lib.is_file():
                 shutil.copy2(str(run_lib), str(shell.shell_cache_dir))
-        if platform.system() == "Windows" and shell.build_opts.enableAddressSanitizer:
+        if Hp.IS_WIN_MB and shell.build_opts.enableAddressSanitizer:
             shutil.copy2(
                 str(
                     constants.WIN_MOZBUILD_CLANG_PATH
@@ -597,7 +594,7 @@ def obtain_shell(
     if shell.shell_cache_js_bin_path.is_file():
         SM_HATCH_LOG.info("Found cached shell...")
         # Assuming that since binary is present, others (e.g. symbols) are also present
-        if platform.system() == "Windows":
+        if Hp.IS_WIN_MB:
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
         return
 
@@ -651,7 +648,7 @@ def obtain_shell(
         SM_HATCH_LOG.exception("Compilation failure details in: %s", cached_no_shell)
         raise
 
-    if platform.system() == "Windows":
+    if Hp.IS_WIN_MB:
         misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
 
 
@@ -673,7 +670,7 @@ def arch_of_binary(binary: Path) -> str:
         timeout=99,
     ).stdout.decode("utf-8", errors="replace")
     filetype = unsplit_file_type.split(":", 1)[1]
-    if platform.system() == "Windows":
+    if Hp.IS_WIN_MB:
         if "MS Windows" not in filetype:
             raise ValueError(
                 "A Windows binary was not compiled in Windows, "
@@ -727,7 +724,7 @@ def test_binary(
     #   (search for LSan)
     # Termux Android aarch64 is not yet supported due to possible ptrace issues
     if (
-        platform.system() == "Linux"
+        Hp.IS_LINUX
         and not ("-asan-" in str(shell_path) and "-armsim64-" in str(shell_path))
         and "-aarch64-" not in str(shell_path)
     ):
@@ -811,7 +808,7 @@ def verify_binary(shell: SMShell) -> None:
             f'Profiling status of shell is: {query_build_cfg(binary, "profiling")}, '
             f"compared to intended input: {not shell.build_opts.disableProfiling}",
         )
-    if platform.machine() == "x86_64":
+    if not Hp.IS_WIN_MB_AARCH64:
         if (
             query_build_cfg(binary, "arm-simulator") and shell.build_opts.enable32
         ) != shell.build_opts.enableSimulatorArm32:

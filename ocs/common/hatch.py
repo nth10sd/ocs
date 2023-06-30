@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-import argparse
 from pathlib import Path
-import platform
+from typing import TYPE_CHECKING
 
 from zzbase.util.constants import ALL_LIBS
+from zzbase.util.constants import HostPlatform as Hp
 
 from ocs import build_options
 from ocs.util import fs_helpers
+
+if TYPE_CHECKING:
+    import argparse
 
 
 class CommonShellError(BaseException):
@@ -135,11 +138,7 @@ class CommonShell:
         :return: Original binary location that was compiled in the shell cache
         """
         full_path = self._js_objdir / "dist" / "bin" / "js"
-        return (
-            full_path.with_suffix(".exe")
-            if platform.system() == "Windows"
-            else full_path
-        )
+        return full_path.with_suffix(".exe") if Hp.IS_WIN_MB else full_path
 
     @property
     def shell_compiled_runlibs_path(self) -> list[Path]:
@@ -156,11 +155,7 @@ class CommonShell:
 
         :return: Name of the compiled js shell with the file extension
         """
-        return (
-            f"{self._name_no_ext}.exe"
-            if platform.system() == "Windows"
-            else f"{self._name_no_ext}"
-        )
+        return f"{self._name_no_ext}.exe" if Hp.IS_WIN_MB else f"{self._name_no_ext}"
 
     @property
     def shell_name_without_ext(self) -> str:
