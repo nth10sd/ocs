@@ -329,7 +329,7 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
         return False, "We are no longer going to ship 32-bit Mac binaries."
     if (Hp.IS_LINUX_AARCH64 | Hp.IS_MAC | Hp.IS_WIN_MB_AARCH64) and args.enable32:
         return False, "ARM64 systems cannot seem to compile 32-bit binaries properly."
-    if "Microsoft" in platform.release() and args.enable32:
+    if "Microsoft".lower() in platform.release() and args.enable32:
         return False, "WSL does not seem to support 32-bit Linux binaries yet."
 
     if args.enableValgrind:
