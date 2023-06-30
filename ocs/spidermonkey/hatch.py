@@ -599,7 +599,7 @@ def obtain_shell(
         # Assuming that since binary is present, others (e.g. symbols) are also present
         if platform.system() == "Windows":
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
-        return
+        return None
 
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
