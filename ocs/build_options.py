@@ -368,6 +368,8 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
             )
         if Hp.IS_WIN_MB and args.enable32:
             return False, "ASan is explicitly not supported in 32-bit Windows builds."
+        if Hp.IS_WIN_MB_AARCH64:
+            return False, "ASan does not yet work on aarch64 Windows builds."
 
     if args.enableSimulatorArm32 or args.enableSimulatorArm64:
         if Hp.IS_WIN_MB and args.enableSimulatorArm32:
