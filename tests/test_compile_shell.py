@@ -52,7 +52,7 @@ def test_shell_compile() -> Path:
             ),
             1,
         )
-    assert (  # If this assert fails, try removing temporary section above
+    assert (  # If this assert fails, try removing monkeypatching section above
         "Monkeypatching coverage rev"
         in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()  # Re-read again
     )
