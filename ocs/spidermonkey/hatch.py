@@ -196,6 +196,11 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
         and parse(platform.mac_ver()[0]) >= parse("10.13")
         and not shell.build_opts.enable32
     ):
+        # Remove entry pointing to the venv python on macOS to play nice w/SM configure
+        orig_mac_path_env_var_full = os.getenv("PATH", "").split(":", maxsplit=1)
+        if (Path(orig_mac_path_env_var_full[0]) / "python").is_file():
+            # Only remove first entry of PATH if it is a venv, i.e. it contains a python
+            cfg_env["PATH"] = orig_mac_path_env_var_full[1]
         # Add the AUTOCONF env variable if repository revision is before:
         #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
         # See bug 1787977. m-c rev has been bumped to account for known broken ranges
