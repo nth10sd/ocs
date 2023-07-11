@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
-import pytest
+from typing import TYPE_CHECKING
 
 from ocs import build_options
+
+if TYPE_CHECKING:
+    import pytest
 
 
 def test_chance(monkeypatch: pytest.MonkeyPatch) -> None:
