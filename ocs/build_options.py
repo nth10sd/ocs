@@ -17,6 +17,7 @@ BUILD_OPTIONS_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
 )
 BUILD_OPTIONS_LOG.setLevel(INFO_LOG_LEVEL)
+SAFE_RANDOM_FOR_CHANCE = SystemRandom()  # Tests monkeypatch this variable
 
 
 def chance(i: float) -> bool:
@@ -25,8 +26,7 @@ def chance(i: float) -> bool:
     :param i: Intended probability.
     :return: Result based on the input probability
     """
-    safe_random = SystemRandom()
-    return safe_random.random() < i
+    return SAFE_RANDOM_FOR_CHANCE.random() < i
 
 
 class Randomizer:

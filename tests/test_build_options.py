@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import random
-
 import pytest
 
 from ocs import build_options
@@ -14,7 +12,7 @@ def test_chance(monkeypatch: pytest.MonkeyPatch) -> None:
 
     :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions
     """
-    monkeypatch.setattr(random, "random", lambda: 0)
+    monkeypatch.setattr(build_options.SAFE_RANDOM_FOR_CHANCE, "random", lambda: 0)
     assert build_options.chance(0.6)
     assert build_options.chance(0.1)
     assert not build_options.chance(0)
