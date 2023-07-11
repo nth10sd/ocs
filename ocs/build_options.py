@@ -6,7 +6,7 @@ import argparse
 from logging import INFO as INFO_LOG_LEVEL
 from pathlib import Path
 import platform
-import random
+from random import SystemRandom
 from typing import Any
 
 from zzbase.util.constants import HostPlatform as Hp
@@ -25,7 +25,8 @@ def chance(i: float) -> bool:
     :param i: Intended probability.
     :return: Result based on the input probability
     """
-    return random.random() < i  # noqa: DUO102
+    safe_random = SystemRandom()
+    return safe_random.random() < i
 
 
 class Randomizer:
