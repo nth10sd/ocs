@@ -29,10 +29,11 @@ if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
     # For future MSVCs, see where the build process complains about the lack of a .pdb at a new desired destination
     echo "Copying over clang_rt.asan_dynamic-x86_64.pdb ..." ;
     # MSVC 2019:
-    cp "$HOME"/.mozbuild/clang/lib/clang/"$(ls "$HOME"/.mozbuild/clang/lib/clang/)"/lib/windows/clang_rt.asan_dynamic-x86_64.pdb \
-      /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/
+    # cp "$HOME"/.mozbuild/clang/lib/clang/"$(ls "$HOME"/.mozbuild/clang/lib/clang/)"/lib/windows/clang_rt.asan_dynamic-x86_64.pdb \
+    #   /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/
     # MSVC 2022:
-    #   /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Enterprise/VC/Tools/MSVC/14.34.31933/bin/HostX64/x64/
+    cp "$HOME"/.mozbuild/clang/lib/clang/"$(ls "$HOME"/.mozbuild/clang/lib/clang/)"/lib/windows/clang_rt.asan_dynamic-x86_64.pdb \
+      /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Enterprise/VC/Tools/MSVC/14.34.31933/bin/HostX64/x64/
 fi ;
 
 echo "=== pytest attempt: 1 ===" ;
