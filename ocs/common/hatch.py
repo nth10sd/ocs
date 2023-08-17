@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     import argparse
 
 
-class CommonShellError(BaseException):
+class CommonShellError(Exception):
     """Error class unique to CommonShell objects."""
 
 
