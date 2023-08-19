@@ -259,7 +259,7 @@ def parse_shell_opts(args: str) -> argparse.Namespace:
     return build_options
 
 
-def compute_shell_type(  # pylint: disable=too-complex
+def compute_shell_type(  # noqa: C901  # pylint: disable=too-complex
     build_options: argparse.Namespace,
 ) -> str:
     """Return configuration information of the shell.
@@ -310,7 +310,7 @@ def compute_shell_name(build_options: argparse.Namespace, build_rev: str) -> str
     return f"{compute_shell_type(build_options)}-{build_rev}"
 
 
-def are_args_valid(  # pylint: disable=too-many-branches,too-complex
+def are_args_valid(  # noqa: C901, PLR0911, PLR0912  # pylint: disable=too-many-branches
     args: argparse.Namespace,
 ) -> tuple[bool, str]:
     """Check to see if chosen arguments are valid.
@@ -318,7 +318,7 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
     :param args: Input arguments
     :return: Whether arguments are valid, with a string as the explanation
     """
-    # pylint: disable=too-many-return-statements
+    # pylint: disable=too-complex,too-many-return-statements
     # Consider refactoring this to raise exceptions instead.
     if args.enableDbg and args.disableDbg:
         return False, "Making a debug, non-debug build would be contradictory."

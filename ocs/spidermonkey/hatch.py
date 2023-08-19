@@ -155,7 +155,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
         env_dump(shell, compile_log)
 
 
-def configure_binary(  # pylint: disable=too-complex,too-many-branches
+def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-complex
     shell: SMShell,
 ) -> None:
     """Configure a binary according to required parameters.
@@ -170,7 +170,7 @@ def configure_binary(  # pylint: disable=too-complex,too-many-branches
     :raise FileNotFoundError: If js_objdir is not a directory
     :raise CalledProcessError: If the shell failed to compile
     """
-    # pylint: disable=too-many-statements
+    # pylint: disable=too-many-branches,too-many-statements
     cfg_cmds: list[str] = []
     cfg_env = dict(os.environ.copy())
     orig_cfg_env = dict(os.environ.copy())
@@ -569,7 +569,7 @@ def sm_compile(shell: SMShell) -> Path:
     return shell.shell_compiled_path
 
 
-def obtain_shell(
+def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     shell: SMShell,
     update_to_rev: str | None = None,
     *,
@@ -586,7 +586,6 @@ def obtain_shell(
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    # pylint: disable=too-complex
     if zzconsts.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
