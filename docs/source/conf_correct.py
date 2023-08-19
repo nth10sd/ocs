@@ -1,5 +1,7 @@
 """Configuration file for the Sphinx documentation builder."""
 
+# ruff: noqa: INP001
+
 # pylint: disable=invalid-name
 
 # This file only contains a selection of the most common options. For a full
@@ -21,11 +23,12 @@ import ocs
 
 sys.path.insert(0, str(Path(__file__).parents[2]))
 
+# This has to be after sys.path.insert else workflow fails (Only required for django)
+# \import ocs  # n oqa: E402  # pylint disable=wrong-import-position
+
 # -- Project information -----------------------------------------------------
 
 project = ocs.__title__
-copyright = ocs.__copyright__  # pylint: disable=redefined-builtin
-author = ocs.__author__
 
 # The full version, including alpha/beta/rc tags
 release = ocs.__version__

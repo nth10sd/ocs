@@ -1,0 +1,4 @@
+include ocs/_version.txt
+include ocs/py.typed
+
+prune */tests

@@ -1,57 +1,111 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = [
+    "setuptools >= 68.0.0",
+    "setuptools-scm[toml] >= 7.1.0",
+    "wheel >= 0.41.1",
+]
 build-backend = "setuptools.build_meta"
 
-# Update packages that do not have types in [[tool.mypy.overrides]]
-
-# When bumping minimum supported Python version, update:
-#   GitHub Actions settings file to also test the desired version
-#   setup.py, both install_requires and the classifiers
-#   tox.ini, under flake8 settings
-# Ensure python_version under [tool.mypy] tests the desired version
-# Ensure py-version under [tool.pylint.typing] is set as the desired minimum version
-
-# Ensure source under [tool.coverage.run] includes the package name
-# Ensure bandit_targets under [tool.pytest.ini_options] is set as the package name
-
-[tool.coverage.run]
-concurrency = ["multiprocessing"]
-omit = [
-    "*/__main__.py",
-    "*/build/*",
-    "*/dist/*",
-    "*/.tox/*",
-    "*/.egg/*",
+[project]
+name = "ocs"
+# Use the following command to find all places to update Python versions
+#   rg --hidden --files | rg -v ".min.js" | xargs rg -I "3[\.]*10" | rg "(py|ver)"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Utilities",
 ]
-parallel = true
-sigterm = true
-source = [
-    "ocs/",
-    "tests/",
+dependencies = [
+    "distro ~= 1.7.0",
+    "mercurial ~= 6.2.1",
+    "packaging ~= 23.1",
+    "setuptools >= 68.0.0",
+    "setuptools-scm[toml] >= 7.1.0",
+    "types-setuptools==68.0.0.3",                     # Bump types-* only with mypy
+    'types-toml==0.10.8.6; python_version <= "3.10"',
+    "typing-extensions ~= 4.7.1",                     # Directly import Self from typing on Python 3.11+
+    "wheel >= 0.41.1",
+    "zzbase ~= 0.11.0",
 ]
+dynamic = ["version", "readme"]
+
+[project.optional-dependencies]
+test = [
+    "bashate ~= 2.1.1",
+    "black ~= 23.7.0",
+    'coverage ~= 7.3.0; python_version >= "3.11"',
+    'coverage[toml] ~= 7.3.0; python_version <= "3.10"',
+    "fixit ~= 2.0.0.post1",
+    "mypy ~= 1.5.1",
+    "pylint ~= 2.17.5",
+    'pyright==1.1.323; platform_system == "Linux"',
+    "pytest ~= 7.4.0",
+    "pytest-black ~= 0.3.12",
+    "pytest-cov ~= 4.1.0",
+    "pytest-dependency ~= 0.5.1",
+    "pytest-mypy ~= 0.10.3",
+    "pytest-pylint ~= 0.19.0",
+    "pytest-randomly ~= 3.15.0",
+    "pytest-ruff ~= 0.1.1",
+    "pytest-sugar ~= 0.9.7",
+    "pytest-xdist ~= 3.3.1",
+    "pytest-vulture ~= 2.1.1",
+    "refurb ~= 1.20.0",
+    "ruff==0.0.285",
+    "semgrep ~= 1.36.0",
+    "sphinx ~= 7.2.2",
+    "vulture ~= 2.8",
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "ocs.__version__" }
+readme = { file = ["README.md", "CHANGELOG.md"] }
+
+[tool.setuptools_scm]
+write_to = "ocs/_version.txt"
+
+##### Other tools #####
 
 [tool.coverage.report]
 # Taken from: https://coverage.readthedocs.io/en/coverage-5.5/config.html#syntax
 exclude_lines = [
-    "pragma: no cover",
+    "def __repr__",               # Ignore missing debug-only code
+    "except ImportError(.*):",    # Likely Python version-specific code
+    "if 0:",                      # Ignore non-runnable code not being run
     "if TYPE_CHECKING:",
-    "def __repr__",  # Ignore missing debug-only code
-    "raise AssertionError",  # Ignore tests not hitting defensive assertion code
+    "if __name__ == .__main__.:", # Ignore non-runnable code not being run
+    "pragma: no cover",
+    "raise AssertionError",       # Ignore tests not hitting defensive assertion code
     "raise NotImplementedError",  # Ignore tests not hitting defensive assertion code
-    "if 0:",  # Ignore non-runnable code not being run
-    "if __name__ == .__main__.:",  # Ignore non-runnable code not being run
 ]
-fail_under = 25  # Minimum code coverage percent
+fail_under = 25 # Minimum code coverage percent
 show_missing = true
 
-[tool.isort]
-force_single_line = true
-force_sort_within_sections = true
-line_length = 88
-profile = "black"
+[tool.coverage.run]
+concurrency = ["multiprocessing"]
+omit = [
+    "*/.egg/*",
+    "*/.eggs/*",
+    "*/.tox/*",
+    "*/__main__.py",
+    "*/build/*",
+    "*/dist/*",
+]
+parallel = true
+sigterm = true
+source = ["ocs/", "tests/"]
 
 [tool.mypy]
 disallow_any_unimported = true
+exclude = ["build/"]
 namespace_packages = true
 python_version = "3.10"
 show_error_codes = true
@@ -59,13 +113,13 @@ strict = true
 warn_unreachable = true
 
 # Add Python modules to be ignored by mypy here
-[[tool.mypy.overrides]]
-module = []
-ignore_missing_imports = true
+# [[tool.mypy.overrides]]
+# module = []
+# ignore_missing_imports = true
 
 [tool.pylint.basic]
 # Good variable names which should always be accepted, separated by a comma
-good-names = ["i", "j", "k", "ex", "Run", "_", "f", "g"]
+good-names = ["_", "ex", "f", "g", "i", "j", "k", "Run"]
 
 [tool.pylint.design]
 max-attributes = 12
@@ -86,6 +140,7 @@ load-plugins = [
     "pylint.extensions.broad_try_clause",
     "pylint.extensions.check_elif",
     "pylint.extensions.code_style",
+    # comparetozero plugin will need to be modified from pylint 3.x
     "pylint.extensions.comparetozero",
     "pylint.extensions.comparison_placement",
     "pylint.extensions.confusing_elif",
@@ -96,6 +151,7 @@ load-plugins = [
     "pylint.extensions.docstyle",
     "pylint.extensions.dunder",
     "pylint.extensions.empty_comment",
+    # emptystring plugin will need to be modified from pylint 3.x
     "pylint.extensions.emptystring",
     "pylint.extensions.eq_without_hash",
     "pylint.extensions.for_any_all",
@@ -120,10 +176,7 @@ ignore-imports = "yes"
 min-similarity-lines = 5
 
 [tool.pylint.messages_control]
-disable = [
-    "locally-disabled",
-    "suppressed-message",
-]
+disable = ["locally-disabled", "suppressed-message"]
 enable = [
     "bad-inline-option",
     "c-extension-no-member",
@@ -151,44 +204,131 @@ score = "no"
 py-version = "3.10"
 
 [tool.pyright]
-exclude = [
-    "**/node_modules",
-    "**/__pycache__",
-    "**/.*",
-    "build/",
-]
+exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
 
 [tool.pytest.ini_options]
-addopts = "-n auto --pylint-error-types=CRWEFI --durations=7 --no-cov-on-fail"
-bandit_recurse = true
-# 1 = LOW, 2 = MEDIUM, 3 = HIGH is the scale for the bandit's conf and sev levels
-bandit_conf_level = 1
-bandit_sev_level = 2  # We want to initially skip only "B404", "B603", "B607", but pytest-bandit 0.6.1 config processing seems to be buggy
-# Update the following line with the package name
-bandit_targets = "ocs"
-markers = [
-    "slow",
+# addopts = "-n auto --durations=7 --cov=. --cov-report term-missing"
+addopts = [
+    "-n=auto",
+    "--durations=7",
+    "--no-cov-on-fail",
+    "--pylint-error-types=CRWEFI",
 ]
+log_level = "DEBUG"
+markers = ["online", "slow"]
+python_files = "tests.py test_*.py *_tests.py"
 xfail_strict = true
 
-[tool.pytype]
-inputs = [
-    ".",
-]
-exclude = [
-    "build/",
-]
-jobs = "auto"
-keep_going = "True"
-platform = "linux"
-python_version = "3.10"
-
 [tool.refurb]
-ignore = [
-    "110",
-]
+ignore = ["110"]
 
-[tool.tryceratops]
-ignore = [
-    "TRY003",
+[tool.ruff]
+include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
+# Rule list is as of 0.0.277
+select = [
+    "A",
+    "AIR",
+    "ANN",
+    "ARG",
+    "ASYNC",
+    "B",
+    "BLE",
+    "C4",
+    "C90",
+    "COM",
+    "CPY",
+    "D",
+    "DJ",
+    "DTZ",
+    "E",
+    "EM",
+    "ERA",
+    "EXE",
+    "F",
+    "FA",
+    "FBT",
+    "FIX",
+    "FLY",
+    "G",
+    "I",
+    "ICN",
+    "INP",
+    "INT",
+    "ISC",
+    "N",
+    "NPY",
+    "PD",
+    "PERF",
+    "PGH",
+    "PIE",
+    "PL",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "PT",
+    "PTH",
+    "PYI",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "SLF",
+    "SLOT",
+    "T10",
+    "T20",
+    "TCH",
+    "TD",
+    "TID",
+    "TRY",
+    "UP",
+    "W",
+    "YTT",
 ]
+ignore = [
+    "ANN101",  # The type of Self should be inferred by type checkers automatically
+    "COM812",  # Seems to add trailing comma even when arguments already fit on one line
+    "D104",    # __init__.py files can be completely blank and not require a docstring
+    "D203",    # D211 is used by default, which is incompatible with this
+    "D213",    # D212 is used by default, which is incompatible with this
+    "EM101",   # String literals is used in exception constructors, stack is readable
+    "EM102",   # f-string literals is used in exception constructors, similar to EM101
+    "PLR2004", # Difficult to refactor to not use magic values in a big legacy project
+    "S603",    # Allow using subprocess methods w/o shell=True, bandit severity is low
+    "TRY003",  # Allow specifying long messages outside the exception class
+]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+target-version = "py310"
+
+[tool.ruff.isort]
+force-single-line = true
+force-sort-within-sections = true
+
+[tool.vulture]
+exclude = ["build/", "docs/source/conf_correct.py"]
+make_whitelist = true

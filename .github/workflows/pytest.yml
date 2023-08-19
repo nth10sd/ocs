@@ -106,39 +106,34 @@ jobs:
                       | awk "/ matches/ && "\!"/ contained matches/" \
                       | cut -d " " -f1) -lt 17 ] ;
           then exit 0 ; else exit 1 ; fi ;
-      - name: Lint with flake8 only checking for Python syntax errors or undefined names
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Run with ruff
+        run: python -u -m ruff .
       - name: Run shellcheck
         if: startsWith(runner.os, 'Linux')
         run: rg -t sh --files | xargs shellcheck
-      - name: Run with yesqa to find obsolete flake8 ignores
+      - name: Run bashate
         if: startsWith(runner.os, 'Linux')
-        run: rg -t py --files | xargs python -u -m yesqa
-      - name: Run with flynt to find old-style formatting strings that can be converted to f-strings
+        run: rg -t sh --files | xargs bashate
+      - name: Run with fixit
         if: startsWith(runner.os, 'Linux')
-        run: python -u -m flynt --dry-run --fail-on-change --transform-concats .
-      - name: Run with pyupgrade to find code that can be written in a more modern way
-        run: python -u -m pyupgrade_directories --py310-plus --recursive .
+        run: python -u -m fixit lint
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
-        run: rg -t py --files | xargs python -u -m refurb
+        run: python -u -m refurb .
       - name: Run with semgrep to find potential security issues with ERROR level
         if: startsWith(runner.os, 'Linux')
         run: python -u -m semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
-        run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
+        run: |
+          python -c 'exec("from pathlib import Path;import shutil;import subprocess;\ntry: import tomllib;\nexcept ImportError: import tomli as tomllib;\nwith Path(\"pyproject.toml\").open(mode=\"rb\") as fp: c = tomllib.load(fp); n = c[\"project\"][\"name\"];\nif not (v := shutil.which(\"vulture\")): raise RuntimeError(\"Please first install vulture\");\nfor z in sorted({x.split(\"  # \",maxsplit=1)[0] for x in sorted(subprocess.run([y for y in [v,\".\",\".vulture_allowlist\" if Path(\".vulture_allowlist\").is_file() else \"\"] if y],capture_output=True,text=True).stdout.rstrip().splitlines()) if not x.startswith(\"# \")}): print(z)")'
       - name: Ensure Sphinx docs always work, resetting Git repo after generation
         if: startsWith(runner.os, 'Linux')
         run: pushd docs/ && ./gen-sphinx-html.sh ; git clean -fd ; popd
       - name: Run pyright
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pyright
-      - name: Run pytype
-        if: startsWith(runner.os, 'Linux')
-        run: python -u -m pytype
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p "$HOME"/trees && hg --version -q ;
@@ -152,7 +147,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint
+          python -u -m pytest --black --cov --mypy --pylint --ruff
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -241,15 +236,12 @@ jobs:
       - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
 
-      - name: Lint with flake8 only checking for Python syntax errors or undefined names
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      - name: Run with pyupgrade to find code that can be written in a more modern way
-        run: python -u -m pyupgrade_directories --py310-plus --recursive .
+      - name: Run with ruff
+        run: python -u -m ruff .
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
-        run: python -u -m vulture $(python -c "import subprocess; out = subprocess.run([\"rg\", \"MODULE_NAME =\", \"setup.py\"], capture_output=True).stdout.decode(\"utf-8\"); print(out.split(\" = \\\"\", maxsplit=1)[-1].rstrip().removesuffix(\"\\\"\") + \"/\")") tests/ .vulture_allowlist
+        run: |
+          python -c 'exec("from pathlib import Path;import shutil;import subprocess;\ntry: import tomllib;\nexcept ImportError: import tomli as tomllib;\nwith Path(\"pyproject.toml\").open(mode=\"rb\") as fp: c = tomllib.load(fp); n = c[\"project\"][\"name\"];\nif not (v := shutil.which(\"vulture\")): raise RuntimeError(\"Please first install vulture\");\nfor z in sorted({x.split(\"  # \",maxsplit=1)[0] for x in sorted(subprocess.run([y for y in [v,\".\",\".vulture_allowlist\" if Path(\".vulture_allowlist\").is_file() else \"\"] if y],capture_output=True,text=True).stdout.rstrip().splitlines()) if not x.startswith(\"# \")}): print(z)")'
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p "$HOME"/trees && hg --version -q ;
@@ -263,7 +255,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint
+          python -u -m pytest --black --cov --mypy --pylint --ruff
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -340,12 +332,8 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
 
-      - name: Lint with flake8 only checking for Python syntax errors or undefined names
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-      - name: Run with pyupgrade to find code that can be written in a more modern way
-        run: python -u -m pyupgrade_directories --py310-plus --recursive .
+      - name: Run with ruff
+        run: python -u -m ruff .
 
       - name: Install prerequisites
         run: |

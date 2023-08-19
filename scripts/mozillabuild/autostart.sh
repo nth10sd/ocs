@@ -37,17 +37,17 @@ if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
 fi ;
 
 echo "=== pytest attempt: 1 ===" ;
-if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
+if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ; then
     echo "=== pytest attempt: 2 ===" ;
     echo "=== Removing shell-cache ... ===" ;
     rm -rf "$HOME"/shell-cache/ ;
     echo "=== Removed shell-cache successfully! ===" ;
-    if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
+    if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ; then
         echo "=== pytest attempt: 3 ===" ;
         echo "=== Removing shell-cache ... ===" ;
         rm -rf "$HOME"/shell-cache/ ;
         echo "=== Removed shell-cache successfully! ===" ;
-        if ! BUILDSM="$*" python -u -m pytest --bandit --black --cov --flake8 --mypy --pylint ; then
+        if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ; then
             date > "$HOME"/pytest-failure.txt ;
         fi ;
     fi ;
