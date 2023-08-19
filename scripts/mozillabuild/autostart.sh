@@ -33,7 +33,7 @@ if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
     #   /c/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30133/bin/HostX64/x64/
     # MSVC 2022:
     cp "$HOME"/.mozbuild/clang/lib/clang/"$(ls "$HOME"/.mozbuild/clang/lib/clang/)"/lib/windows/clang_rt.asan_dynamic-x86_64.pdb \
-      /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Enterprise/VC/Tools/MSVC/14.34.31933/bin/HostX64/x64/
+        /c/Program\ Files/Microsoft\ Visual\ Studio/2022/Enterprise/VC/Tools/MSVC/14.34.31933/bin/HostX64/x64/
 fi ;
 
 echo "=== pytest attempt: 1 ===" ;
@@ -47,7 +47,8 @@ if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ; the
         echo "=== Removing shell-cache ... ===" ;
         rm -rf "$HOME"/shell-cache/ ;
         echo "=== Removed shell-cache successfully! ===" ;
-        if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ; then
+        if ! BUILDSM="$*" python -u -m pytest --black --cov --mypy --pylint --ruff ;
+        then
             date > "$HOME"/pytest-failure.txt ;
         fi ;
     fi ;
@@ -58,8 +59,7 @@ popd || exit ;
 # Create a tarball and SHA-256 checksum only if pytest ran without any errors
 if [ ! -f "$HOME"/pytest-failure.txt ]; then
     pushd "$HOME"/shell-cache || exit ;
-    for f in * ;
-    do
+    for f in * ; do
         [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst ;
         shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256 ;
     done ;
