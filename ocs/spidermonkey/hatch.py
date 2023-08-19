@@ -407,7 +407,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
         ) as f:
             f.write(
                 f"Configuration of {shell.repo_name} rev {shell.hg_hash} "
-                f"failed with the following output:\n",
+                "failed with the following output:\n",
             )
             f.write(ex.stdout.decode("utf-8", errors="replace"))
         raise
@@ -447,7 +447,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
 
         f.write("# Create another shell in shell-cache like this one:\n")
         f.write(
-            f"# python3 -u -m ocs "
+            "# python3 -u -m ocs "
             f'-b="{shell.build_opts.build_options_str}" -r {shell.hg_hash}\n# \n',
         )
 
@@ -561,7 +561,7 @@ def sm_compile(shell: SMShell) -> Path:
         ) as f:
             f.write(
                 f"Compilation of {shell.repo_name} rev {shell.hg_hash} "
-                f"failed with the following output:\n",
+                "failed with the following output:\n",
             )
             f.write(out)
         raise OSError(f"{zzconsts.MAKE_BINARY_PATH} did not result in a js shell.")
@@ -813,7 +813,7 @@ def verify_binary(shell: SMShell) -> None:
             query_build_cfg(binary, "arm-simulator") and shell.build_opts.enable32
         ) != shell.build_opts.enableSimulatorArm32:
             raise ValueError(
-                f"ARM32 simulator status of shell is: "
+                "ARM32 simulator status of shell is: "
                 f'{query_build_cfg(binary, "arm-simulator")}, '
                 f"compared to intended input: {shell.build_opts.enableSimulatorArm32}",
             )
@@ -821,7 +821,7 @@ def verify_binary(shell: SMShell) -> None:
             query_build_cfg(binary, "arm64-simulator") and not shell.build_opts.enable32
         ) != shell.build_opts.enableSimulatorArm64:
             raise ValueError(
-                f"ARM64 simulator status of shell is: "
+                "ARM64 simulator status of shell is: "
                 f'{query_build_cfg(binary, "arm64-simulator")}, '
                 f"compared to intended 32-bit status: {shell.build_opts.enable32}",
                 f"and intended ARM64 status: {shell.build_opts.enableSimulatorArm64}",
