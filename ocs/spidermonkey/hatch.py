@@ -7,7 +7,7 @@ from logging import INFO as INFO_LOG_LEVEL
 import os
 from pathlib import Path
 import platform
-from shlex import quote
+import shlex
 import shutil
 import subprocess
 import sys
@@ -383,8 +383,8 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
 
     SM_HATCH_LOG.debug(
         "Command to be run is: %s %s",
-        " ".join(quote(x) for x in env_vars),
-        " ".join(quote(x) for x in cfg_cmds),
+        shlex.join(env_vars),
+        shlex.join(cfg_cmds),
     )
 
     if not shell.js_objdir.is_dir():
@@ -456,8 +456,8 @@ def env_dump(shell: SMShell, log_: Path) -> None:
 
         f.write("# Full configuration command with needed environment variables is:\n")
         f.write(
-            f'# {" ".join(quote(x) for x in shell.env_added)} '
-            f'{" ".join(quote(x) for x in shell.cfg_cmd_excl_env)}\n# \n',
+            f"# {shlex.join(shell.env_added)} "
+            f"{shlex.join(shell.cfg_cmd_excl_env)}\n# \n",
         )
 
         # .fuzzmanagerconf details
@@ -713,9 +713,7 @@ def test_binary(
     if use_vg:
         SM_HATCH_LOG.info("Using Valgrind to test...")
     test_cmd = [str(shell_path), *args]
-    SM_HATCH_LOG.debug(
-        "The testing command is: %s", " ".join(quote(x) for x in test_cmd)
-    )
+    SM_HATCH_LOG.debug("The testing command is: %s", shlex.join(test_cmd))
 
     test_env = env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={zzconsts.ASAN_ERROR_EXIT_CODE}"
