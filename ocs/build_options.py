@@ -9,8 +9,8 @@ import platform
 from random import SystemRandom
 from typing import Any
 
-from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.constants import TREES_PATH
+from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.logging import get_logger
 
 BUILD_OPTIONS_LOG = get_logger(

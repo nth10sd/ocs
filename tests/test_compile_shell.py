@@ -11,9 +11,9 @@ from typing import TYPE_CHECKING
 
 import pytest
 from zzbase.patching.common import patch_files
-from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.constants import MC_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
+from zzbase.util.constants import HostPlatform as Hp
 
 from ocs import build_options
 from ocs.spidermonkey.hatch import SMShell

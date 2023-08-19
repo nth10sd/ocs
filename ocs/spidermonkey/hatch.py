@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import argparse
 import json
 from logging import INFO as INFO_LOG_LEVEL
 import os
@@ -14,6 +13,7 @@ import subprocess
 import sys
 import traceback
 from typing import IO
+from typing import TYPE_CHECKING
 
 import distro
 from packaging.version import parse
@@ -33,6 +33,9 @@ from ocs.util.fs_helpers import bash_piping as piping
 from ocs.util.fs_helpers import env_with_path
 from ocs.util.fs_helpers import get_lock_dir_path
 from ocs.util.fs_helpers import handle_rm_readonly_files
+
+if TYPE_CHECKING:
+    import argparse
 
 SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
