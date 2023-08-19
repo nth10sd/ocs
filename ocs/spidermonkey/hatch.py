@@ -712,7 +712,7 @@ def test_binary(
     """
     if use_vg:
         SM_HATCH_LOG.info("Using Valgrind to test...")
-    test_cmd = [str(shell_path)] + args
+    test_cmd = [str(shell_path), *args]
     SM_HATCH_LOG.debug(
         "The testing command is: %s", " ".join(quote(x) for x in test_cmd)
     )
