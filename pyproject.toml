@@ -44,7 +44,7 @@ test = [
     'coverage ~= 7.3.0; python_version >= "3.11"',
     'coverage[toml] ~= 7.3.0; python_version <= "3.10"',
     "fixit ~= 2.0.0.post1",
-    "mypy ~= 1.5.1",
+    "mypy ~= 1.4.1",
     "pylint ~= 2.17.5",
     'pyright==1.1.323; platform_system == "Linux"',
     "pytest ~= 7.4.0",
