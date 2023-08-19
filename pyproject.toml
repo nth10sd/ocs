@@ -57,7 +57,6 @@ test = [
     "pytest-ruff ~= 0.1.1",
     "pytest-sugar ~= 0.9.7",
     "pytest-xdist ~= 3.3.1",
-    "pytest-vulture ~= 2.1.1",
     "refurb ~= 1.20.0",
     "ruff==0.0.285",
     "semgrep ~= 1.36.0",
