@@ -76,7 +76,11 @@ def add_parser_opts() -> tuple[argparse.ArgumentParser, Randomizer]:
     randomizer = Randomizer()
 
     # Keyword args of various types not ready for mypy yet: https://git.io/JLdRI
-    def randomize_bool(name: list[str], weight: float, **kwargs: Any) -> None:
+    def randomize_bool(
+        name: list[str],
+        weight: float,
+        **kwargs: Any,  # noqa: ANN401
+    ) -> None:
         """Add a randomized boolean option that defaults to False.
 
         Option also has a [weight] chance of being changed to True when using --random.
