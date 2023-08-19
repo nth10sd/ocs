@@ -56,8 +56,9 @@ def get_repo_hash_and_id(
     repo_dir: Path,
     repo_rev: str = "parents() and default",
 ) -> tuple[str, str, bool]:
-    """Return the repository hash and id, and whether it is on default. It will also ask
-    what the user would like to do, should the repository not be on default.
+    """Return the repository hash and id, and whether it is on default.
+
+    It will also ask what the user wants to do, should the repository not be on default.
 
     :param repo_dir: Full path to the repository
     :param repo_rev: Intended Mercurial changeset details to retrieve

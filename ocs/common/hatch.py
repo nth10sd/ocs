@@ -1,4 +1,4 @@
-"""Common shell object code"""
+"""Common shell object code."""
 
 from __future__ import annotations
 
@@ -27,6 +27,7 @@ class CommonShell:
     """
 
     def __init__(self, build_opts: argparse.Namespace, cset_hash: str):
+        """Initialize the CommonShell."""
         self._name_no_ext = build_options.compute_shell_name(build_opts, cset_hash)
         self.build_opts = build_opts
 
@@ -48,7 +49,7 @@ class CommonShell:
 
     @cfg_cmd_excl_env.setter
     def cfg_cmd_excl_env(self, cfg: list[str]) -> None:
-        """Sets the configure command excluding the enviroment variables.
+        """Set the configure command excluding the enviroment variables.
 
         :param cfg: Configure command
         """
@@ -132,8 +133,7 @@ class CommonShell:
 
     @property
     def shell_compiled_path(self) -> Path:
-        """Retrieve full path to the original location of js binary compiled in the
-        shell cache.
+        """Retrieve full path to original js bin location compiled in the shell cache.
 
         :return: Original binary location that was compiled in the shell cache
         """
@@ -142,8 +142,7 @@ class CommonShell:
 
     @property
     def shell_compiled_runlibs_path(self) -> list[Path]:
-        """Retrieve the full path to the original location of the libraries of js binary
-        compiled in the shell cache.
+        """Retrieve paths to original lib locations of js bin compiled in shell cache.
 
         :return: Original libraries' location of the binary compiled in the shell cache
         """
@@ -167,7 +166,7 @@ class CommonShell:
 
     @property
     def version(self) -> str:
-        """Retrieve the version number of the js shell as extracted from js.pc
+        """Retrieve the version number of the js shell as extracted from "js.pc".
 
         :return: Version number of the js shell
         """
@@ -175,7 +174,7 @@ class CommonShell:
 
     @version.setter
     def version(self, js_version: str) -> None:
-        """Set the version number of the js shell as extracted from js.pc
+        """Set the version number of the js shell as extracted from "js.pc".
 
         :param js_version: Version number of the js shell
         """

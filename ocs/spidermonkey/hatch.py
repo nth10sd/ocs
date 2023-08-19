@@ -1,4 +1,4 @@
-"""Common shell object code"""
+"""Common shell object code."""
 
 from __future__ import annotations
 
@@ -55,12 +55,13 @@ class SMShell(CommonShell):
     """
 
     def __init__(self, build_opts: argparse.Namespace, hg_hash: str):
+        """Initialize the SMShell."""
         super().__init__(build_opts, hg_hash)
         self._hg_hash = hg_hash
 
     @classmethod
     def main(cls, args: list[str] | None = None) -> int:
-        """Main function of CommonShell class.
+        """SMShell class main method.
 
         :param args: Additional parameters
         :raise SMShellError: When the run function encounters an error
@@ -124,7 +125,7 @@ class SMShell(CommonShell):
 
 
 def configure_js_shell_compile(shell: SMShell) -> None:
-    """Configures, compiles and copies a js shell according to required parameters.
+    """Configure, compile and copy a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
     """
@@ -753,8 +754,7 @@ def test_binary(
 
 
 def query_build_cfg(shell_path: Path, parameter: str) -> bool:
-    """Test if a binary is compiled with specified parameters,
-    in getBuildConfiguration().
+    """Test if a binary is compiled w/specified parameters, in getBuildConfiguration().
 
     :param shell_path: Path of the shell
     :param parameter: Parameter that will be tested
@@ -832,7 +832,7 @@ def verify_binary(shell: SMShell) -> None:
 
 
 def main() -> None:
-    """Execute main() function in SMShell class.
+    """Execute main function in SMShell class.
 
     :raise SystemExit: When the main function of SMShell finishes execution
     """

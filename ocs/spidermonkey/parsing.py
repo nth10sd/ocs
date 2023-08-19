@@ -1,4 +1,4 @@
-"""ocs spidermonkey parsing"""
+"""Parsing for SpiderMonkey code."""
 
 from __future__ import annotations
 

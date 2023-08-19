@@ -33,6 +33,7 @@ class Randomizer:
     """Class to randomize parser options."""
 
     def __init__(self) -> None:
+        """Initialize the Randomizer."""
         self.options: list[dict[str, float | str]] = []
 
     def add(self, name: str, weight: float) -> None:
@@ -204,7 +205,7 @@ def add_parser_opts() -> tuple[argparse.ArgumentParser, Randomizer]:
 
 
 def parse_shell_opts(args: str) -> argparse.Namespace:
-    """Parses shell options into a build_options object.
+    """Parse shell options into a build_options object.
 
     :param args: Arguments to be parsed
     :raise FileNotFoundError: If repos not found when searching default tree locations
@@ -343,19 +344,19 @@ def are_args_valid(  # pylint: disable=too-many-branches,too-complex
         # Test with bug 1278887
         # Also ensure we are running autobisectjs w/Valgrind having --error-exitcode=??
         # Uncomment the following when we unbreak Valgrind fuzzing.
-        # if not which("valgrind"):
-        #     return False, "Valgrind is not installed."
-        # if not args.enableOpt:
-        #     # FIXME: Isn't this enabled by default??  # pylint: disable=fixme
-        #     return False, "Valgrind needs opt builds."
-        # if args.enableAddressSanitizer:
-        #     return False, "One should not compile with both Valgrind flags and "
-        #     "ASan flags."
+        # \if not which("valgrind"):
+        # \    return False, "Valgrind is not installed."
+        # \if not args.enableOpt:
+        # \    # F IXME: Isn't this enabled by default??  # pylint disable=fixme
+        # \    return False, "Valgrind needs opt builds."
+        # \if args.enableAddressSanitizer:
+        # \    return False, "One should not compile with both Valgrind flags and "
+        # \    "ASan flags."
 
-        # if Hp.IS_WIN_MB:
-        #     return False, "Valgrind does not work on Windows."
-        # if Hp.IS_MAC:
-        #     return False, "Valgrind does not work well with Mac OS X 10.10 Yosemite."
+        # \if Hp.IS_WIN_MB:
+        # \    return False, "Valgrind does not work on Windows."
+        # \if Hp.IS_MAC:
+        # \    return False, "Valgrind does not work well with Mac OS X 10.10 Yosemite."
 
     if args.runWithVg and not args.enableValgrind:
         return False, "--run-with-valgrind needs --enable-valgrind."
@@ -401,7 +402,7 @@ def gen_rnd_cfgs(
     parser: argparse.ArgumentParser,
     randomizer: Randomizer,
 ) -> argparse.Namespace:
-    """Generates random configurations.
+    """Generate random configurations.
 
     :param parser: Parser object for specified configurations
     :param randomizer: Randomizer object for getting a random subset of build options
@@ -423,7 +424,7 @@ def gen_rnd_cfgs(
 
 
 def main() -> None:
-    """Main build_options function, generates sample random build configurations."""
+    """Generate sample random build configurations."""
     BUILD_OPTIONS_LOG.info(
         "Here are some sample random build configurations that can be generated:",
     )
