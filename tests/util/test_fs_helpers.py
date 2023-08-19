@@ -1,5 +1,7 @@
 """Test the fs_helpers.py file."""
 
+# ruff: noqa: S101
+
 from __future__ import annotations
 
 from pathlib import Path

@@ -1,5 +1,7 @@
 """Test the hg_helpers.py file."""
 
+# ruff: noqa: S101
+
 from __future__ import annotations
 
 import pytest

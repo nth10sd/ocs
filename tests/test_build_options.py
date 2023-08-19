@@ -1,5 +1,7 @@
 """Test the build_options.py file."""
 
+# ruff: noqa: S101
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
