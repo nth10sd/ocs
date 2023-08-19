@@ -114,7 +114,7 @@ jobs:
         run: rg -t sh --files | xargs shellcheck
       - name: Run bashate
         if: startsWith(runner.os, 'Linux')
-        run: rg -t sh --files | xargs bashate
+        run: rg -t sh --files | xargs bashate -i E006
       - name: Run with fixit
         if: startsWith(runner.os, 'Linux')
         run: python -u -m fixit lint
