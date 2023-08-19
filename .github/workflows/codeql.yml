@@ -52,10 +52,8 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
 
-      - name: Lint with flake8 only checking for Python syntax errors or undefined names
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          python -u -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: Run with ruff
+        run: python -u -m ruff .
 
       # CodeQL analysis section START
       # Linux-only, enable on GitHub for public repos and private repos on Enterprise plan with Advanced Security
