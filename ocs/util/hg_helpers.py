@@ -31,7 +31,7 @@ def exists_and_is_ancestor(
     # Takes advantage of "id(badhash)" being the empty set,
     # in contrast to just "badhash", which is an error
     out = subprocess.run(
-        [
+        [  # noqa: S607
             "hg",
             "-R",
             str(repo_dir),
@@ -94,7 +94,16 @@ def get_repo_hash_and_id(
             raise SystemExit("\nAborting...\n")
 
         if update_default == "d":
-            subprocess.run(["hg", "-R", str(repo_dir), "update", "default"], check=True)
+            subprocess.run(
+                [  # noqa: S607
+                    "hg",
+                    "-R",
+                    str(repo_dir),
+                    "update",
+                    "default",
+                ],
+                check=True,
+            )
             is_on_default = True
         elif update_default == "u":
             hg_log_template_cmds = [

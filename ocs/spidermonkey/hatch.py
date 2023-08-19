@@ -616,7 +616,7 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
             shell.build_opts.repo_dir,
         )
         subprocess.run(
-            [
+            [  # noqa: S607
                 "hg",
                 "-R",
                 str(shell.build_opts.repo_dir),
@@ -666,7 +666,7 @@ def arch_of_binary(binary: Path) -> str:
     """
     # We can possibly use the python-magic-bin PyPI library in the future
     unsplit_file_type = subprocess.run(
-        ["file", str(binary)],
+        ["file", str(binary)],  # noqa: S607
         check=True,
         cwd=Path.cwd(),
         stdout=subprocess.PIPE,
