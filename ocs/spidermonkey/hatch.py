@@ -54,13 +54,13 @@ class SMShell(CommonShell):
     :param hg_hash: Changeset hash
     """
 
-    def __init__(self, build_opts: argparse.Namespace, hg_hash: str):
+    def __init__(self, build_opts: argparse.Namespace, hg_hash: str) -> None:
         """Initialize the SMShell."""
         super().__init__(build_opts, hg_hash)
         self._hg_hash = hg_hash
 
     @classmethod
-    def main(cls, args: list[str] | None = None) -> int:
+    def main(cls: type[CommonShell], args: list[str] | None = None) -> int:
         """SMShell class main method.
 
         :param args: Additional parameters

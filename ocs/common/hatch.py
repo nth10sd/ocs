@@ -26,7 +26,7 @@ class CommonShell:
     :param cset_hash: Changeset hash
     """
 
-    def __init__(self, build_opts: argparse.Namespace, cset_hash: str):
+    def __init__(self, build_opts: argparse.Namespace, cset_hash: str) -> None:
         """Initialize the CommonShell."""
         self._name_no_ext = build_options.compute_shell_name(build_opts, cset_hash)
         self.build_opts = build_opts
@@ -38,6 +38,14 @@ class CommonShell:
         self._full_env: dict[str, str] = {}
 
         self._js_version = ""
+
+    @staticmethod
+    def run(_argv: list[str]) -> int:
+        """Build a shell and place it in the autobisectjs cache.
+
+        :return: 0, to denote a successful compile
+        """
+        return 1  # Remove when mypy 1.5+ is used, annotation should return None instead
 
     @property
     def cfg_cmd_excl_env(self) -> list[str]:
