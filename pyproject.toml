@@ -206,7 +206,6 @@ py-version = "3.10"
 exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
 
 [tool.pytest.ini_options]
-# addopts = "-n auto --durations=7 --cov=. --cov-report term-missing"
 addopts = [
     "-n=auto",
     "--durations=7",
