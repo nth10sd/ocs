@@ -61,7 +61,7 @@ test = [
     "ruff==0.0.285",
     "semgrep ~= 1.36.0",
     "sphinx ~= 7.2.2",
-    "vulture ~= 2.8",
+    "vulture ~= 2.9",
 ]
 
 [tool.setuptools.dynamic]
