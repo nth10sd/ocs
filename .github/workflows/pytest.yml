@@ -50,6 +50,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
@@ -69,52 +70,8 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
 
-      - name: Set Linux environment variables
-        run: |
-          echo "LLVM_CONFIG=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
-          echo "LLVM_SYMBOLIZER=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
-          echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
-      - name: Set Linux llvm-config and llvm-symbolizer symlinks
-        run: sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
-      - name: Check versions
-        run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
-
-      - name: Install 64-bit SpiderMonkey prerequisites
-        run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
-      - name: Install Valgrind for some builds
-        if: matrix.build-type == '--enable-valgrind'
-        run: sudo apt-get install valgrind
-      - name: Install 32-bit prerequisites for some builds
-        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
-        run: sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386
-
-      - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
-      - name: Install 32-bit Rust toolchain for some builds
-        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
-        run: rustup target add i686-unknown-linux-gnu
-
-      - name: Search for existing linter ignore lines in Python
-        run: |
-          rg -t py --stats "(?:(?:flake8|noqa|pylint|pyright|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
-            $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") || true
-      - name: Ensure we are not increasing the number of ignore lines as a guideline
-        run: |
-          if [ $(rg -t py --stats \
-                    "(?:(?:flake8|noqa|pylint|pyright|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
-                    $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") \
-                      | awk "/ matches/ && "\!"/ contained matches/" \
-                      | cut -d " " -f1) -lt 29 ] ;
-          then exit 0 ; else exit 1 ; fi ;
-
       - name: Run with ruff
         run: python -u -m ruff .
-      - name: Run shellcheck
-        if: startsWith(runner.os, 'Linux')
-        run: rg -t sh --files | xargs shellcheck
-      - name: Run bashate
-        if: startsWith(runner.os, 'Linux')
-        run: rg -t sh --files | xargs bashate -i E006
       - name: Run with fixit
         if: startsWith(runner.os, 'Linux')
         run: python -u -m fixit lint
@@ -134,6 +91,50 @@ jobs:
       - name: Run pyright
         if: startsWith(runner.os, 'Linux')
         run: python -u -m pyright
+
+      - name: Set Linux environment variables
+        run: |
+          echo "LLVM_CONFIG=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+          echo "LLVM_SYMBOLIZER=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+          echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
+      - name: Set Linux llvm-config and llvm-symbolizer symlinks
+        run: sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      - name: Check versions
+        run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
+
+      - name: Install 64-bit SpiderMonkey prerequisites
+        run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
+      - name: Install Valgrind for some builds
+        if: matrix.build-type == '--enable-valgrind'
+        run: sudo apt-get install valgrind
+      - name: Install 32-bit prerequisites for some builds
+        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
+        run: sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386
+      - name: Search for existing linter ignore lines in Python
+        run: |
+          rg -t py --stats "(?:(?:flake8|noqa|pylint|pyright|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
+            $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") || true
+      - name: Ensure we are not increasing the number of ignore lines as a guideline
+        run: |
+          if [ $(rg -t py --stats \
+                    "(?:(?:flake8|noqa|pylint|pyright|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
+                    $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") \
+                      | awk "/ matches/ && "\!"/ contained matches/" \
+                      | cut -d " " -f1) -lt 29 ] ;
+          then exit 0 ; else exit 1 ; fi ;
+      - name: Run shellcheck
+        if: startsWith(runner.os, 'Linux')
+        run: rg -t sh --files | xargs shellcheck
+      - name: Run bashate
+        if: startsWith(runner.os, 'Linux')
+        run: rg -t sh --files | xargs bashate -i E006
+
+      - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
+      - name: Install 32-bit Rust toolchain for some builds
+        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
+        run: rustup target add i686-unknown-linux-gnu
+
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p "$HOME"/trees && hg --version -q ;
@@ -200,6 +201,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
@@ -219,6 +221,13 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
 
+      - name: Run with ruff
+        run: python -u -m ruff .
+      - name: Run with vulture to find dead code
+        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
+        run: |
+          python -c 'exec("from pathlib import Path;import shutil;import subprocess;\ntry: import tomllib;\nexcept ImportError: import tomli as tomllib;\nwith Path(\"pyproject.toml\").open(mode=\"rb\") as fp: c = tomllib.load(fp); n = c[\"project\"][\"name\"];\nif not (v := shutil.which(\"vulture\")): raise RuntimeError(\"Please first install vulture\");\nfor z in sorted({x.split(\"  # \",maxsplit=1)[0] for x in sorted(subprocess.run([y for y in [v,\".\",\".vulture_allowlist\" if Path(\".vulture_allowlist\").is_file() else \"\"] if y],capture_output=True,text=True).stdout.rstrip().splitlines()) if not x.startswith(\"# \")}): print(z)")'
+
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm ; ls -l /usr/local/Cellar/llvm/
       - name: Set macOS environment variables
@@ -236,12 +245,6 @@ jobs:
       - name: Rustup latest 32/64-bit Rust, as it seems faster than Rust-related workflows
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env && rustup target add i686-unknown-linux-gnu
 
-      - name: Run with ruff
-        run: python -u -m ruff .
-      - name: Run with vulture to find dead code
-        if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
-        run: |
-          python -c 'exec("from pathlib import Path;import shutil;import subprocess;\ntry: import tomllib;\nexcept ImportError: import tomli as tomllib;\nwith Path(\"pyproject.toml\").open(mode=\"rb\") as fp: c = tomllib.load(fp); n = c[\"project\"][\"name\"];\nif not (v := shutil.which(\"vulture\")): raise RuntimeError(\"Please first install vulture\");\nfor z in sorted({x.split(\"  # \",maxsplit=1)[0] for x in sorted(subprocess.run([y for y in [v,\".\",\".vulture_allowlist\" if Path(\".vulture_allowlist\").is_file() else \"\"] if y],capture_output=True,text=True).stdout.rstrip().splitlines()) if not x.startswith(\"# \")}): print(z)")'
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p "$HOME"/trees && hg --version -q ;
@@ -313,6 +316,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
