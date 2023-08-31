@@ -58,9 +58,9 @@ test = [
     "pytest-ruff ~= 0.1.1",
     "pytest-xdist ~= 3.3.1",
     "refurb ~= 1.20.0",
-    "ruff==0.0.285",
-    "semgrep ~= 1.36.0",
-    "sphinx ~= 7.2.3",
+    "ruff==0.0.286",
+    "semgrep ~= 1.37.0",
+    "sphinx ~= 7.2.4",
     "vulture ~= 2.9.1",
 ]
 
