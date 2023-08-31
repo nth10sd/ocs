@@ -212,10 +212,10 @@ addopts = [
     "--instafail",
     "--no-cov-on-fail",
     "--pylint-error-types=CRWEFI",
+    "--strict-markers",
 ]
 log_level = "DEBUG"
 markers = ["online", "slow"]
-python_files = "tests.py test_*.py *_tests.py"
 xfail_strict = true
 
 [tool.refurb]
