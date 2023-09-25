@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    "setuptools >= 68.0.0",
+    "setuptools >= 68.2.2",
     "setuptools-scm[toml] >= 7.1.0",
-    "wheel >= 0.41.1",
+    "wheel >= 0.41.2",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -27,12 +27,12 @@ dependencies = [
     "distro ~= 1.7.0",
     "mercurial ~= 6.2.1",
     "packaging ~= 23.1",
-    "setuptools >= 68.0.0",
+    "setuptools >= 68.2.2",
     "setuptools-scm[toml] >= 7.1.0",
-    "types-setuptools==68.0.0.3",                     # Bump types-* only with mypy
-    'types-toml==0.10.8.6; python_version <= "3.10"',
-    "typing-extensions ~= 4.7.1",                     # Directly import Self from typing on Python 3.11+
-    "wheel >= 0.41.1",
+    "types-setuptools==68.2.0.0",                     # Bump types-* only with mypy
+    'types-toml==0.10.8.7; python_version <= "3.10"',
+    "typing-extensions ~= 4.8.0",                     # Directly import Self from typing on Python 3.11+
+    "wheel >= 0.41.2",
     "zzbase ~= 0.11.0",
 ]
 dynamic = ["version", "readme"]
@@ -40,14 +40,14 @@ dynamic = ["version", "readme"]
 [project.optional-dependencies]
 test = [
     "bashate ~= 2.1.1",
-    "black ~= 23.7.0",
+    "black ~= 23.9.1",
     'coverage ~= 7.3.0; python_version >= "3.11"',
     'coverage[toml] ~= 7.3.0; python_version <= "3.10"',
     "fixit ~= 2.0.0.post1",
-    "mypy ~= 1.4.1",
+    "mypy ~= 1.5.1",
     "pylint ~= 2.17.5",
     'pyright==1.1.324; platform_system == "Linux"',
-    "pytest ~= 7.4.0",
+    "pytest ~= 7.4.2",
     "pytest-black ~= 0.3.12",
     "pytest-cov ~= 4.1.0",
     "pytest-dependency ~= 0.5.1",
@@ -57,10 +57,10 @@ test = [
     "pytest-randomly ~= 3.15.0",
     "pytest-ruff ~= 0.1.1",
     "pytest-xdist ~= 3.3.1",
-    "refurb ~= 1.20.0",
-    "ruff==0.0.286",
-    "semgrep ~= 1.37.0",
-    "sphinx ~= 7.2.4",
+    "refurb ~= 1.21.0",
+    "ruff==0.0.291",
+    "semgrep ~= 1.41.0",
+    "sphinx ~= 7.2.6",
     "vulture ~= 2.9.1",
 ]
 
