@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 from typing import Final
 
-from zzbase.shell_compile_prereqs.spidermonkey import find_latest_icu_version
+from zzbase.js_shells.spidermonkey.prereqs_for_compiling import find_latest_icu_version
 from zzbase.util import constants as zzconsts
 
 if zzconsts.HostPlatform.IS_WIN_MB:
