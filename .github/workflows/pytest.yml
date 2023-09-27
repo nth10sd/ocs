@@ -26,9 +26,9 @@ jobs:
             "--enable-debug --disable-optimize --enable-simulator=arm64",
             "--disable-debug --enable-simulator=arm64",
             "--enable-valgrind",
-            "--32",
-            "--enable-debug --disable-optimize --32",
-            "--enable-debug --disable-optimize --enable-simulator=arm --32",
+            "--enable-32bit",
+            "--enable-debug --disable-optimize --enable-32bit",
+            "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",
           ]
         python-version: ["3.10"]
     steps:
@@ -105,7 +105,7 @@ jobs:
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
       - name: Install 32-bit prerequisites for some builds
-        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
+        if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386
       - name: Search for existing linter ignore lines in Python
         run: |
@@ -143,7 +143,7 @@ jobs:
       - name: Rustup latest 64-bit Rust, as it seems faster than Rust-related workflows
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path && source "$HOME"/.cargo/env
       - name: Install 32-bit Rust toolchain for some builds
-        if: contains('["--32", "--enable-debug --disable-optimize --32", "--enable-debug --disable-optimize --enable-simulator=arm --32",]', matrix.build-type)
+        if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: rustup target add i686-unknown-linux-gnu
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure

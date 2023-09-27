@@ -5,10 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from zzbase.js_shells.spidermonkey.build_options import compute_shell_type
 from zzbase.util.constants import ALL_LIBS
 from zzbase.util.constants import HostPlatform as Hp
 
-from ocs import build_options
 from ocs.util import fs_helpers
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ class CommonShell:
 
     def __init__(self, build_opts: argparse.Namespace, cset_hash: str) -> None:
         """Initialize the CommonShell."""
-        self._name_no_ext = build_options.compute_shell_name(build_opts, cset_hash)
+        self._name_no_ext = f"{compute_shell_type(build_opts)}-{cset_hash}"
         self.build_opts = build_opts
 
         self._js_objdir = Path()

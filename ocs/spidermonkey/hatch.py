@@ -17,12 +17,12 @@ from typing import TYPE_CHECKING
 
 import distro
 from packaging.version import parse
+from zzbase.js_shells.spidermonkey import build_options
 from zzbase.util import constants as zzconsts
 from zzbase.util import utils
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.logging import get_logger
 
-from ocs import build_options
 from ocs.common.hatch import CommonShell
 from ocs.common.hatch import CommonShellError
 from ocs.spidermonkey.parsing import parse_args
@@ -84,7 +84,7 @@ class SMShell(CommonShell):
         :return: 0, to denote a successful compile
         """
         options = parse_args(argv)
-        options.build_opts = build_options.parse_shell_opts(options.build_opts)
+        options.build_opts = build_options.parse_shell_opts(options.build_opts.split())
 
         with utils.LockDir(
             get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
@@ -176,7 +176,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
     orig_cfg_env = dict(os.environ.copy())
     if Hp.IS_LINUX | Hp.IS_MAC:
         cfg_env["AR"] = "ar"
-    if Hp.IS_LINUX and shell.build_opts.enable32:
+    if Hp.IS_LINUX and shell.build_opts.enable_32bit:
         # 32-bit shell on 32/64-bit x86 Linux
         cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
         # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first,
@@ -192,13 +192,13 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
                 "--target=i686-pc-linux",
             )
         )
-        if shell.build_opts.enableSimulatorArm32:
+        if shell.build_opts.enable_simulator_arm32:
             cfg_cmds.append("--enable-simulator=arm")
     # 64-bit shell on macOS 10.13 El Capitan and greater
     elif (  # pylint: disable=confusing-consecutive-elif
         Hp.IS_MAC
         and parse(platform.mac_ver()[0]) >= parse("10.13")
-        and not shell.build_opts.enable32
+        and not shell.build_opts.enable_32bit
     ):
         # Remove entry pointing to the venv python on macOS to play nice w/SM configure
         orig_mac_path_env_var_full = os.getenv("PATH", "").split(":", maxsplit=1)
@@ -220,7 +220,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
                 str(shell.js_cfg_path.as_posix()),
             )
         )
-        if shell.build_opts.enableSimulatorArm64:
+        if shell.build_opts.enable_simulator_arm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
     elif Hp.IS_WIN_MB:  # pylint: disable=confusing-consecutive-elif
@@ -235,7 +235,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
             raise FileNotFoundError(
                 f"llvm-config.exe not found at: {win_mozbuild_clang_bin_path}",
             )
-        if shell.build_opts.enableAddressSanitizer:
+        if shell.build_opts.enable_address_sanitizer:
             cfg_env["LIBS"] = (
                 "clang_rt.asan_dynamic-x86_64.lib "
                 "clang_rt.asan_dynamic_runtime_thunk-x86_64.lib"
@@ -266,14 +266,14 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
         # Cross-compile ARM64 binary using x86_64 Python and toolchain on ARM64 host
         if Hp.IS_WIN_MB_AARCH64:
             cfg_cmds.append("--target=aarch64")
-        elif shell.build_opts.enable32:
+        elif shell.build_opts.enable_32bit:
             cfg_cmds.extend(
                 (
                     "--host=x86_64-pc-mingw32",
                     "--target=i686-pc-mingw32",
                 )
             )
-            if shell.build_opts.enableSimulatorArm32:
+            if shell.build_opts.enable_simulator_arm32:
                 cfg_cmds.append("--enable-simulator=arm")
         else:
             cfg_cmds.extend(
@@ -282,7 +282,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
                     "--target=x86_64-pc-mingw32",
                 )
             )
-            if shell.build_opts.enableSimulatorArm64:
+            if shell.build_opts.enable_simulator_arm64:
                 cfg_cmds.append("--enable-simulator=arm64")
     else:
         cfg_cmds.extend(
@@ -291,31 +291,29 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
                 str(shell.js_cfg_path.as_posix()),
             )
         )
-        if shell.build_opts.enableSimulatorArm64:
+        if shell.build_opts.enable_simulator_arm64:
             cfg_cmds.append("--enable-simulator=arm64")
 
-    if shell.build_opts.enableDbg:
+    if shell.build_opts.enable_debug:
         cfg_cmds.append("--enable-debug")
-    elif shell.build_opts.disableDbg:
+    elif shell.build_opts.disable_debug:
         cfg_cmds.append("--disable-debug")
 
-    if shell.build_opts.enableOpt:
+    if shell.build_opts.enable_optimize:
         cfg_cmds.append(
-            f"--enable-optimize{'=-O1' if shell.build_opts.enableValgrind else ''}",
+            f"--enable-optimize{'=-O1' if shell.build_opts.enable_valgrind else ''}",
         )
-    elif shell.build_opts.disableOpt:
+    elif shell.build_opts.disable_optimize:
         cfg_cmds.append("--disable-optimize")
-    if shell.build_opts.disableProfiling:
+    if shell.build_opts.disable_profiling:
         cfg_cmds.append("--disable-profiling")
 
-    if shell.build_opts.enableOomBreakpoint:  # Extra debugging help for OOM assertions
+    if shell.build_opts.enable_oom_breakpoint:  # Extra OOM assertion debugging help
         cfg_cmds.append("--enable-oom-breakpoint")
-    if (
-        shell.build_opts.enableWithoutIntlApi
-    ):  # Speeds up compilation but is non-default
+    if shell.build_opts.without_intl_api:  # Speeds up compilation but is non-default
         cfg_cmds.append("--without-intl-api")
 
-    if shell.build_opts.enableAddressSanitizer:
+    if shell.build_opts.enable_address_sanitizer:
         cfg_cmds.extend(
             ("--enable-address-sanitizer", "--enable-fuzzing", "--disable-jemalloc")
         )
@@ -327,7 +325,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
                     "--without-sysroot",  # Else ASan builds have corrupt stack
                 )
             )
-    if shell.build_opts.enableValgrind:
+    if shell.build_opts.enable_valgrind:
         cfg_cmds.extend(
             (
                 "--enable-valgrind",
@@ -342,7 +340,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
     # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
     # set, so this is probably not worth the effort. Also, ctypes has 32-bit issues.
     # NSPR (and ctypes, which seems to need NSPR) does not seem to support aarch64 Linux
-    if not (Hp.IS_LINUX_AARCH64 or shell.build_opts.enable32):
+    if not (Hp.IS_LINUX_AARCH64 or shell.build_opts.enable_32bit):
         cfg_cmds.extend(
             (
                 "--enable-nspr-build",
@@ -425,7 +423,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
     """
     # Platform and OS detection for the spec, part of which is in:
     #   https://wiki.mozilla.org/Security/CrashSignatures
-    if shell.build_opts.enable32:
+    if shell.build_opts.enable_32bit:
         fmconf_platform = "x86"  # 32-bit Intel-only, we do not support 32-bit ARM hosts
     elif Hp.IS_WIN_MB_AARCH64:
         fmconf_platform = "aarch64"
@@ -531,7 +529,7 @@ def sm_compile(shell: SMShell) -> Path:
         for run_lib in shell.shell_compiled_runlibs_path:
             if run_lib.is_file():
                 shutil.copy2(str(run_lib), str(shell.shell_cache_dir))
-        if Hp.IS_WIN_MB and shell.build_opts.enableAddressSanitizer:
+        if Hp.IS_WIN_MB and shell.build_opts.enable_address_sanitizer:
             shutil.copy2(
                 str(
                     constants.WIN_MOZBUILD_CLANG_PATH
@@ -784,51 +782,52 @@ def verify_binary(shell: SMShell) -> None:
     """
     binary = shell.shell_cache_js_bin_path
 
-    if arch_of_binary(binary) != ("32" if shell.build_opts.enable32 else "64"):
+    if arch_of_binary(binary) != ("32" if shell.build_opts.enable_32bit else "64"):
         raise ValueError(
             f"{arch_of_binary(binary)} architecture of binary is different "
-            f"from the intended input: {shell.build_opts.enable32}",
+            f"from the intended input: {shell.build_opts.enable_32bit}",
         )
 
     # Testing for debug / opt builds are different, as there are hybrid debug-opt builds
-    if query_build_cfg(binary, "debug") != shell.build_opts.enableDbg:
+    if query_build_cfg(binary, "debug") != shell.build_opts.enable_debug:
         raise ValueError(
             f'Debug status of shell is: {query_build_cfg(binary, "debug")}, '
-            f"compared to intended input: {shell.build_opts.enableDbg}",
+            f"compared to intended input: {shell.build_opts.enable_debug}",
         )
 
-    if query_build_cfg(binary, "asan") != shell.build_opts.enableAddressSanitizer:
+    if query_build_cfg(binary, "asan") != shell.build_opts.enable_address_sanitizer:
         raise ValueError(
             f'Asan status of shell is: {query_build_cfg(binary, "asan")}, '
-            f"compared to intended input: {shell.build_opts.enableAddressSanitizer}",
+            f"compared to intended input: {shell.build_opts.enable_address_sanitizer}",
         )
     # Checking for profiling status does not work with mozilla-beta and mozilla-release
-    if query_build_cfg(binary, "profiling") == shell.build_opts.disableProfiling:
+    if query_build_cfg(binary, "profiling") == shell.build_opts.disable_profiling:
         raise ValueError(
             f'Profiling status of shell is: {query_build_cfg(binary, "profiling")}, '
-            f"compared to intended input: {not shell.build_opts.disableProfiling}",
+            f"compared to intended input: {not shell.build_opts.disable_profiling}",
         )
     if not Hp.IS_WIN_MB_AARCH64:
         if (
-            query_build_cfg(binary, "arm-simulator") and shell.build_opts.enable32
-        ) != shell.build_opts.enableSimulatorArm32:
+            query_build_cfg(binary, "arm-simulator") and shell.build_opts.enable_32bit
+        ) != shell.build_opts.enable_simulator_arm32:
             raise ValueError(
                 "ARM32 simulator status of shell is: "
                 f'{query_build_cfg(binary, "arm-simulator")}, '
-                f"compared to intended input: {shell.build_opts.enableSimulatorArm32}",
+                f"compared to intended: {shell.build_opts.enable_simulator_arm32}",
             )
         if (
-            query_build_cfg(binary, "arm64-simulator") and not shell.build_opts.enable32
-        ) != shell.build_opts.enableSimulatorArm64:
+            query_build_cfg(binary, "arm64-simulator")
+            and not shell.build_opts.enable_32bit
+        ) != shell.build_opts.enable_simulator_arm64:
             raise ValueError(
                 "ARM64 simulator status of shell is: "
                 f'{query_build_cfg(binary, "arm64-simulator")}, '
-                f"compared to intended 32-bit status: {shell.build_opts.enable32}",
-                f"and intended ARM64 status: {shell.build_opts.enableSimulatorArm64}",
+                f"compared to intended 32-bit status: {shell.build_opts.enable_32bit}",
+                f"and intended ARM64 status: {shell.build_opts.enable_simulator_arm64}",
             )
 
 
-def main() -> None:
+def sm_hatch_main() -> None:
     """Execute main function in SMShell class.
 
     :raise SystemExit: When the main function of SMShell finishes execution
