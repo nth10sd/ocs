@@ -350,11 +350,11 @@ jobs:
       - name: Run with ruff
         run: python -u -m ruff .
 
-      - name: Install prerequisites (hg is dealt with later in the process)
+      - name: Install prerequisites
         run: |
           while ($True) {
             try {
-              choco upgrade ripgrep ; choco install mozillabuild sd-cli
+              choco upgrade hg ripgrep ; choco install mozillabuild sd-cli
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;
@@ -394,17 +394,6 @@ jobs:
         run: |
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
-      - name: Install Mercurial just before the clone
-        run: |
-          while ($True) {
-            try {
-              choco upgrade hg
-              break
-            } catch {
-              echo "Error installing hg via choco, retrying in 2 seconds..." ;
-              sleep 2 ;
-            }
-          }
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p $HOME/trees && hg --version -q ;
