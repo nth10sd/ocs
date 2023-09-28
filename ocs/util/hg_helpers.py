@@ -6,6 +6,7 @@ from logging import INFO as INFO_LOG_LEVEL
 from pathlib import Path
 import subprocess
 
+from zzbase.util.constants import HG_BINARY
 from zzbase.util.logging import get_logger
 
 HG_HELPERS_LOG = get_logger(
@@ -24,14 +25,18 @@ def exists_and_is_ancestor(
     :param repo_dir: Path to the repository
     :param rev_a: Repository ID hash that should be an ancestor of `rev_b`
     :param rev_b: Repository ID hash that should be a descendent of `rev_a`
+    :raise FileNotFoundError: If Mercurial (hg) is not found
     :return: True if the `rev_a` exists and is an ancestor of `rev_b`
     """
+    if not HG_BINARY:
+        raise FileNotFoundError("hg is not found")
+
     # Note that if `rev_a` is the same as `rev_b`, it will return True
     # Takes advantage of "id(badhash)" being the empty set,
     # in contrast to just "badhash", which is an error
     out = subprocess.run(
-        [  # noqa: S607
-            "hg",
+        [
+            HG_BINARY,
             "-R",
             str(repo_dir),
             "log",
@@ -61,13 +66,17 @@ def get_repo_hash_and_id(
 
     :param repo_dir: Full path to the repository
     :param repo_rev: Intended Mercurial changeset details to retrieve
+    :raise FileNotFoundError: If Mercurial (hg) is not found
     :raise ValueError: Raises if the input is invalid
     :raise SystemExit: When abort is selected
     :return: Changeset hash, local numerical ID, whether repository is on default tip
     """
+    if not HG_BINARY:
+        raise FileNotFoundError("hg is not found")
+
     # This will return null if the repository is not on default.
     hg_log_template_cmds = [
-        "hg",
+        HG_BINARY,
         "-R",
         str(repo_dir),
         "log",
@@ -94,19 +103,13 @@ def get_repo_hash_and_id(
 
         if update_default == "d":
             subprocess.run(
-                [  # noqa: S607
-                    "hg",
-                    "-R",
-                    str(repo_dir),
-                    "update",
-                    "default",
-                ],
+                [HG_BINARY, "-R", str(repo_dir), "update", "default"],
                 check=True,
             )
             is_on_default = True
         elif update_default == "u":
             hg_log_template_cmds = [
-                "hg",
+                HG_BINARY,
                 "-R",
                 str(repo_dir),
                 "log",

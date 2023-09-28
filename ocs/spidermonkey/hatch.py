@@ -20,6 +20,8 @@ from packaging.version import parse
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.util import constants as zzconsts
 from zzbase.util import utils
+from zzbase.util.constants import FILE_BINARY
+from zzbase.util.constants import HG_BINARY
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.logging import get_logger
 from zzbase.vcs.hg_helpers import hgrc_repo_name
@@ -568,7 +570,7 @@ def sm_compile(shell: SMShell) -> Path:
     return shell.shell_compiled_path
 
 
-def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
+def obtain_shell(  # noqa: C901, PLR0912  # pylint: disable=too-complex
     shell: SMShell,
     update_to_rev: str | None = None,
     *,
@@ -578,13 +580,16 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
 
     :param shell: Potential compiled shell object
     :param update_to_rev: Specified revision to be updated to
-
+    :raise FileNotFoundError: If Mercurial (hg) is not found
     :raise RuntimeError: If MozillaBuild versions prior to 4.0 are used
     :raise FileNotFoundError: If lock dir is not a directory
     :raise OSError: When a cached failed-compile shell was found, or when compile failed
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
+    if not HG_BINARY:
+        raise FileNotFoundError("hg is not found")
+
     if zzconsts.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
@@ -615,8 +620,8 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
             shell.build_opts.repo_dir,
         )
         subprocess.run(
-            [  # noqa: S607
-                "hg",
+            [
+                HG_BINARY,
                 "-R",
                 str(shell.build_opts.repo_dir),
                 "update",
@@ -665,7 +670,7 @@ def arch_of_binary(binary: Path) -> str:
     """
     # We can possibly use the python-magic-bin PyPI library in the future
     unsplit_file_type = subprocess.run(
-        ["file", str(binary)],  # noqa: S607
+        [FILE_BINARY, str(binary)],
         check=True,
         cwd=Path.cwd(),
         stdout=subprocess.PIPE,
