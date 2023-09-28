@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import configparser
 from logging import INFO as INFO_LOG_LEVEL
 from pathlib import Path
 import subprocess
@@ -130,15 +129,3 @@ def get_repo_hash_and_id(
     (hg_id_hash, hg_id_local_num) = hg_id_full.split(" ")
     HG_HELPERS_LOG.debug("Finished getting the repository's hash and local id number")
     return hg_id_hash, hg_id_local_num, is_on_default
-
-
-def hgrc_repo_name(repo_dir: Path) -> str:
-    """Extract the Mercurial repo name from the hgrc file.
-
-    :param repo_dir: Repo directory
-    :return: Name of the repo in the .hgrc file
-    """
-    hgrc_cfg = configparser.ConfigParser()
-    hgrc_cfg.read(repo_dir / ".hg" / "hgrc")
-    # Not all default entries in [paths] end with "/".
-    return [i for i in hgrc_cfg.get("paths", "default").split("/") if i][-1]

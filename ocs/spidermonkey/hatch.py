@@ -22,6 +22,7 @@ from zzbase.util import constants as zzconsts
 from zzbase.util import utils
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.logging import get_logger
+from zzbase.vcs.hg_helpers import hgrc_repo_name
 
 from ocs.common.hatch import CommonShell
 from ocs.common.hatch import CommonShellError
@@ -121,7 +122,7 @@ class SMShell(CommonShell):
 
         :return: Name of the repository
         """
-        return hg_helpers.hgrc_repo_name(self.build_opts.repo_dir)
+        return hgrc_repo_name(self.build_opts.repo_dir)
 
 
 def configure_js_shell_compile(shell: SMShell) -> None:
