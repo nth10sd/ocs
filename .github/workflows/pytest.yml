@@ -354,7 +354,7 @@ jobs:
         run: |
           while ($True) {
             try {
-              choco upgrade hg ripgrep ; choco install mozillabuild sd-cli
+              choco upgrade ripgrep ; choco install mozillabuild sd-cli
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;
