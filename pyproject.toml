@@ -25,7 +25,7 @@ classifiers = [
 ]
 dependencies = [
     "distro ~= 1.7.0",
-    'mercurial ~= 6.5.2; platform_system != "Windows"',
+    'mercurial ~= 6.5.2; platform_system != "Windows"', # Also update TortoiseHg as well
     "packaging ~= 23.1",
     "setuptools >= 68.2.2",
     "setuptools-scm[toml] >= 7.1.0",
