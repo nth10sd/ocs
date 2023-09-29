@@ -570,7 +570,7 @@ def sm_compile(shell: SMShell) -> Path:
     return shell.shell_compiled_path
 
 
-def obtain_shell(  # noqa: C901, PLR0912  # pylint: disable=too-complex
+def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     shell: SMShell,
     update_to_rev: str | None = None,
     *,
