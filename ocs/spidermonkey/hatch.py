@@ -580,7 +580,6 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
 
     :param shell: Potential compiled shell object
     :param update_to_rev: Specified revision to be updated to
-    :raise FileNotFoundError: If Mercurial (hg) is not found
     :raise RuntimeError: If MozillaBuild versions prior to 4.0 are used
     :raise FileNotFoundError: If lock dir is not a directory
     :raise OSError: When a cached failed-compile shell was found, or when compile failed

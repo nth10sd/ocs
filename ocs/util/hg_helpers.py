@@ -25,7 +25,6 @@ def exists_and_is_ancestor(
     :param repo_dir: Path to the repository
     :param rev_a: Repository ID hash that should be an ancestor of `rev_b`
     :param rev_b: Repository ID hash that should be a descendent of `rev_a`
-    :raise FileNotFoundError: If Mercurial (hg) is not found
     :return: True if the `rev_a` exists and is an ancestor of `rev_b`
     """
     # Note that if `rev_a` is the same as `rev_b`, it will return True
@@ -63,7 +62,6 @@ def get_repo_hash_and_id(
 
     :param repo_dir: Full path to the repository
     :param repo_rev: Intended Mercurial changeset details to retrieve
-    :raise FileNotFoundError: If Mercurial (hg) is not found
     :raise ValueError: Raises if the input is invalid
     :raise SystemExit: When abort is selected
     :return: Changeset hash, local numerical ID, whether repository is on default tip
