@@ -28,9 +28,6 @@ def exists_and_is_ancestor(
     :raise FileNotFoundError: If Mercurial (hg) is not found
     :return: True if the `rev_a` exists and is an ancestor of `rev_b`
     """
-    if not HG_BINARY:
-        raise FileNotFoundError("hg is not found")
-
     # Note that if `rev_a` is the same as `rev_b`, it will return True
     # Takes advantage of "id(badhash)" being the empty set,
     # in contrast to just "badhash", which is an error
@@ -71,9 +68,6 @@ def get_repo_hash_and_id(
     :raise SystemExit: When abort is selected
     :return: Changeset hash, local numerical ID, whether repository is on default tip
     """
-    if not HG_BINARY:
-        raise FileNotFoundError("hg is not found")
-
     # This will return null if the repository is not on default.
     hg_log_template_cmds = [
         HG_BINARY,

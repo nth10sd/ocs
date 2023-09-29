@@ -587,9 +587,6 @@ def obtain_shell(  # noqa: C901, PLR0912  # pylint: disable=too-complex
     :raise KeyboardInterrupt: When ctrl-c was pressed during shell compilation
     :raise CalledProcessError: When shell compilation failed
     """
-    if not HG_BINARY:
-        raise FileNotFoundError("hg is not found")
-
     if zzconsts.IS_MOZILLABUILD_3_OR_OLDER:
         raise RuntimeError("MozillaBuild versions prior to 4.0 are not supported")
 
