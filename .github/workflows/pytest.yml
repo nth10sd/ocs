@@ -99,8 +99,6 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
-      - name: List installed packages via apt
-        run: sudo apt list --installed
       - name: Install 64-bit SpiderMonkey prerequisites
         run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
       - name: Install Valgrind for some builds
@@ -109,6 +107,14 @@ jobs:
       - name: Install 32-bit prerequisites for some builds
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386
+      - name: List free space
+        run: df -h
+      - name: Remove unneeded browsers
+        run: sudo apt-get remove google-chrome-stable microsoft-edge-stable
+      - name: Run apt-get autoremove and apt-get clean
+        run: sudo apt-get autoremove ; sudo apt-get clean
+      - name: List free space again
+        run: df -h
       - name: Search for existing linter ignore lines in Python
         run: |
           rg -t py --stats "(?:(?:flake8|noqa|pylint|pyright|type): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
