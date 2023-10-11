@@ -99,6 +99,8 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
+      - name: List installed packages via apt
+        run: sudo apt list --installed
       - name: Install 64-bit SpiderMonkey prerequisites
         run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
       - name: Install Valgrind for some builds
