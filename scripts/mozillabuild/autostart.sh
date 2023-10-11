@@ -56,6 +56,9 @@ fi ;
 unset BUILDSM
 popd || exit ;
 
+# Remove m-c to free up more space for tarball creation
+rm -rf "$HOME"/trees/mozilla-central/ ;
+
 # Create a tarball and SHA-256 checksum only if pytest ran without any errors
 if [ ! -f "$HOME"/pytest-failure.txt ]; then
     pushd "$HOME"/shell-cache || exit ;
