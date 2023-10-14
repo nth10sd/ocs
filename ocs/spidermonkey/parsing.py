@@ -21,7 +21,8 @@ def parse_args(args: list[str]) -> argparse.Namespace:
         "--build-opts",  # Specify how the shell will be built.
         type=lambda x: x.removeprefix('"').removesuffix('"'),
         help='Specify build options, e.g. -b="--disable-debug --enable-optimize", '
-        'note that the "equals" symbol is needed for a single build flag',
+        'note that the "equals" symbol is needed for a single build flag, run -h with '
+        "other package to get a generated list",
     )
     parser.add_argument(
         "-r",
