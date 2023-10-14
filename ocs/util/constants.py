@@ -9,6 +9,8 @@ from typing import Final
 from zzbase.js_shells.spidermonkey.prereqs_for_compiling import find_latest_icu_version
 from zzbase.util import constants as zzconsts
 
+PACKAGE_NAME: Final = __name__.split(".", maxsplit=1)[0]
+
 if zzconsts.HostPlatform.IS_WIN_MB:
     WIN_MOZBUILD_CLANG_PATH: Final = Path.home() / ".mozbuild" / "clang"
     WIN_CLANG_CL: Final = WIN_MOZBUILD_CLANG_PATH / "bin" / "clang-cl.exe"

@@ -69,7 +69,9 @@ def test_shell_compile() -> Path:
     # string cannot seem to propagate properly from PowerShell -> batch script -> bash
     build_opts = os.getenv("BUILDSM", default_parameters_debug).rstrip()
 
-    opts_parsed = build_options.parse_shell_opts(build_opts.split())
+    opts_parsed = build_options.parse_shell_opts(
+        build_opts.split() if build_opts else []
+    )
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
     smshell = SMShell(opts_parsed, hg_hash_of_default)
     # Ensure exit code is 0

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from zzbase.util.utils import PACKAGE_NAME
+from ocs.util.constants import PACKAGE_NAME
 
 
 def parse_args(args: list[str]) -> argparse.Namespace:

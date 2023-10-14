@@ -87,7 +87,9 @@ class SMShell(CommonShell):
         :return: 0, to denote a successful compile
         """
         options = parse_args(argv)
-        options.build_opts = build_options.parse_shell_opts(options.build_opts.split())
+        options.build_opts = build_options.parse_shell_opts(
+            options.build_opts.split() if options.build_opts else []
+        )
 
         with utils.LockDir(
             get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
