@@ -44,7 +44,6 @@ test = [
     "black ~= 23.10.0",
     'coverage ~= 7.3.2; python_version >= "3.11"',
     'coverage[toml] ~= 7.3.2; python_version <= "3.10"',
-    "fixit ~= 2.0.0.post1",
     "mypy ~= 1.6.1",
     "pylint ~= 3.0.1",
     'pyright==1.1.332; platform_system == "Linux"',

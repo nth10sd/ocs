@@ -72,9 +72,6 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff .
-      - name: Run with fixit
-        if: startsWith(runner.os, 'Linux')
-        run: python -u -m fixit lint
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
         run: python -u -m refurb .
