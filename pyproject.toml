@@ -27,7 +27,7 @@ dependencies = [
     "distro ~= 1.7.0",
     'mercurial ~= 6.5.2; platform_system != "Windows"', # Update TortoiseHg(Win) as well
     'mercurial ~= 6.2.3; platform_system == "Windows"', # 6.3+ do not have hg.exe
-    "packaging ~= 23.1",
+    "packaging ~= 23.2",
     "setuptools >= 68.2.2",
     "setuptools-scm[toml] >= 7.1.0",
     "types-setuptools==68.2.0.0",                       # Bump types-* only with mypy
@@ -41,28 +41,28 @@ dynamic = ["version", "readme"]
 [project.optional-dependencies]
 test = [
     "bashate ~= 2.1.1",
-    "black ~= 23.9.1",
-    'coverage ~= 7.3.0; python_version >= "3.11"',
-    'coverage[toml] ~= 7.3.0; python_version <= "3.10"',
+    "black ~= 23.10.0",
+    'coverage ~= 7.3.2; python_version >= "3.11"',
+    'coverage[toml] ~= 7.3.2; python_version <= "3.10"',
     "fixit ~= 2.0.0.post1",
-    "mypy ~= 1.5.1",
-    "pylint ~= 2.17.6",
-    'pyright==1.1.329; platform_system == "Linux"',
+    "mypy ~= 1.6.1",
+    "pylint ~= 3.0.1",
+    'pyright==1.1.332; platform_system == "Linux"',
     "pytest ~= 7.4.2",
     "pytest-black ~= 0.3.12",
     "pytest-cov ~= 4.1.0",
     "pytest-dependency ~= 0.5.1",
     "pytest-instafail ~= 0.5.0",
     "pytest-mypy ~= 0.10.3",
-    "pytest-pylint ~= 0.19.0",
+    "pytest-pylint ~= 0.21.0",
     "pytest-randomly ~= 3.15.0",
     "pytest-ruff ~= 0.1.1",
     "pytest-xdist ~= 3.3.1",
-    "refurb ~= 1.21.0",
-    "ruff==0.0.291",
+    "refurb ~= 1.22.0",
+    "ruff ~= 0.1.1",
     "semgrep ~= 1.41.0",
     "sphinx ~= 7.2.6",
-    "vulture ~= 2.9.1",
+    "vulture ~= 2.10",
 ]
 
 [tool.setuptools.dynamic]
