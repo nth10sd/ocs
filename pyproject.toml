@@ -170,19 +170,18 @@ ignore-imports = "yes"
 min-similarity-lines = 5
 
 [tool.pylint.messages_control]
-disable = [
-    "locally-disabled",
-    "suppressed-message",
-    "use-implicit-booleaness-not-comparison-to-string",
-    "use-implicit-booleaness-not-comparison-to-zero",
-]
+disable = ["locally-disabled", "suppressed-message"]
 enable = [
     "bad-inline-option",
     "c-extension-no-member",
+    "consider-using-augmented-assign",
     "deprecated-pragma",
     "eq-without-hash",
     "file-ignored",
+    "prefer-typing-namedtuple",
     "raw-checker-failed",
+    "use-implicit-booleaness-not-comparison-to-string",
+    "use-implicit-booleaness-not-comparison-to-zero",
     "use-symbolic-message-instead",
     "useless-suppression",
 ]
