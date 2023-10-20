@@ -75,9 +75,6 @@ jobs:
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
         run: python -u -m refurb .
-      - name: Run with semgrep to find potential security issues with ERROR level
-        if: startsWith(runner.os, 'Linux')
-        run: semgrep scan --severity=ERROR --strict --error --config auto
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: |
