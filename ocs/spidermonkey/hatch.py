@@ -829,11 +829,3 @@ def verify_binary(shell: SMShell) -> None:
                 f"compared to intended 32-bit status: {shell.build_opts.enable_32bit}",
                 f"and intended ARM64 status: {shell.build_opts.enable_simulator_arm64}",
             )
-
-
-def sm_hatch_main() -> None:
-    """Execute main function in SMShell class.
-
-    :raise SystemExit: When the main function of SMShell finishes execution
-    """
-    raise SystemExit(SMShell.main())
