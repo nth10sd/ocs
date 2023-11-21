@@ -7,7 +7,7 @@ from __future__ import annotations
 import contextlib
 from functools import cache
 import os
-from typing import TYPE_CHECKING
+from pathlib import Path
 
 import pytest
 from zzbase.js_shells.spidermonkey import build_options
@@ -16,13 +16,10 @@ from zzbase.util.constants import MC_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
 from zzbase.util.constants import HostPlatform as Hp
 
-from ocs.spidermonkey.hatch import SMShell
+from ocs.spidermonkey.hatch import OldSMShell
 from ocs.util import hg_helpers
 
-from .util.constants_for_tests import SHELL_CACHE
-
-if TYPE_CHECKING:
-    from pathlib import Path
+SHELL_CACHE = Path.home() / "shell-cache"
 
 
 @pytest.mark.slow()
@@ -73,9 +70,9 @@ def test_shell_compile() -> Path:
         build_opts.split() if build_opts else []
     )
     hg_hash_of_default = hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
-    smshell = SMShell(opts_parsed, hg_hash_of_default)
+    old_smshell = OldSMShell(opts_parsed, hg_hash=hg_hash_of_default)
     # Ensure exit code is 0
-    assert not smshell.run([f"-b={build_opts}"])
+    assert not old_smshell.run([f"-b={build_opts}"])
 
     file_name = f"{build_options.compute_shell_type(opts_parsed)}-{hg_hash_of_default}"
     js_bin_path = SHELL_CACHE / file_name / file_name

@@ -13,32 +13,28 @@ import subprocess
 import sys
 import traceback
 from typing import IO
-from typing import TYPE_CHECKING
 
 import distro
 from packaging.version import parse
 from zzbase.js_shells.spidermonkey import build_options
+from zzbase.js_shells.spidermonkey.hatch import SMShell
+from zzbase.js_shells.spidermonkey.hatch import SMShellError
 from zzbase.util import constants as zzconsts
-from zzbase.util import utils
 from zzbase.util.constants import FILE_BINARY
 from zzbase.util.constants import HG_BINARY
 from zzbase.util.constants import HostPlatform as Hp
+from zzbase.util.fs_helpers import bash_piping as piping
+from zzbase.util.fs_helpers import env_with_path
+from zzbase.util.fs_helpers import get_lock_dir_path
+from zzbase.util.fs_helpers import handle_rm_readonly_files
 from zzbase.util.logging import get_logger
-from zzbase.vcs.hg_helpers import hgrc_repo_name
+from zzbase.util.utils import LockDir
+from zzbase.util.utils import autoconf_run
 
-from ocs.common.hatch import CommonShell
-from ocs.common.hatch import CommonShellError
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import constants
 from ocs.util import hg_helpers
 from ocs.util import misc_progs
-from ocs.util.fs_helpers import bash_piping as piping
-from ocs.util.fs_helpers import env_with_path
-from ocs.util.fs_helpers import get_lock_dir_path
-from ocs.util.fs_helpers import handle_rm_readonly_files
-
-if TYPE_CHECKING:
-    import argparse
 
 SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
@@ -46,28 +42,24 @@ SM_HATCH_LOG = get_logger(
 SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
 
-class SMShellError(CommonShellError):
-    """Error class unique to SMShell objects."""
+class OldSMShellError(SMShellError):
+    """Error class unique to OldSMShell objects."""
 
 
-class SMShell(CommonShell):
-    """A SMShell object represents an actual compiled shell binary.
+class OldSMShell(SMShell):
+    """A OldSMShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py
-    :param hg_hash: Changeset hash
+    :param git_hash: Git repo changeset hash
+    :param hg_hash: Mercurial (hg) changeset hash
     """
 
-    def __init__(self, build_opts: argparse.Namespace, hg_hash: str) -> None:
-        """Initialize the SMShell."""
-        super().__init__(build_opts, hg_hash)
-        self._hg_hash = hg_hash
-
     @classmethod
-    def main(cls: type[CommonShell], args: list[str] | None = None) -> int:
-        """SMShell class main method.
+    def main(cls: type[SMShell], args: list[str] | None = None) -> int:
+        """OldSMShell class main method.
 
         :param args: Additional parameters
-        :raise SMShellError: When the run function encounters an error
+        :raise OldSMShellError: When the run function encounters an error
         :return: 0, to denote a successful compile and 1, to denote a failed compile
         """
         if not args:
@@ -75,7 +67,7 @@ class SMShell(CommonShell):
             args = sys.argv[1:]  # pragma: no cover
         try:
             return cls.run(args)
-        except SMShellError:
+        except OldSMShellError:
             SM_HATCH_LOG.exception("The run function encountered an error")
             raise
 
@@ -91,16 +83,16 @@ class SMShell(CommonShell):
             options.build_opts.split() if options.build_opts else []
         )
 
-        with utils.LockDir(
+        with LockDir(
             get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
         ):
             if options.revision:
-                shell = SMShell(options.build_opts, options.revision)
+                shell = OldSMShell(options.build_opts, hg_hash=options.revision)
             else:
                 local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(
                     options.build_opts.repo_dir,
                 )[0]
-                shell = SMShell(options.build_opts, local_orig_hg_hash)
+                shell = OldSMShell(options.build_opts, hg_hash=local_orig_hg_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
 
@@ -112,24 +104,8 @@ class SMShell(CommonShell):
 
         return 0
 
-    @property
-    def hg_hash(self) -> str:
-        """Retrieve the hash of the current changeset of the repository.
 
-        :return: Changeset hash
-        """
-        return self._hg_hash
-
-    @property
-    def repo_name(self) -> str:
-        """Retrieve the name of a Mercurial repository.
-
-        :return: Name of the repository
-        """
-        return hgrc_repo_name(self.build_opts.repo_dir)
-
-
-def configure_js_shell_compile(shell: SMShell) -> None:
+def configure_js_shell_compile(shell: OldSMShell) -> None:
     """Configure, compile and copy a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
@@ -147,7 +123,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
         shell.hg_hash,
         "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
     ):
-        utils.autoconf_run(shell.build_opts.repo_dir / "js" / "src")
+        autoconf_run(shell.build_opts.repo_dir / "js" / "src")
 
     configure_binary(shell)
     sm_compile(shell)
@@ -161,7 +137,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
 
 def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-complex
-    shell: SMShell,
+    shell: OldSMShell,
 ) -> None:
     """Configure a binary according to required parameters.
 
@@ -409,7 +385,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
             errors="replace",
         ) as f:
             f.write(
-                f"Configuration of {shell.repo_name} rev {shell.hg_hash} "
+                f"Configuration of {shell.hg_repo_name} rev {shell.hg_hash} "
                 "failed with the following output:\n",
             )
             f.write(ex.stdout.decode("utf-8", errors="replace"))
@@ -420,7 +396,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
     shell.cfg_cmd_excl_env = cfg_cmds
 
 
-def env_dump(shell: SMShell, log_: Path) -> None:
+def env_dump(shell: OldSMShell, log_: Path) -> None:
     """Dump environment to a .fuzzmanagerconf file.
 
     :param shell: A compiled shell
@@ -467,7 +443,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write("\n")
         f.write("[Main]\n")
         f.write(f"platform = {fmconf_platform}\n")
-        f.write(f"product = {shell.repo_name}\n")
+        f.write(f"product = {shell.hg_repo_name}\n")
         f.write(f"product_version = {shell.hg_hash}\n")
         f.write(f"os = {fmconf_os}\n")
 
@@ -479,7 +455,7 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write(f"version = {shell.version}\n")
 
 
-def sm_compile(shell: SMShell) -> Path:
+def sm_compile(shell: OldSMShell) -> Path:
     """Compile a binary and copy essential compiled files into a desired structure.
 
     :param shell: SpiderMonkey shell parameters
@@ -563,7 +539,7 @@ def sm_compile(shell: SMShell) -> Path:
             errors="replace",
         ) as f:
             f.write(
-                f"Compilation of {shell.repo_name} rev {shell.hg_hash} "
+                f"Compilation of {shell.hg_repo_name} rev {shell.hg_hash} "
                 "failed with the following output:\n",
             )
             f.write(out)
@@ -573,7 +549,7 @@ def sm_compile(shell: SMShell) -> Path:
 
 
 def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
-    shell: SMShell,
+    shell: OldSMShell,
     update_to_rev: str | None = None,
     *,
     _update_latest_txt: bool = False,
@@ -773,7 +749,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> bool:
     )
 
 
-def verify_binary(shell: SMShell) -> None:
+def verify_binary(shell: OldSMShell) -> None:
     """Verify that the binary is compiled as intended.
 
     :param shell: Compiled binary object
