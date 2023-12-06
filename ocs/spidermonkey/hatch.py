@@ -105,7 +105,7 @@ class OldSMShell(SMShell):
         return 0
 
 
-def configure_js_shell_compile(shell: OldSMShell) -> None:
+def configure_js_shell_compile(shell: SMShell) -> None:
     """Configure, compile and copy a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
@@ -137,7 +137,7 @@ def configure_js_shell_compile(shell: OldSMShell) -> None:
 
 
 def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-complex
-    shell: OldSMShell,
+    shell: SMShell,
 ) -> None:
     """Configure a binary according to required parameters.
 
@@ -396,7 +396,7 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
     shell.cfg_cmd_excl_env = cfg_cmds
 
 
-def env_dump(shell: OldSMShell, log_: Path) -> None:
+def env_dump(shell: SMShell, log_: Path) -> None:
     """Dump environment to a .fuzzmanagerconf file.
 
     :param shell: A compiled shell
@@ -455,7 +455,7 @@ def env_dump(shell: OldSMShell, log_: Path) -> None:
         f.write(f"version = {shell.version}\n")
 
 
-def sm_compile(shell: OldSMShell) -> Path:
+def sm_compile(shell: SMShell) -> Path:
     """Compile a binary and copy essential compiled files into a desired structure.
 
     :param shell: SpiderMonkey shell parameters
@@ -549,7 +549,7 @@ def sm_compile(shell: OldSMShell) -> Path:
 
 
 def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
-    shell: OldSMShell,
+    shell: SMShell,
     update_to_rev: str | None = None,
     *,
     _update_latest_txt: bool = False,
@@ -749,7 +749,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> bool:
     )
 
 
-def verify_binary(shell: OldSMShell) -> None:
+def verify_binary(shell: SMShell) -> None:
     """Verify that the binary is compiled as intended.
 
     :param shell: Compiled binary object
