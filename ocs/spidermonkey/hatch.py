@@ -30,6 +30,7 @@ from zzbase.util.fs_helpers import handle_rm_readonly_files
 from zzbase.util.logging import get_logger
 from zzbase.util.utils import LockDir
 from zzbase.util.utils import autoconf_run
+from zzbase.vcs import git_helpers
 
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import constants
@@ -76,6 +77,7 @@ class OldSMShell(SMShell):
         """Build a shell and place it in the autobisectjs cache.
 
         :param argv: Additional parameters
+        :raise OldSMShellError: If repository is not clean
         :return: 0, to denote a successful compile
         """
         options = parse_args(argv)
@@ -88,11 +90,21 @@ class OldSMShell(SMShell):
         ):
             if options.revision:
                 shell = OldSMShell(options.build_opts, hg_hash=options.revision)
-            else:
+            elif (options.build_opts.repo_dir / ".hg" / "hgrc").is_file():
                 local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(
                     options.build_opts.repo_dir,
                 )[0]
                 shell = OldSMShell(options.build_opts, hg_hash=local_orig_hg_hash)
+            else:
+                local_orig_git_hash = git_helpers.get_repo_hash(
+                    options.build_opts.repo_dir,
+                )
+                if not (
+                    git_helpers.is_repo_clean(options.build_opts.repo_dir)
+                    or options.build_opts.overwrite_unclean_repo
+                ):
+                    raise OldSMShellError("Repository is not clean")
+                shell = OldSMShell(options.build_opts, git_hash=local_orig_git_hash)
 
             obtain_shell(shell, update_to_rev=options.revision)
 
@@ -117,11 +129,25 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     # Run autoconf 2.13 only on non-Windows platforms if repository revision is before:
     #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
+    #   gecko-dev 511135:b4a2cfe25078c17e2063a6866a3d2caf9d61651f, Fx106
     # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if not Hp.IS_WIN_MB and hg_helpers.exists_and_is_ancestor(
-        shell.build_opts.repo_dir,
-        shell.hg_hash,
-        "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+    if not Hp.IS_WIN_MB and (
+        (
+            (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+            and hg_helpers.exists_and_is_ancestor(
+                shell.build_opts.repo_dir,
+                shell.hg_hash,
+                "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+            )
+        )
+        or (
+            not (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+            and git_helpers.exists_and_is_ancestor(
+                shell.build_opts.repo_dir,
+                shell.git_hash,
+                "b4a2cfe25078c17e2063a6866a3d2caf9d61651f",
+            )
+        )
     ):
         autoconf_run(shell.build_opts.repo_dir / "js" / "src")
 
@@ -188,11 +214,25 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
             cfg_env["PATH"] = orig_mac_path_env_var_full[1]
         # Add the AUTOCONF env variable if repository revision is before:
         #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
+        #   gecko-dev 511135:b4a2cfe25078c17e2063a6866a3d2caf9d61651f, Fx106
         # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-        if shutil.which("brew") and hg_helpers.exists_and_is_ancestor(
-            shell.build_opts.repo_dir,
-            shell.hg_hash,
-            "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+        if shutil.which("brew") and (
+            (
+                (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                and hg_helpers.exists_and_is_ancestor(
+                    shell.build_opts.repo_dir,
+                    shell.hg_hash,
+                    "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
+                )
+            )
+            or (
+                not (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                and git_helpers.exists_and_is_ancestor(
+                    shell.build_opts.repo_dir,
+                    shell.git_hash,
+                    "b4a2cfe25078c17e2063a6866a3d2caf9d61651f",
+                )
+            )
         ):
             cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
         cfg_cmds.extend(
@@ -384,8 +424,18 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
             encoding="utf-8",
             errors="replace",
         ) as f:
+            repo_name = (
+                shell.hg_repo_name
+                if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                else shell.git_repo_name
+            )
+            hash_ = (
+                shell.hg_hash
+                if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                else shell.git_hash
+            )
             f.write(
-                f"Configuration of {shell.hg_repo_name} rev {shell.hg_hash} "
+                f"Configuration of {repo_name} rev {hash_} "
                 "failed with the following output:\n",
             )
             f.write(ex.stdout.decode("utf-8", errors="replace"))
@@ -443,8 +493,18 @@ def env_dump(shell: SMShell, log_: Path) -> None:
         f.write("\n")
         f.write("[Main]\n")
         f.write(f"platform = {fmconf_platform}\n")
-        f.write(f"product = {shell.hg_repo_name}\n")
-        f.write(f"product_version = {shell.hg_hash}\n")
+        repo_name = (
+            shell.hg_repo_name
+            if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+            else shell.git_repo_name
+        )
+        f.write(f"product = {repo_name}\n")
+        hash_ = (
+            shell.hg_hash
+            if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+            else shell.git_hash
+        )
+        f.write(f"product_version = {hash_}\n")
         f.write(f"os = {fmconf_os}\n")
 
         f.write("\n")
@@ -538,8 +598,18 @@ def sm_compile(shell: SMShell) -> Path:
             encoding="utf-8",
             errors="replace",
         ) as f:
+            repo_name = (
+                shell.hg_repo_name
+                if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                else shell.git_repo_name
+            )
+            hash_ = (
+                shell.hg_hash
+                if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
+                else shell.git_hash
+            )
             f.write(
-                f"Compilation of {shell.hg_repo_name} rev {shell.hg_hash} "
+                f"Compilation of {repo_name} rev {hash_} "
                 "failed with the following output:\n",
             )
             f.write(out)
