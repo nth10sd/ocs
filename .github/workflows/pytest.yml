@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
@@ -210,7 +210,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
@@ -327,7 +327,7 @@ jobs:
           # 20221026 This only worked w/set-output in the pip cache dir step on Win
           # path: ${{ steps.pip-cache.outputs.dir }}
           path: ~\AppData\Local\pip\Cache
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
           restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
