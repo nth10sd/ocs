@@ -49,7 +49,9 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: |
+            ${{ secrets.CRASH2COV_TOKEN }}
+            ${{ secrets.ZZBASE_TOKEN }}
 
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
@@ -215,7 +217,9 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: |
+            ${{ secrets.CRASH2COV_TOKEN }}
+            ${{ secrets.ZZBASE_TOKEN }}
 
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
@@ -332,7 +336,9 @@ jobs:
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ secrets.ZZBASE_TOKEN }}
+          ssh-private-key: |
+            ${{ secrets.CRASH2COV_TOKEN }}
+            ${{ secrets.ZZBASE_TOKEN }}
 
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
