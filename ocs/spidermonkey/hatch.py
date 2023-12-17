@@ -122,7 +122,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     :param shell: Potential compiled shell object
     """
-    SM_HATCH_LOG.info(f"Compiling build: {shell.build_opts.build_options_str}")
+    SM_HATCH_LOG.info("Compiling build: %s", shell.build_opts.build_options_str)
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
