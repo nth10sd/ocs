@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import json
 from logging import INFO as INFO_LOG_LEVEL
-import os
 from pathlib import Path
-import platform
 import shlex
 import shutil
 import subprocess
@@ -14,16 +12,11 @@ import sys
 import traceback
 from typing import IO
 
-import distro
-from packaging.version import parse
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.js_shells.spidermonkey.hatch import SMShell
 from zzbase.js_shells.spidermonkey.hatch import SMShellError
 from zzbase.util import constants as zzconsts
-from zzbase.util.constants import FILE_BINARY
-from zzbase.util.constants import HG_BINARY
 from zzbase.util.constants import HostPlatform as Hp
-from zzbase.util.fs_helpers import bash_piping as piping
 from zzbase.util.fs_helpers import env_with_path
 from zzbase.util.fs_helpers import get_lock_dir_path
 from zzbase.util.fs_helpers import handle_rm_readonly_files
@@ -31,16 +24,16 @@ from zzbase.util.logging import get_logger
 from zzbase.util.utils import LockDir
 from zzbase.util.utils import autoconf_run
 from zzbase.vcs import git_helpers
+from zzbase.vcs import hg_helpers
 
 from ocs.spidermonkey.parsing import parse_args
-from ocs.util import constants
-from ocs.util import hg_helpers
+from ocs.util import hg_helpers as ocs_hg_helpers
 from ocs.util import misc_progs
 
-SM_HATCH_LOG = get_logger(
+OCS_SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
 )
-SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
+OCS_SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
 
 class OldSMShellError(SMShellError):
@@ -69,7 +62,7 @@ class OldSMShell(SMShell):
         try:
             return cls.run(args)
         except OldSMShellError:
-            SM_HATCH_LOG.exception("The run function encountered an error")
+            OCS_SM_HATCH_LOG.exception("The run function encountered an error")
             raise
 
     @staticmethod
@@ -81,9 +74,10 @@ class OldSMShell(SMShell):
         :return: 0, to denote a successful compile
         """
         options = parse_args(argv)
-        options.build_opts = build_options.parse_shell_opts(
+        parse_shell_opts_list: list[str] = (
             options.build_opts.split() if options.build_opts else []
         )
+        options.build_opts = build_options.parse_shell_opts(parse_shell_opts_list)
 
         with LockDir(
             get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
@@ -91,7 +85,7 @@ class OldSMShell(SMShell):
             if options.revision:
                 shell = OldSMShell(options.build_opts, hg_hash=options.revision)
             elif (options.build_opts.repo_dir / ".hg" / "hgrc").is_file():
-                local_orig_hg_hash = hg_helpers.get_repo_hash_and_id(
+                local_orig_hg_hash = ocs_hg_helpers.get_repo_hash_and_id(
                     options.build_opts.repo_dir,
                 )[0]
                 shell = OldSMShell(options.build_opts, hg_hash=local_orig_hg_hash)
@@ -109,7 +103,7 @@ class OldSMShell(SMShell):
             obtain_shell(shell, update_to_rev=options.revision)
 
             shell_cache_abs_dir = shell.shell_cache_js_bin_path.parents[-3]
-            SM_HATCH_LOG.info(  # Output with "~" instead of the full absolute dir
+            OCS_SM_HATCH_LOG.info(  # Output with "~" instead of the full absolute dir
                 "Desired shell is at:\n\n~/%s",
                 shell.shell_cache_js_bin_path.relative_to(shell_cache_abs_dir),
             )
@@ -121,8 +115,9 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     """Configure, compile and copy a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
+    :raise CalledProcessError: If the shell failed to compile
     """
-    SM_HATCH_LOG.info("Compiling build: %s", shell.build_opts.build_options_str)
+    OCS_SM_HATCH_LOG.info("Compiling build: %s", shell.build_opts.build_options_str)
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
@@ -151,278 +146,19 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     ):
         autoconf_run(shell.build_opts.repo_dir / "js" / "src")
 
-    configure_binary(shell)
-    sm_compile(shell)
-    verify_binary(shell)
-
-    compile_log = (
-        shell.shell_cache_dir / f"{shell.shell_name_without_ext}.fuzzmanagerconf"
-    )
-    if not compile_log.is_file():
-        env_dump(shell, compile_log)
-
-
-def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-complex
-    shell: SMShell,
-) -> None:
-    """Configure a binary according to required parameters.
-
-    :param shell: Potential compiled shell object
-    :raise FileNotFoundError: If the default .mozbuild folder not found, especially
-                              if `./mach bootstrap` was not run
-    :raise FileNotFoundError: If clang.exe not found in default .mozbuild folder
-    :raise FileNotFoundError: If llvm-config.exe not found in default .mozbuild folder
-    :raise FileNotFoundError: If MOZ_CLANG_RT_ASAN_LIB_PATH env var file not found
-    :raise FileNotFoundError: If libclang path is not a directory
-    :raise FileNotFoundError: If js_objdir is not a directory
-    :raise CalledProcessError: If the shell failed to compile
-    """
-    # pylint: disable=too-many-branches,too-many-statements
-    cfg_cmds: list[str] = []
-    cfg_env = dict(os.environ.copy())
-    orig_cfg_env = dict(os.environ.copy())
-    if Hp.IS_LINUX | Hp.IS_MAC:
-        cfg_env["AR"] = "ar"
-    if Hp.IS_LINUX and shell.build_opts.enable_32bit:
-        # 32-bit shell on 32/64-bit x86 Linux
-        cfg_env["PKG_CONFIG_PATH"] = "/usr/lib/x86_64-linux-gnu/pkgconfig"
-        # apt-get `g++-multilib lib32z1-dev libc6-dev-i386` first,
-        # ^^ if on 64-bit Linux. (no matter Clang or GCC)
-        # Also run this: `rustup target add i686-unknown-linux-gnu`
-        cfg_env["CC"] = f"clang {constants.SSE2_FLAGS}"
-        cfg_env["CXX"] = f"clang++ {constants.SSE2_FLAGS}"
-        cfg_cmds.extend(
-            (
-                "sh",
-                str(shell.js_cfg_path.as_posix()),
-                "--host=x86_64-pc-linux-gnu",
-                "--target=i686-pc-linux",
-            )
-        )
-        if shell.build_opts.enable_simulator_arm32:
-            cfg_cmds.append("--enable-simulator=arm")
-    # 64-bit shell on macOS 10.13 El Capitan and greater
-    elif (  # pylint: disable=confusing-consecutive-elif
-        Hp.IS_MAC
-        and parse(platform.mac_ver()[0]) >= parse("10.13")
-        and not shell.build_opts.enable_32bit
-    ):
-        # Remove entry pointing to the venv python on macOS to play nice w/SM configure
-        orig_mac_path_env_var_full = os.getenv("PATH", "").split(":", maxsplit=1)
-        if (Path(orig_mac_path_env_var_full[0]) / "python").is_file():
-            # Only remove first entry of PATH if it is a venv, i.e. it contains a python
-            cfg_env["PATH"] = orig_mac_path_env_var_full[1]
-        # Add the AUTOCONF env variable if repository revision is before:
-        #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
-        #   gecko-dev 511135:b4a2cfe25078c17e2063a6866a3d2caf9d61651f, Fx106
-        # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-        if shutil.which("brew") and (
-            (
-                (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-                and hg_helpers.exists_and_is_ancestor(
-                    shell.build_opts.repo_dir,
-                    shell.hg_hash,
-                    "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
-                )
-            )
-            or (
-                not (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-                and git_helpers.exists_and_is_ancestor(
-                    shell.build_opts.repo_dir,
-                    shell.git_hash,
-                    "b4a2cfe25078c17e2063a6866a3d2caf9d61651f",
-                )
-            )
-        ):
-            cfg_env["AUTOCONF"] = "/usr/local/Cellar/autoconf213/2.13/bin/autoconf213"
-        cfg_cmds.extend(
-            (
-                "sh",
-                str(shell.js_cfg_path.as_posix()),
-            )
-        )
-        if shell.build_opts.enable_simulator_arm64:
-            cfg_cmds.append("--enable-simulator=arm64")
-
-    elif Hp.IS_WIN_MB:  # pylint: disable=confusing-consecutive-elif
-        win_mozbuild_clang_bin_path = constants.WIN_MOZBUILD_CLANG_PATH / "bin"
-        if not win_mozbuild_clang_bin_path.is_dir():
-            raise FileNotFoundError('Please first run "./mach bootstrap".')
-        if not (win_mozbuild_clang_bin_path / "clang.exe").is_file():
-            raise FileNotFoundError(
-                f"clang.exe not found at: {win_mozbuild_clang_bin_path}",
-            )
-        if not (win_mozbuild_clang_bin_path / "llvm-config.exe").is_file():
-            raise FileNotFoundError(
-                f"llvm-config.exe not found at: {win_mozbuild_clang_bin_path}",
-            )
-        if shell.build_opts.enable_address_sanitizer:
-            cfg_env["LIBS"] = (
-                "clang_rt.asan_dynamic-x86_64.lib "
-                "clang_rt.asan_dynamic_runtime_thunk-x86_64.lib"
-            )
-            clang_lib_path = (
-                constants.WIN_MOZBUILD_CLANG_PATH
-                / "lib"
-                / "clang"
-                / constants.CLANG_VER
-                / "lib"
-                / "windows"
-            )
-            cfg_env["CLANG_LIB_DIR"] = clang_lib_path.as_posix()
-            cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"] = (
-                clang_lib_path / "clang_rt.asan_dynamic-x86_64.dll"
-            ).as_posix()
-            if not Path(cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]).is_file():
-                raise FileNotFoundError(
-                    f'{cfg_env["MOZ_CLANG_RT_ASAN_LIB_PATH"]} is not a file',
-                )
-            cfg_env["LIB"] = cfg_env.get("LIB", "") + cfg_env["CLANG_LIB_DIR"]
-        cfg_cmds.extend(
-            (
-                "sh",
-                str(shell.js_cfg_path.as_posix()),
-            )
-        )
-        # Cross-compile ARM64 binary using x86_64 Python and toolchain on ARM64 host
-        if Hp.IS_WIN_MB_AARCH64:
-            cfg_cmds.append("--target=aarch64")
-        elif shell.build_opts.enable_32bit:
-            cfg_cmds.extend(
-                (
-                    "--host=x86_64-pc-mingw32",
-                    "--target=i686-pc-mingw32",
-                )
-            )
-            if shell.build_opts.enable_simulator_arm32:
-                cfg_cmds.append("--enable-simulator=arm")
-        else:
-            cfg_cmds.extend(
-                (
-                    "--host=x86_64-pc-mingw32",
-                    "--target=x86_64-pc-mingw32",
-                )
-            )
-            if shell.build_opts.enable_simulator_arm64:
-                cfg_cmds.append("--enable-simulator=arm64")
-    else:
-        cfg_cmds.extend(
-            (
-                "sh",
-                str(shell.js_cfg_path.as_posix()),
-            )
-        )
-        if shell.build_opts.enable_simulator_arm64:
-            cfg_cmds.append("--enable-simulator=arm64")
-
-    if shell.build_opts.enable_debug:
-        cfg_cmds.append("--enable-debug")
-    elif shell.build_opts.disable_debug:
-        cfg_cmds.append("--disable-debug")
-
-    if shell.build_opts.enable_optimize:
-        cfg_cmds.append(
-            f"--enable-optimize{'=-O1' if shell.build_opts.enable_valgrind else ''}",
-        )
-    elif shell.build_opts.disable_optimize:
-        cfg_cmds.append("--disable-optimize")
-    if shell.build_opts.disable_profiling:
-        cfg_cmds.append("--disable-profiling")
-
-    if shell.build_opts.enable_oom_breakpoint:  # Extra OOM assertion debugging help
-        cfg_cmds.append("--enable-oom-breakpoint")
-    if shell.build_opts.without_intl_api:  # Speeds up compilation but is non-default
-        cfg_cmds.append("--without-intl-api")
-
-    if shell.build_opts.enable_address_sanitizer:
-        cfg_cmds.extend(
-            ("--enable-address-sanitizer", "--enable-fuzzing", "--disable-jemalloc")
-        )
-        if Hp.IS_LINUX:
-            cfg_cmds.extend(
-                (
-                    "--disable-stdcxx-compat",
-                    # macOS & Win ASan builds fail to compile using --without-sysroot
-                    "--without-sysroot",  # Else ASan builds have corrupt stack
-                )
-            )
-    if shell.build_opts.enable_valgrind:
-        cfg_cmds.extend(
-            (
-                "--enable-valgrind",
-                "--disable-jemalloc",
-            )
-        )
-
-    # We add the following flags by default.
-    if Hp.IS_LINUX | Hp.IS_MAC:
-        cfg_cmds.append("--with-ccache")
-    # Building with NSPR is standard on upstream. However, local 32-bit builds need NSPR
-    # binaries which are available, but then the LD_LIBRARY_PATH variable needs to be
-    # set, so this is probably not worth the effort. Also, ctypes has 32-bit issues.
-    # NSPR (and ctypes, which seems to need NSPR) does not seem to support aarch64 Linux
-    if not (Hp.IS_LINUX_AARCH64 or shell.build_opts.enable_32bit):
-        cfg_cmds.extend(
-            (
-                "--enable-nspr-build",
-                "--enable-ctypes",
-            )
-        )
-    cfg_cmds.extend(
-        (
-            # gets debug symbols on opt shells
-            "--enable-debug-symbols",
-            "--enable-gczeal",
-            # Look at js/src/devtools/automation/variants/fuzzing as of 2022-10-09:
-            # m-c rev c4bdea458a08b975ffd70faed4a2f6fbe1e563bc
-            "--enable-rust-simd",
-            "--disable-tests",
-        )
-    )
-
-    if Hp.IS_LINUX and distro.id() == "gentoo":
-        path_to_libclang = Path(
-            "/usr/lib/llvm/"
-            f'{piping(["clang", "--version"], ["cut", "-d", "/", "-f5"]).split()[-1]}'
-            "/lib64"
-        )
-        if not path_to_libclang.is_dir():
-            raise FileNotFoundError(f"{path_to_libclang} is not a directory")
-        cfg_cmds.append(f"--with-libclang-path={path_to_libclang.as_posix()}")
-
-    # Dump whatever we added to the environment
-    env_vars: list[str] = []
-    for env_var in set(cfg_env.keys()) - set(orig_cfg_env.keys()):
-        str_to_be_appended = (
-            f'{env_var}="{cfg_env[env_var]}"'
-            if " " in cfg_env[env_var]
-            else f"{env_var}={cfg_env[env_var]}"
-        )
-        env_vars.append(str_to_be_appended)
-
-    SM_HATCH_LOG.debug(
-        "Command to be run is: %s %s",
-        shlex.join(env_vars),
-        shlex.join(cfg_cmds),
-    )
-
-    if not shell.js_objdir.is_dir():
-        raise FileNotFoundError(f"{shell.js_objdir} is not a directory")
-
+    shell.configure()
     try:
         subprocess.run(
-            cfg_cmds,
+            shell.cfg_cmd_excl_env,
             check=True,
             cwd=shell.js_objdir,
-            env=cfg_env,
+            env=shell.env_full,
             stderr=subprocess.STDOUT,
             stdout=subprocess.PIPE,
         )
     except subprocess.CalledProcessError as ex:
         with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
-            "a",
-            encoding="utf-8",
-            errors="replace",
+            "a", encoding="utf-8", errors="replace"
         ) as f:
             repo_name = (
                 shell.hg_repo_name
@@ -441,78 +177,9 @@ def configure_binary(  # noqa: C901, PLR0912, PLR0915  # pylint: disable=too-com
             f.write(ex.stdout.decode("utf-8", errors="replace"))
         raise
 
-    shell.env_added = env_vars
-    shell.env_full = cfg_env
-    shell.cfg_cmd_excl_env = cfg_cmds
-
-
-def env_dump(shell: SMShell, log_: Path) -> None:
-    """Dump environment to a .fuzzmanagerconf file.
-
-    :param shell: A compiled shell
-    :param log_: Log file location
-    """
-    # Platform and OS detection for the spec, part of which is in:
-    #   https://wiki.mozilla.org/Security/CrashSignatures
-    if shell.build_opts.enable_32bit:
-        fmconf_platform = "x86"  # 32-bit Intel-only, we do not support 32-bit ARM hosts
-    elif Hp.IS_WIN_MB_AARCH64:
-        fmconf_platform = "aarch64"
-    elif Hp.IS_WIN_MB_X86_64:
-        fmconf_platform = "x86_64"
-    else:
-        fmconf_platform = platform.machine()
-
-    fmconf_os = ""
-    if Hp.IS_LINUX:
-        fmconf_os = "linux"
-    elif Hp.IS_MAC:
-        fmconf_os = "macosx"
-    elif Hp.IS_WIN_MB:
-        fmconf_os = "windows"
-
-    with log_.open("a", encoding="utf-8", errors="replace") as f:
-        f.write("# Information about shell:\n# \n")
-
-        f.write("# Create another shell in shell-cache like this one:\n")
-        f.write(
-            "# python3 -u -m ocs "
-            f'-b="{shell.build_opts.build_options_str}" -r {shell.hg_hash}\n# \n',
-        )
-
-        f.write("# Full environment is:\n")
-        f.write(f"# {shell.env_full}\n# \n")
-
-        f.write("# Full configuration command with needed environment variables is:\n")
-        f.write(
-            f"# {shlex.join(shell.env_added)} "
-            f"{shlex.join(shell.cfg_cmd_excl_env)}\n# \n",
-        )
-
-        # .fuzzmanagerconf details
-        f.write("\n")
-        f.write("[Main]\n")
-        f.write(f"platform = {fmconf_platform}\n")
-        repo_name = (
-            shell.hg_repo_name
-            if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-            else shell.git_repo_name
-        )
-        f.write(f"product = {repo_name}\n")
-        hash_ = (
-            shell.hg_hash
-            if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-            else shell.git_hash
-        )
-        f.write(f"product_version = {hash_}\n")
-        f.write(f"os = {fmconf_os}\n")
-
-        f.write("\n")
-        f.write("[Metadata]\n")
-        f.write(f"buildFlags = {shell.build_opts.build_options_str}\n")
-        f.write(f'majorVersion = {shell.version.split(".")[0]}\n')
-        f.write(f"pathPrefix = {shell.build_opts.repo_dir}/\n")
-        f.write(f"version = {shell.version}\n")
+    sm_compile(shell)
+    verify_binary(shell)
+    shell.env_dump_and_cleanup()
 
 
 def sm_compile(shell: SMShell) -> Path:
@@ -547,7 +214,7 @@ def sm_compile(shell: SMShell) -> Path:
             or "error: unable to execute command: Killed"  # GCC running out of memory
             in out
         ):  # Clang running out of memory
-            SM_HATCH_LOG.info(
+            OCS_SM_HATCH_LOG.info(
                 "Trying once more due to the compiler running out of memory..."
             )
             out = subprocess.run(
@@ -560,7 +227,7 @@ def sm_compile(shell: SMShell) -> Path:
             ).stdout.decode("utf-8", errors="replace")
         # `make` can return a non-zero error, but later a shell still gets compiled.
         if shell.shell_compiled_path.is_file():
-            SM_HATCH_LOG.info(
+            OCS_SM_HATCH_LOG.info(
                 "A shell was compiled even though there was a non-zero exit code. "
                 "Continuing...",
             )
@@ -573,10 +240,10 @@ def sm_compile(shell: SMShell) -> Path:
         if Hp.IS_WIN_MB and shell.build_opts.enable_address_sanitizer:
             shutil.copy2(
                 str(
-                    constants.WIN_MOZBUILD_CLANG_PATH
+                    zzconsts.CLANG_BINARY.parents[1]
                     / "lib"
                     / "clang"
-                    / constants.CLANG_VER
+                    / zzconsts.CLANG_VER
                     / "lib"
                     / "windows"
                     / "clang_rt.asan_dynamic-x86_64.dll",
@@ -590,7 +257,7 @@ def sm_compile(shell: SMShell) -> Path:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
                     shell.version = line.split(": ")[1].rstrip()
     else:
-        SM_HATCH_LOG.warning(
+        OCS_SM_HATCH_LOG.warning(
             "%s did not result in a js shell:", zzconsts.MAKE_BINARY_PATH
         )
         with (shell.shell_cache_dir / f"{shell.shell_name_without_ext}.busted").open(
@@ -643,7 +310,7 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     cached_no_shell = shell.shell_cache_js_bin_path.with_suffix(".busted")
 
     if shell.shell_cache_js_bin_path.is_file():
-        SM_HATCH_LOG.info("Found cached shell...")
+        OCS_SM_HATCH_LOG.info("Found cached shell...")
         # Assuming that since binary is present, others (e.g. symbols) are also present
         if Hp.IS_WIN_MB:
             misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
@@ -652,20 +319,20 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     if cached_no_shell.is_file():
         raise OSError("Found a cached shell that failed compilation...")
     if shell.shell_cache_dir.is_dir():
-        SM_HATCH_LOG.info("Found a cache dir without a successful/failed shell...")
+        OCS_SM_HATCH_LOG.info("Found a cache dir without a successful/failed shell...")
         shutil.rmtree(shell.shell_cache_dir, onerror=handle_rm_readonly_files)
 
     shell.shell_cache_dir.mkdir()
 
     if update_to_rev:
-        SM_HATCH_LOG.info(
+        OCS_SM_HATCH_LOG.info(
             "Updating to rev %s in the %s repository...",
             update_to_rev,
             shell.build_opts.repo_dir,
         )
         subprocess.run(
             [
-                HG_BINARY,
+                zzconsts.HG_BINARY,
                 "-R",
                 str(shell.build_opts.repo_dir),
                 "update",
@@ -696,7 +363,9 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
             f.write(f"\nCaught exception {ex!r} ({ex})\n")
             f.write("Backtrace:\n")
             f.write(f"{traceback.format_exc()}\n")
-        SM_HATCH_LOG.exception("Compilation failure details in: %s", cached_no_shell)
+        OCS_SM_HATCH_LOG.exception(
+            "Compilation failure details in: %s", cached_no_shell
+        )
         raise
 
     if Hp.IS_WIN_MB:
@@ -714,7 +383,7 @@ def arch_of_binary(binary: Path) -> str:
     """
     # We can possibly use the python-magic-bin PyPI library in the future
     unsplit_file_type = subprocess.run(
-        [FILE_BINARY, str(binary)],
+        [zzconsts.FILE_BINARY, str(binary)],
         check=True,
         cwd=Path.cwd(),
         stdout=subprocess.PIPE,
@@ -759,9 +428,9 @@ def test_binary(
     :return: Tuple comprising the stdout of the run command and its return code
     """
     if use_vg:
-        SM_HATCH_LOG.info("Using Valgrind to test...")
+        OCS_SM_HATCH_LOG.info("Using Valgrind to test...")
     test_cmd = [str(shell_path), *args]
-    SM_HATCH_LOG.debug("The testing command is: %s", shlex.join(test_cmd))
+    OCS_SM_HATCH_LOG.debug("The testing command is: %s", shlex.join(test_cmd))
 
     test_env = env_with_path(str(shell_path.parent))
     asan_options = f"exitcode={zzconsts.ASAN_ERROR_EXIT_CODE}"
@@ -794,7 +463,7 @@ def test_binary(
         test_cmd_result.stdout.decode("utf-8", errors="replace"),
         test_cmd_result.returncode,
     )
-    SM_HATCH_LOG.debug("The exit code is: %s", return_code)
+    OCS_SM_HATCH_LOG.debug("The exit code is: %s", return_code)
     return out, return_code
 
 

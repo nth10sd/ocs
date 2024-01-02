@@ -15,43 +15,6 @@ HG_HELPERS_LOG = get_logger(
 HG_HELPERS_LOG.setLevel(INFO_LOG_LEVEL)
 
 
-def exists_and_is_ancestor(
-    repo_dir: Path,
-    rev_a: str,
-    rev_b: str,
-) -> bool:
-    """Return true iff `rev_a` exists and is an ancestor of `rev_b`.
-
-    :param repo_dir: Path to the repository
-    :param rev_a: Repository ID hash that should be an ancestor of `rev_b`
-    :param rev_b: Repository ID hash that should be a descendent of `rev_a`
-    :return: True if the `rev_a` exists and is an ancestor of `rev_b`
-    """
-    # Note that if `rev_a` is the same as `rev_b`, it will return True
-    # Takes advantage of "id(badhash)" being the empty set,
-    # in contrast to just "badhash", which is an error
-    out = subprocess.run(
-        [
-            HG_BINARY,
-            "-R",
-            str(repo_dir),
-            "log",
-            "-r",
-            f"{rev_a} and ancestor({rev_a},{rev_b})",
-            "--template={node|short}",
-        ],
-        check=False,
-        cwd=Path.cwd(),
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE,
-        timeout=999,
-    ).stdout.decode("utf-8", errors="replace")
-    return (
-        out != ""  # pylint: disable=compare-to-empty-string
-        and out.find("abort: unknown revision") < 0
-    )
-
-
 def get_repo_hash_and_id(
     repo_dir: Path,
     repo_rev: str = "parents() and default",
