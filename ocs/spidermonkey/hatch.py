@@ -482,7 +482,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> bool:
                 use_vg=False,
                 stderr=subprocess.DEVNULL,
             )[0]
-            .rstrip()
+            .split()[-1]
             .lower(),
         )
     )
