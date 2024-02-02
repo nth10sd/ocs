@@ -360,15 +360,15 @@ jobs:
           python -c 'exec("from pathlib import Path;import shutil;import subprocess;\ntry: import tomllib;\nexcept ImportError: import tomli as tomllib;\nwith Path(\"pyproject.toml\").open(mode=\"rb\") as fp: c = tomllib.load(fp); n = c[\"project\"][\"name\"];\nif not (v := shutil.which(\"vulture\")): raise RuntimeError(\"Please first install vulture\");\nfor z in sorted({x.split(\"  # \",maxsplit=1)[0] for x in sorted(subprocess.run([y for y in [v,\".\",\".vulture_allowlist\" if Path(\".vulture_allowlist\").is_file() else \"\"] if y],capture_output=True,text=True).stdout.rstrip().splitlines()) if not x.startswith(\"# \")}): print(z)")'
 
       - name: Make sure LLVM is installed and look for available LLVM versions
-        run: brew install llvm || true ; brew link --overwrite python@3.11 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
+        run: brew install llvm || true ; brew link --overwrite python@3.11 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
       - name: Set macOS environment variables
         run: |
-          echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
-          echo "LLVM_SYMBOLIZER=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
+          echo "LLVM_CONFIG=/opt/homebrew/Cellar/llvm/$(pushd /opt/homebrew/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
+          echo "LLVM_SYMBOLIZER=/opt/homebrew/Cellar/llvm/$(pushd /opt/homebrew/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
       - name: Set macOS llvm-config and llvm-symbolizer symlinks
         run: |
-          sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
-          sudo ln -s /usr/local/Cellar/llvm/"$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
+          sudo ln -s /opt/homebrew/Cellar/llvm/"$(pushd /opt/homebrew/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-config /usr/local/bin/llvm-config ;
+          sudo ln -s /opt/homebrew/Cellar/llvm/"$(pushd /opt/homebrew/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)"/bin/llvm-symbolizer /usr/local/bin/llvm-symbolizer ;
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
