@@ -56,12 +56,8 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
+      - name: Removing subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
-        run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -229,12 +225,8 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
+      - name: Removing subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
-        run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -348,12 +340,8 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (POSIX-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && (startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS'))
+      - name: Removing subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
-      - name: Removing subdomain to make requirements.txt setup work in CI (Windows-only)
-        if: steps.pip-cache.outputs.cache-hit != 'true' && startsWith(runner.os, 'Windows')
-        run: python -c 'import fileinput; [print(line.partition(\"git@\")[0] + \"git@github.com/\" + line.partition(\".github.com/\")[-1] if (\".github.com/\" in line and not line.startswith(\"#\")) else line, end=\"\") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
