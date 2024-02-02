@@ -244,6 +244,12 @@ exclude = [
     "node_modules",
     "venv",
 ]
+include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
+src = ["python"]
+target-version = "py310"
+unsafe-fixes = true
+
+[tool.ruff.lint]
 ignore = [
     "ANN101",  # The type of Self should be inferred by type checkers automatically
     "COM812",  # Seems to add trailing comma even when arguments already fit on one line
@@ -256,14 +262,12 @@ ignore = [
     "S603",    # Allow using subprocess methods w/o shell=True, bandit severity is low
     "TRY003",  # Allow specifying long messages outside the exception class
 ]
-include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
 select = ["ALL"]
-target-version = "py310"
-unsafe-fixes = true
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 force-single-line = true
 force-sort-within-sections = true
+known-local-folder = ["ocs"]
 
 [tool.vulture]
 exclude = ["build/", "docs/source/conf_correct.py"]
