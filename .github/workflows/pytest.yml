@@ -69,7 +69,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Run with ruff
-        run: python -u -m ruff .
+        run: python -u -m ruff check .
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
         run: python -u -m refurb .
@@ -238,7 +238,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Run with ruff
-        run: python -u -m ruff .
+        run: python -u -m ruff check .
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: |
@@ -353,7 +353,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Run with ruff
-        run: python -u -m ruff .
+        run: python -u -m ruff check .
       - name: Run with vulture to find dead code
         if: startsWith(runner.os, 'Linux') || startsWith(runner.os, 'macOS')
         run: |
@@ -468,7 +468,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Run with ruff
-        run: python -u -m ruff .
+        run: python -u -m ruff check .
 
       - name: Install prerequisites
         run: |
