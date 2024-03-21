@@ -433,7 +433,11 @@ def test_binary(
     OCS_SM_HATCH_LOG.debug("The testing command is: %s", shlex.join(test_cmd))
 
     test_env = env_with_path(str(shell_path.parent))
-    asan_options = f"abort_on_error=1,exitcode={zzconsts.ASAN_ERROR_EXIT_CODE}"
+    asan_options = (
+        "abort_on_error=1,"
+        "allocator_may_return_null=1,"
+        f"exitcode={zzconsts.ASAN_ERROR_EXIT_CODE},"
+    )
     # Turn on LSan, Linux-only.
     # macOS non-support:
     # https://github.com/google/sanitizers/issues/1026
