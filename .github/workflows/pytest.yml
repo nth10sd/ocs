@@ -170,7 +170,7 @@ jobs:
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
-        uses: nth10sd/upload-artifact-as-is@v0
+        uses: nth10sd/upload-artifact-as-is@v1
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
@@ -285,7 +285,7 @@ jobs:
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
-        uses: nth10sd/upload-artifact-as-is@v0
+        uses: nth10sd/upload-artifact-as-is@v1
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
@@ -400,7 +400,7 @@ jobs:
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
-        uses: nth10sd/upload-artifact-as-is@v0
+        uses: nth10sd/upload-artifact-as-is@v1
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
@@ -546,7 +546,7 @@ jobs:
 
       # Removal of m-c, and creation of tarball and SHA-256 checksum happens in autostart.sh
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
-        uses: nth10sd/upload-artifact-as-is@v0
+        uses: nth10sd/upload-artifact-as-is@v1
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
