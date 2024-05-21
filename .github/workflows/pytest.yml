@@ -174,12 +174,12 @@ jobs:
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v4
         continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
 
   macOS-x86_64: # Remove when the Intel runners on CI no longer exist
@@ -289,12 +289,12 @@ jobs:
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v4
         continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
 
   macOS-arm64:
@@ -404,12 +404,12 @@ jobs:
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v4
         continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
 
   Windows:
@@ -550,10 +550,10 @@ jobs:
         with:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.5
+        uses: codecov/codecov-action@v4
         continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
-          # token: ${{ secrets.CODECOV_TOKEN }}
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
