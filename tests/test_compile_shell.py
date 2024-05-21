@@ -48,7 +48,7 @@ def test_shell_compile() -> Path:
                 / "data"
                 / "pypi_library_patches"
                 / "coverage"
-                / "64130ee5-patch-for-m-c-to-work.diff"
+                / "patch-for-m-c-to-work.diff"
             ),
             1,
         )
