@@ -175,6 +175,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
@@ -289,6 +290,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
@@ -403,6 +405,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
@@ -548,6 +551,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        continue-on-error: true # codecov limits number of uploads allowed for each commit
         with:
           env_vars: OS,PYTHON
           fail_ci_if_error: true # optional (default = false)
