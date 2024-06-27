@@ -41,11 +41,11 @@ dynamic = ["version", "readme"]
 [project.optional-dependencies]
 test = [
     "bashate ~= 2.1.1",
-    'coverage ~= 7.5.3; python_version >= "3.11"',
+    'coverage ~= 7.5.4; python_version >= "3.11"',
     'coverage[toml] ~= 7.5.3; python_version <= "3.10"',
-    "mypy ~= 1.10.0",
-    "pylint ~= 3.2.3",
-    'pyright==1.1.366; platform_system == "Linux"',
+    "mypy ~= 1.10.1",
+    "pylint ~= 3.2.4",
+    'pyright==1.1.369; platform_system == "Linux"',
     "pytest ~= 8.2.2",
     "pytest-cov ~= 5.0.0",
     "pytest-dependency ~= 0.6.0",
@@ -56,7 +56,7 @@ test = [
     "pytest-ruff ~= 0.3.2",
     "pytest-xdist ~= 3.6.1",
     "refurb ~= 2.0.0",
-    "ruff ~= 0.4.8",
+    "ruff ~= 0.5.0",
     "sphinx ~= 7.3.7",
     "vulture ~= 2.11",
 ]
