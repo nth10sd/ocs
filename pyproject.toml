@@ -34,7 +34,6 @@ dependencies = [
     'types-toml==0.10.8.7; python_version <= "3.10"',
     "typing-extensions ~= 4.12.2",                       # Directly import Self from typing on Python 3.11+
     "wheel >= 0.41.2",
-    "zzbase ~= 0.11.0",
 ]
 dynamic = ["version", "readme"]
 
