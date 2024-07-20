@@ -11,7 +11,10 @@ import subprocess
 import sys
 import traceback
 from typing import IO
+from typing import TYPE_CHECKING
 
+from overrides import EnforceOverrides
+from overrides import override
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.js_shells.spidermonkey.hatch import SMShell
 from zzbase.js_shells.spidermonkey.hatch import SMShellError
@@ -30,17 +33,20 @@ from ocs.spidermonkey.parsing import parse_args
 from ocs.util import hg_helpers as ocs_hg_helpers
 from ocs.util import misc_progs
 
+if TYPE_CHECKING:
+    from typing_extensions import Self  # Directly import from typing on Python 3.11+
+
 OCS_SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
 )
 OCS_SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
 
-class OldSMShellError(SMShellError):
+class OldSMShellError(SMShellError, EnforceOverrides):
     """Error class unique to OldSMShell objects."""
 
 
-class OldSMShell(SMShell):
+class OldSMShell(SMShell, EnforceOverrides):
     """A OldSMShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py
@@ -48,8 +54,10 @@ class OldSMShell(SMShell):
     :param hg_hash: Mercurial (hg) changeset hash
     """
 
+    __slots__ = ()
+
     @classmethod
-    def main(cls: type[SMShell], args: list[str] | None = None) -> int:
+    def main(cls: type[Self], args: list[str] | None = None) -> int:
         """OldSMShell class main method.
 
         :param args: Additional parameters
@@ -66,6 +74,7 @@ class OldSMShell(SMShell):
             raise
 
     @staticmethod
+    @override
     def run(argv: list[str]) -> int:
         """Build a shell and place it in the autobisectjs cache.
 

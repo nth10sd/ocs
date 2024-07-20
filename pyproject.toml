@@ -32,7 +32,7 @@ dependencies = [
     "setuptools-scm[toml] >= 7.1.0",
     "types-setuptools==68.2.0.0",                       # Bump types-* only with mypy
     'types-toml==0.10.8.7; python_version <= "3.10"',
-    "typing-extensions ~= 4.12.2",                       # Directly import Self from typing on Python 3.11+
+    "typing-extensions ~= 4.12.2",                      # Directly import Self from typing on Python 3.11+
     "wheel >= 0.41.2",
 ]
 dynamic = ["version", "readme"]
@@ -43,6 +43,7 @@ test = [
     'coverage ~= 7.6.0; python_version >= "3.11"',
     'coverage[toml] ~= 7.6.0; python_version <= "3.10"',
     "mypy ~= 1.10.1",
+    "overrides ~= 7.7.0",
     "pylint ~= 3.2.5",
     'pyright==1.1.372; platform_system == "Linux"',
     "pytest ~= 8.2.2",
