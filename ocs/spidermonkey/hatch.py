@@ -14,7 +14,6 @@ from typing import IO
 from typing import TYPE_CHECKING
 
 from overrides import EnforceOverrides
-from overrides import override
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.js_shells.spidermonkey.hatch import SMShell
 from zzbase.js_shells.spidermonkey.hatch import SMShellError
@@ -74,7 +73,6 @@ class OldSMShell(SMShell, EnforceOverrides):
             raise
 
     @staticmethod
-    @override
     def run(argv: list[str]) -> int:
         """Build a shell and place it in the autobisectjs cache.
 
