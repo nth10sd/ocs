@@ -45,7 +45,7 @@ class OldSMShellError(SMShellError, EnforceOverrides):
     """Error class unique to OldSMShell objects."""
 
 
-class OldSMShell(SMShell, EnforceOverrides):
+class OldSMShell(SMShell):
     """A OldSMShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py
