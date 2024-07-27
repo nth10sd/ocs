@@ -210,6 +210,7 @@ addopts = [
     "--durations=7",
     "--instafail",
     "--no-cov-on-fail",
+    "--order-dependencies",
     "--pylint-error-types=CRWEFI",
     "--strict-markers",
 ]
