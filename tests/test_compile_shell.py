@@ -23,7 +23,7 @@ from ocs.util import hg_helpers
 SHELL_CACHE = Path.home() / "shell-cache"
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 @cache
 def test_shell_compile() -> Path:
     """Test compilation of shells depending on the specified environment variable.
