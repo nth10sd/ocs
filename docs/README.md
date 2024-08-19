@@ -7,5 +7,5 @@ Run the following on a clean repository to generate Sphinx HTML documentation in
 
 To remove generated documentation, run:
 ```
-rm -rf source/conf.py source/*.rst build/ source/_static/ source/_templates/
+rmdir source/_static && rm -rf source/conf.py source/*.rst build/ source/_static/ source/_templates/ ;
 ```

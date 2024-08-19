@@ -58,7 +58,7 @@ test = [
     "pytest-xdist ~= 3.6.1",
     "refurb ~= 2.0.0",
     "ruff ~= 0.5.5",
-    "sphinx ~= 7.3.7",
+    "sphinx ~= 8.0.2",
     "vulture ~= 2.11",
 ]
 
