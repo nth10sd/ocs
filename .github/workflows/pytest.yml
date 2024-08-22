@@ -56,8 +56,15 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Remove subdomain to make requirements.txt setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+      - name: Remove " @ " lines to make pyproject.toml setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print("" if (" @ " in line and line.rstrip().endswith(",")) else line, end="") for line in fileinput.input(inplace=True)]' pyproject.toml ;
+      - name: Print differences in git repository needed to make CI work
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -67,6 +74,9 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
+      - name: Revert pyproject.toml if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -225,8 +235,15 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Remove subdomain to make requirements.txt setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+      - name: Remove " @ " lines to make pyproject.toml setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print("" if (" @ " in line and line.rstrip().endswith(",")) else line, end="") for line in fileinput.input(inplace=True)]' pyproject.toml ;
+      - name: Print differences in git repository needed to make CI work
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -236,6 +253,9 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
+      - name: Revert pyproject.toml if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -340,8 +360,15 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Remove subdomain to make requirements.txt setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+      - name: Remove " @ " lines to make pyproject.toml setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print("" if (" @ " in line and line.rstrip().endswith(",")) else line, end="") for line in fileinput.input(inplace=True)]' pyproject.toml ;
+      - name: Print differences in git repository needed to make CI work
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -351,6 +378,9 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
+      - name: Revert pyproject.toml if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -455,8 +485,15 @@ jobs:
       - name: Install pip prerequisites
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -u -m pip install --upgrade pip setuptools wheel ;
-      - name: Removing subdomain to make requirements.txt setup work in CI
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ; git diff ;
+      - name: Remove subdomain to make requirements.txt setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+      - name: Remove " @ " lines to make pyproject.toml setup work in CI
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print("" if (" @ " in line and line.rstrip().endswith(",")) else line, end="") for line in fileinput.input(inplace=True)]' pyproject.toml ;
+      - name: Print differences in git repository needed to make CI work
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git diff ;
       - name: Install requirements from possibly-changed requirements.txt
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install -r requirements.txt ;
@@ -466,6 +503,9 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
+      - name: Revert pyproject.toml if changed
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
