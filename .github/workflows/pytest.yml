@@ -551,6 +551,13 @@ jobs:
       - name: Convert deploy key CRLF to LF
         run: |
           ((Get-Content ~/.ssh/id_ed25519_RO_zzbase) -join "`n") + "`n" | Set-Content -NoNewline ~/.ssh/id_ed25519_RO_zzbase
+      - name: Create second deploy key file
+        env:
+          DEPLOY_KEY: ${{ secrets.CRASH2COV_TOKEN }}
+        run: echo "$env:DEPLOY_KEY" > ~/.ssh/id_ed25519_RO_crash2cov
+      - name: Convert second deploy key CRLF to LF
+        run: |
+          ((Get-Content ~/.ssh/id_ed25519_RO_crash2cov) -join "`n") + "`n" | Set-Content -NoNewline ~/.ssh/id_ed25519_RO_crash2cov
       - name: Run tools using pytest under code coverage via MozillaBuild
         env:
           PYTEST_STATUS_FILE: "~/pytest-failure.txt"
