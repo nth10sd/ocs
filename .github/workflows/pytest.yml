@@ -497,33 +497,22 @@ jobs:
               sleep 2 ;
             }
           }
-      - name: Download WinPython (hardcoded version for MozillaBuild, separate from Python in GitHub Actions)
-        run: |
-          while ($True) {
-            try {
-              Invoke-WebRequest -Uri https://github.com/winpython/winpython/releases/download/5.0.20221030final/Winpython64-3.10.8.0dot.exe -OutFile C:\mozilla-build\winpython.exe
-              break
-            } catch {
-              echo "Error downloading WinPython, retrying in 2 seconds..." ;
-              sleep 2 ;
-            }
-          }
-      - name: Verify WinPython hash checksum
-        run: |
-          if (-Not ((Get-FileHash -Algorithm SHA256 C:\mozilla-build\winpython.exe).Hash -eq "bd454f8df90d6ea6405780e6da71decb96ddfbbb0a5d5a33461203a7a5995651")) { throw ; }
-      - name: Use 7-Zip to extract WinPython
-        run: |
-          & ${env:ProgramFiles}\7-Zip\7z.exe x C:\mozilla-build\winpython.exe "-oC:\mozilla-build\" -y
-      - name: Remove WinPython installer
-        run: rm C:\mozilla-build\winpython.exe
+
       - name: Remove Python from MozillaBuild
         run: rm C:\mozilla-build\python3 -r -fo
-      - name: Move WinPython into the correct MozillaBuild location
-        run: mv C:\mozilla-build\WPy64-*\python-*.amd64 C:\mozilla-build\python3
-      - name: Remove remainder of WinPython
-        run: rm C:\mozilla-build\WPy64-*\ -r -fo
+      - name: Install uv so we can use uv python
+        run: pip install --upgrade uv==0.3.2
+      - name: Get the desired Python
+        run: uv python install 3.10.14
+      - name: Copy uv's Python into the correct MozillaBuild location
+        run: ln -s $env:APPDATA\uv\python\cpython-3.10.14-windows-x86_64-none C:\mozilla-build\python3
+      - name: Dump a list of available Pythons
+        run: uv python list
       - name: Copy Python binary to python3.exe to make Mozilla build process happy
-        run: cp C:\mozilla-build\python3\python.exe C:\mozilla-build\python3\python3.exe
+        run: ln -s C:\mozilla-build\python3\python.exe C:\mozilla-build\python3\python3.exe
+      - name: List available Python binaries in MozillaBuild folder
+        run: ls C:\mozilla-build\python3\python*.exe
+
       - name: Copy custom MozillaBuild autostart script to mozilla-build location
         run: cp scripts/mozillabuild/autostart.sh C:\mozilla-build\
       - name: Amend MozillaBuild start command
