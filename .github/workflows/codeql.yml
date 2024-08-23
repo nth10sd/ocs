@@ -42,9 +42,6 @@ jobs:
       - name: Remove subdomain to make requirements.txt setup work in CI
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
-      - name: Remove " @ " lines to make pyproject.toml setup work in CI
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -c 'import fileinput; [print("" if (" @ " in line and line.rstrip().endswith(",")) else line, end="") for line in fileinput.input(inplace=True)]' pyproject.toml ;
       - name: Print differences in git repository needed to make CI work
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: git diff ;
