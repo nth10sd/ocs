@@ -71,9 +71,6 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
-      - name: Revert pyproject.toml if changed
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -247,9 +244,6 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
-      - name: Revert pyproject.toml if changed
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -369,9 +363,6 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
-      - name: Revert pyproject.toml if changed
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -491,9 +482,6 @@ jobs:
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade -e . ;
-      - name: Revert pyproject.toml if changed
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git checkout -- pyproject.toml ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
