@@ -59,7 +59,7 @@ jobs:
 
       - name: Install uv
         shell: bash
-        run: python -u -m pip install --upgrade uv==$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')
+        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -232,7 +232,7 @@ jobs:
 
       - name: Install uv
         shell: bash
-        run: python -u -m pip install --upgrade uv==$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')
+        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -351,7 +351,7 @@ jobs:
 
       - name: Install uv
         shell: bash
-        run: python -u -m pip install --upgrade uv==$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')
+        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -468,7 +468,7 @@ jobs:
 
       - name: Install uv
         shell: bash
-        run: python -u -m pip install --upgrade uv==$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')
+        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
