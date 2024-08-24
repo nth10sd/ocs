@@ -495,8 +495,6 @@ jobs:
 
       - name: Remove Python from MozillaBuild
         run: rm C:\mozilla-build\python3 -r -fo
-      - name: Install uv so we can use uv python
-        run: pip install --upgrade uv==0.3.2
       - name: Get the desired Python
         run: uv python install 3.10.14
       - name: Copy uv's Python into the correct MozillaBuild location
