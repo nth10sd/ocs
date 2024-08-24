@@ -440,25 +440,23 @@ jobs:
             "--disable-debug --enable-simulator=arm64",
           ]
         python-version: ["3.10"]
-    env:
-      # From https://docs.astral.sh/uv/guides/integration/github/#caching
-      UV_CACHE_DIR: /tmp/.uv-cache
-      UV_SYSTEM_PYTHON: 1
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      # uv pip cache dependencies to save time
-      - name: Restore uv cache
+      # - name: Get pip cache dir
+      #   id: pip-cache
+      #   run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+      - name: pip cache
         uses: actions/cache@v4
         with:
-          path: /tmp/.uv-cache
-          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-            uv-${{ runner.os }}
+          # 20221026 This only worked w/set-output in the pip cache dir step on Win
+          # path: ${{ steps.pip-cache.outputs.dir }}
+          path: ~\AppData\Local\pip\Cache
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -466,17 +464,26 @@ jobs:
             ${{ secrets.CRASH2COV_TOKEN }}
             ${{ secrets.ZZBASE_TOKEN }}
 
-      - name: Install uv
-        shell: bash
-        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
+      # uv (0.3.2) pip seems to have issues accessing the GitHub Actions env and PATHs, whereas pip seems fine
+
+      - name: Install pip prerequisites
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -u -m pip install --upgrade pip setuptools wheel ;
       - name: Remove subdomain to make requirements.txt setup work in CI
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
       - name: Print differences in git repository needed to make CI work
-        run: git diff
-      - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt -e .
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git diff ;
+      - name: Install requirements from possibly-changed requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install -r requirements.txt ;
       - name: Revert requirements.txt if changed
-        run: git checkout -- requirements.txt
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: git checkout -- requirements.txt ;
+      - name: Install package in development mode
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: pip install --upgrade -e . ;
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -495,6 +502,8 @@ jobs:
 
       - name: Remove Python from MozillaBuild
         run: rm C:\mozilla-build\python3 -r -fo
+      - name: Install uv so we can use uv python
+        run: pip install --upgrade uv==0.3.2
       - name: Get the desired Python
         run: uv python install 3.10.14
       - name: Copy uv's Python into the correct MozillaBuild location
@@ -562,6 +571,3 @@ jobs:
           fail_ci_if_error: true # optional (default = false)
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
-
-      - name: Minimize uv cache, --ci will only keep locally-built packages
-        run: uv cache prune --ci
