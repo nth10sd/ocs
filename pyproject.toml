@@ -30,10 +30,11 @@ dependencies = [
     "packaging ~= 24.1",
     "setuptools==71.1.0",
     "setuptools-scm[toml] >= 8.1.0",
-    "types-setuptools==71.1.0.20240726",                       # Bump types-* only with mypy
+    "types-setuptools==71.1.0.20240726",                # Bump types-* only with mypy
     'types-toml==0.10.8.7; python_version <= "3.10"',
     "typing-extensions ~= 4.12.2",                      # Directly import Self from typing on Python 3.11+
     'tomli ~= 2.0.1; python_version <= "3.10"',
+    "uv >= 0.3.2",                                      # CI looks out for the comparison: >=
     "wheel==0.44.0",
 ]
 dynamic = ["version", "readme"]

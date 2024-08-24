@@ -14,21 +14,25 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10"]
+    env:
+      # From https://docs.astral.sh/uv/guides/integration/github/#caching
+      UV_CACHE_DIR: /tmp/.uv-cache
+      UV_SYSTEM_PYTHON: 1
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Get pip cache dir
-        id: pip-cache
-        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-      - name: pip cache
+      # uv pip cache dependencies to save time
+      - name: Restore uv cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: ${{ runner.os }}-pip-
+          path: /tmp/.uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+            uv-${{ runner.os }}
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -36,24 +40,17 @@ jobs:
             ${{ secrets.CRASH2COV_TOKEN }}
             ${{ secrets.ZZBASE_TOKEN }}
 
-      - name: Install pip prerequisites
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel ;
+      - name: Install uv
+        shell: bash
+        run: python -u -m pip install --upgrade uv==$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')
       - name: Remove subdomain to make requirements.txt setup work in CI
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
+        run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git diff ;
-      - name: Install requirements from possibly-changed requirements.txt
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: pip install -r requirements.txt ;
+        run: git diff
+      - name: Install requirements from possibly-changed requirements.txt, and package in development mode
+        run: uv pip install -r requirements.txt -e .
       - name: Revert requirements.txt if changed
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: git checkout -- requirements.txt ;
-      - name: Install package in development mode
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: pip install --upgrade -e . ;
+        run: git checkout -- requirements.txt
 
       - name: Run with ruff
         run: python -u -m ruff check .
@@ -156,3 +153,5 @@ jobs:
               fi ;
             done ;
       # CodeQL analysis section END
+      - name: Minimize uv cache, --ci will only keep locally-built packages
+        run: uv cache prune --ci
