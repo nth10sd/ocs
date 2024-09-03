@@ -204,11 +204,20 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
+      # GitHub issue about disk space availability on GitHub Actions macOS runners
+      # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
+      - name: Remove unused Xcode to prevent low disk space issues
+        run: |
+          df -h
+          if [ -d /Applications/Xcode_14.3.1.app/ ] ; then sudo rm -rf /Applications/Xcode_14.3.1.app ; fi
+          if [ -d /Applications/Xcode_15.0.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.0.1.app ; fi
+          if [ -d /Applications/Xcode_15.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.1.app ; fi
+          df -h
       - name: Set Xcode version
         shell: bash
         run: |
-          sudo xcode-select -s "/Applications/Xcode_15.1.app"
-          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_15.1.app" >> $GITHUB_ENV
+          sudo xcode-select -s "/Applications/Xcode_15.2.app"
+          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_15.2.app" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -323,11 +332,20 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
+      # GitHub issue about disk space availability on GitHub Actions macOS runners
+      # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
+      - name: Remove unused Xcode to prevent low disk space issues
+        run: |
+          df -h
+          if [ -d /Applications/Xcode_14.3.1.app/ ] ; then sudo rm -rf /Applications/Xcode_14.3.1.app ; fi
+          if [ -d /Applications/Xcode_15.0.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.0.1.app ; fi
+          if [ -d /Applications/Xcode_15.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.1.app ; fi
+          df -h
       - name: Set Xcode version
         shell: bash
         run: |
-          sudo xcode-select -s "/Applications/Xcode_15.1.app"
-          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_15.1.app" >> $GITHUB_ENV
+          sudo xcode-select -s "/Applications/Xcode_15.2.app"
+          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_15.2.app" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
