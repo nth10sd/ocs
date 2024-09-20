@@ -77,7 +77,7 @@ mercurial==6.5.3 ; platform_system != 'Windows'
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-mypy==1.11.1
+mypy==1.11.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -105,13 +105,13 @@ psutil==6.0.0
     # via zzbase
 pygments==2.18.0
     # via sphinx
-pylint==3.2.6
+pylint==3.2.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.377 ; platform_system == 'Linux'
+pyright==1.1.381 ; platform_system == 'Linux'
     # via ocs (pyproject.toml)
-pytest==8.3.2
+pytest==8.3.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -145,7 +145,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.6.2
+ruff==0.6.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -217,11 +217,11 @@ urllib3==2.2.2
     # via
     #   requests
     #   types-requests
-uv==0.3.2
+uv==0.4.13
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-vulture==2.11
+vulture==2.12
     # via ocs (pyproject.toml)
 wheel==0.44.0
     # via

@@ -34,7 +34,7 @@ dependencies = [
     'types-toml==0.10.8.7; python_version <= "3.10"',
     "typing-extensions ~= 4.12.2",                      # Directly import Self from typing on Python 3.11+
     'tomli ~= 2.0.1; python_version <= "3.10"',
-    "uv >= 0.3.2",                                      # CI looks out for the comparison: >=
+    "uv >= 0.4.13",                                      # CI looks out for the comparison: >=
     "wheel==0.44.0",
 ]
 dynamic = ["version", "readme"]
@@ -44,11 +44,11 @@ test = [
     "bashate ~= 2.1.1",
     'coverage ~= 7.6.1; python_version >= "3.11"',
     'coverage[toml] ~= 7.6.1; python_version <= "3.10"',
-    "mypy ~= 1.11.1",
+    "mypy ~= 1.11.2",
     "overrides ~= 7.7.0",
-    "pylint ~= 3.2.6",
-    'pyright==1.1.377; platform_system == "Linux"',
-    "pytest ~= 8.3.2",
+    "pylint ~= 3.2.7",
+    'pyright==1.1.381; platform_system == "Linux"',
+    "pytest ~= 8.3.3",
     "pytest-cov ~= 5.0.0",
     "pytest-dependency ~= 0.6.0",
     "pytest-instafail ~= 0.5.0",
@@ -59,9 +59,9 @@ test = [
     "pytest-ruff ~= 0.4.1",
     "pytest-xdist ~= 3.6.1",
     "refurb ~= 2.0.0",
-    "ruff ~= 0.6.2",
+    "ruff ~= 0.6.5",
     "sphinx ~= 8.0.2",
-    "vulture ~= 2.11",
+    "vulture ~= 2.12",
 ]
 
 [tool.setuptools.dynamic]
