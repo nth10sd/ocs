@@ -93,7 +93,7 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
       - name: Install 64-bit SpiderMonkey prerequisites
-        run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
+        run: sudo apt-get update ; sudo apt-get install autoconf2.13 ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) mercurial ripgrep
       - name: Install Valgrind for some builds
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
@@ -506,11 +506,11 @@ jobs:
       - name: Run with ruff
         run: python -u -m ruff check .
 
-      - name: Install prerequisites
+      - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |
           while ($True) {
             try {
-              choco upgrade ripgrep ; choco install mozillabuild sd-cli
+              choco upgrade ripgrep ; choco install mercurial mozillabuild sd-cli
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;

@@ -69,14 +69,6 @@ markupsafe==2.1.5
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mercurial==6.2.3 ; platform_system == 'Windows'
-    # via
-    #   ocs (pyproject.toml)
-    #   zzbase
-mercurial==6.5.3 ; platform_system != 'Windows'
-    # via
-    #   ocs (pyproject.toml)
-    #   zzbase
 mypy==1.11.2
     # via
     #   ocs (pyproject.toml)
@@ -179,7 +171,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomli==2.0.1 ; python_full_version == '3.11'
+tomli==2.0.1 ; python_full_version <= '3.11'
     # via
     #   ocs (pyproject.toml)
     #   coverage
