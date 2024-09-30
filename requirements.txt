@@ -4,7 +4,7 @@ alabaster==1.0.0
     # via sphinx
 anyio==4.4.0
     # via httpx
-astroid==3.3.3
+astroid==3.3.4
     # via pylint
 attrs==24.2.0
     # via pytest-mypy
@@ -97,11 +97,11 @@ psutil==6.0.0
     # via zzbase
 pygments==2.18.0
     # via sphinx
-pylint==3.3.0
+pylint==3.3.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.381 ; platform_system == 'Linux'
+pyright==1.1.382.post1 ; platform_system == 'Linux'
     # via ocs (pyproject.toml)
 pytest==8.3.3
     # via
@@ -137,7 +137,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.6.6
+ruff==0.6.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -204,12 +204,13 @@ typing-extensions==4.12.2
     #   anyio
     #   astroid
     #   mypy
+    #   pyright
     #   zzbase
 urllib3==2.2.2
     # via
     #   requests
     #   types-requests
-uv==0.4.13
+uv==0.4.17
     # via
     #   ocs (pyproject.toml)
     #   zzbase
