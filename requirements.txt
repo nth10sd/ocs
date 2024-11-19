@@ -2,9 +2,9 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-anyio==4.4.0
+anyio==4.6.2.post1
     # via httpx
-astroid==3.3.4
+astroid==3.3.5
     # via pylint
 attrs==24.2.0
     # via pytest-mypy
@@ -12,25 +12,27 @@ babel==2.16.0
     # via sphinx
 bashate==2.1.1
     # via ocs (pyproject.toml)
-certifi==2024.7.4
+certifi==2024.8.30
     # via
     #   httpcore
     #   httpx
     #   requests
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.6.1
+coverage[toml]==7.6.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
+deepdiff==8.0.1
+    # via zzbase
 defusedxml==0.7.1
     # via zzbase
-dill==0.3.8
+dill==0.3.9
     # via pylint
 distro==1.9.0
     # via
@@ -44,15 +46,15 @@ exceptiongroup==1.2.2 ; python_full_version < '3.11'
     #   pytest
 execnet==2.1.1
     # via pytest-xdist
-filelock==3.15.4
+filelock==3.16.1
     # via pytest-mypy
 h11==0.14.0
     # via httpcore
-httpcore==1.0.5
+httpcore==1.0.7
     # via httpx
-httpx==0.27.0
+httpx==0.27.2
     # via zzbase
-idna==3.7
+idna==3.10
     # via
     #   anyio
     #   httpx
@@ -65,11 +67,11 @@ isort==5.13.2
     # via pylint
 jinja2==3.1.4
     # via sphinx
-markupsafe==2.1.5
+markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.11.2
+mypy==1.13.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -78,18 +80,20 @@ mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.9.1 ; platform_system == 'Linux'
     # via pyright
+orderly-set==5.2.2
+    # via deepdiff
 overrides==7.7.0
     # via ocs (pyproject.toml)
-packaging==24.1
+packaging==24.2
     # via
     #   ocs (pyproject.toml)
     #   pytest
     #   setuptools-scm
     #   sphinx
     #   zzbase
-pbr==6.0.0
+pbr==6.1.0
     # via bashate
-platformdirs==4.2.2
+platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
@@ -101,7 +105,7 @@ pylint==3.3.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.382.post1 ; platform_system == 'Linux'
+pyright==1.1.389 ; platform_system == 'Linux'
     # via ocs (pyproject.toml)
 pytest==8.3.3
     # via
@@ -115,7 +119,7 @@ pytest==8.3.3
     #   pytest-randomly
     #   pytest-ruff
     #   pytest-xdist
-pytest-cov==5.0.0
+pytest-cov==6.0.0
     # via ocs (pyproject.toml)
 pytest-dependency==0.6.0
     # via ocs (pyproject.toml)
@@ -127,7 +131,7 @@ pytest-order==1.3.0
     # via ocs (pyproject.toml)
 pytest-pylint==0.21.0
     # via ocs (pyproject.toml)
-pytest-randomly==3.15.0
+pytest-randomly==3.16.0
     # via ocs (pyproject.toml)
 pytest-ruff==0.4.1
     # via ocs (pyproject.toml)
@@ -137,7 +141,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.6.8
+ruff==0.7.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -157,7 +161,7 @@ sniffio==1.3.1
     #   httpx
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==8.0.2
+sphinx==8.1.3
     # via ocs (pyproject.toml)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
@@ -171,7 +175,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomli==2.0.1 ; python_full_version <= '3.11'
+tomli==2.1.0 ; python_full_version <= '3.11'
     # via
     #   ocs (pyproject.toml)
     #   coverage
@@ -206,15 +210,15 @@ typing-extensions==4.12.2
     #   mypy
     #   pyright
     #   zzbase
-urllib3==2.2.2
+urllib3==2.2.3
     # via
     #   requests
     #   types-requests
-uv==0.4.17
+uv==0.5.3
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-vulture==2.12
+vulture==2.13
     # via ocs (pyproject.toml)
 wheel==0.44.0
     # via
