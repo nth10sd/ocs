@@ -145,7 +145,7 @@ ruff==0.7.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==71.1.0
+setuptools==75.5.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-dependency
@@ -194,7 +194,7 @@ types-psutil==6.0.0.20240621
     # via zzbase
 types-requests==2.32.0.20240712
     # via zzbase
-types-setuptools==71.1.0.20240726
+types-setuptools==75.5.0.20241121
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -220,7 +220,7 @@ uv==0.5.3
     #   zzbase
 vulture==2.13
     # via ocs (pyproject.toml)
-wheel==0.44.0
+wheel==0.45.0
     # via
     #   ocs (pyproject.toml)
     #   zzbase
