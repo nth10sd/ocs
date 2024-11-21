@@ -19,6 +19,12 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
+      - name: Get latest Git (Win) https://github.com/actions/runner-images/issues/10843
+        if: startsWith(runner.os, 'Windows')
+        run: |
+          git.exe --version ;
+          Start-Process git.exe -Wait -ArgumentList 'update-git-for-windows -y' ;
+          git.exe --version ;
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
