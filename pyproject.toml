@@ -254,7 +254,6 @@ unsafe-fixes = true
 
 [tool.ruff.lint]
 ignore = [
-    "ANN101",  # The type of Self should be inferred by type checkers automatically
     "COM812",  # Seems to add trailing comma even when arguments already fit on one line
     "D104",    # __init__.py files can be completely blank and not require a docstring
     "D203",    # D211 is used by default, which is incompatible with this
