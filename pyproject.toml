@@ -55,6 +55,7 @@ test = [
     "pytest-pylint ~= 0.21.0",
     "pytest-randomly ~= 3.16.0",
     "pytest-ruff ~= 0.4.1",
+    "pytest-vulture ~= 2.2.2",
     "pytest-xdist ~= 3.6.1",
     "refurb ~= 2.0.0",
     "ruff ~= 0.7.4",
@@ -272,5 +273,6 @@ force-sort-within-sections = true
 known-local-folder = ["ocs"]
 
 [tool.vulture]
+# check-entry-points = 0  # maturin repos only
 exclude = ["build/", "docs/source/conf_correct.py"]
 make_whitelist = true

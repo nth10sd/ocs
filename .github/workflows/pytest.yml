@@ -164,7 +164,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -296,7 +296,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -428,7 +428,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
