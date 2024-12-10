@@ -262,7 +262,7 @@ def sm_compile(shell: SMShell) -> Path:
         with jspc_new_file_path.open(encoding="utf-8", errors="replace") as f:
             for line in f:
                 if line.startswith("Version: "):  # Sample line: "Version: 47.0a2"
-                    shell.version = line.split(": ")[1].rstrip()
+                    shell.version = line.split(": ")[1].rstrip()  # vulture: ignore
     else:
         OCS_SM_HATCH_LOG.warning(
             "%s did not result in a js shell:", zzconsts.MAKE_BINARY_PATH
