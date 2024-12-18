@@ -22,7 +22,7 @@ jobs:
             "",
             "--enable-address-sanitizer",
             "--enable-debug",
-            "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api --disable-profiling",
+            "--enable-debug --disable-optimize --enable-oom-breakpoint --disable-profiling",
             "--enable-debug --disable-optimize --enable-simulator=arm64",
             "--disable-debug --enable-simulator=arm64",
             "--enable-valgrind",

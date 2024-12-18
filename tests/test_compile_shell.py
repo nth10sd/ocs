@@ -58,7 +58,7 @@ def test_shell_compile() -> Path:
     )
 
     default_parameters_debug = (
-        "--enable-debug --disable-optimize --enable-oom-breakpoint --without-intl-api"
+        "--enable-debug --disable-optimize --enable-oom-breakpoint"
     )
     if Hp.IS_LINUX:
         default_parameters_debug += " --enable-valgrind"
