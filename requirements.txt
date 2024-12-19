@@ -105,7 +105,7 @@ pylint==3.3.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.390 ; platform_system == 'Linux'
+pyright==1.1.391 ; platform_system == 'Linux'
     # via ocs (pyproject.toml)
 pytest==8.3.4
     # via
@@ -144,7 +144,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.8.2
+ruff==0.8.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -221,7 +221,7 @@ urllib3==2.2.3
     # via
     #   requests
     #   types-requests
-uv==0.5.7
+uv==0.5.10
     # via
     #   ocs (pyproject.toml)
     #   zzbase
