@@ -4,7 +4,7 @@ alabaster==1.0.0
     # via sphinx
 anyio==4.6.2.post1
     # via httpx
-astroid==3.3.5
+astroid==3.3.8
     # via pylint
 attrs==24.2.0
     # via pytest-mypy
@@ -65,7 +65,7 @@ iniconfig==2.0.0
     # via pytest
 isort==5.13.2
     # via pylint
-jinja2==3.1.4
+jinja2==3.1.5
     # via sphinx
 markupsafe==3.0.2
     # via jinja2
@@ -101,7 +101,7 @@ psutil==6.0.0
     # via zzbase
 pygments==2.18.0
     # via sphinx
-pylint==3.3.2
+pylint==3.3.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
@@ -144,7 +144,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.8.3
+ruff==0.8.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -221,7 +221,7 @@ urllib3==2.2.3
     # via
     #   requests
     #   types-requests
-uv==0.5.10
+uv==0.5.11
     # via
     #   ocs (pyproject.toml)
     #   zzbase
