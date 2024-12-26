@@ -2,29 +2,29 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-anyio==4.6.2.post1
+anyio==4.7.0
     # via httpx
 astroid==3.3.8
     # via pylint
-attrs==24.2.0
+attrs==24.3.0
     # via pytest-mypy
 babel==2.16.0
     # via sphinx
 bashate==2.1.1
     # via ocs (pyproject.toml)
-certifi==2024.8.30
+certifi==2024.12.14
     # via
     #   httpcore
     #   httpx
     #   requests
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.6.9
+coverage[toml]==7.6.10
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -148,7 +148,7 @@ ruff==0.8.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==75.5.0
+setuptools==75.6.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-dependency
@@ -178,11 +178,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomli==2.1.0 ; python_full_version == '3.11'
-    # via
-    #   ocs (pyproject.toml)
-    #   coverage
-tomli==2.2.1 ; python_full_version < '3.11'
+tomli==2.2.1 ; python_full_version <= '3.11'
     # via
     #   ocs (pyproject.toml)
     #   coverage
@@ -201,7 +197,7 @@ types-psutil==6.0.0.20240621
     # via zzbase
 types-requests==2.32.0.20240712
     # via zzbase
-types-setuptools==75.5.0.20241121
+types-setuptools==75.6.0.20241223
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -217,11 +213,11 @@ typing-extensions==4.12.2
     #   mypy
     #   pyright
     #   zzbase
-urllib3==2.2.3
+urllib3==2.3.0
     # via
     #   requests
     #   types-requests
-uv==0.5.11
+uv==0.5.12
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -229,7 +225,7 @@ vulture==2.14
     # via
     #   ocs (pyproject.toml)
     #   pytest-vulture
-wheel==0.45.0
+wheel==0.45.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
