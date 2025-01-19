@@ -36,12 +36,6 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
-      - name: Get latest Git (Win) https://github.com/actions/runner-images/issues/10843
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          git.exe --version ;
-          Start-Process git.exe -Wait -ArgumentList 'update-git-for-windows -y' ;
-          git.exe --version ;
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -204,12 +198,6 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
-      - name: Get latest Git (Win) https://github.com/actions/runner-images/issues/10843
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          git.exe --version ;
-          Start-Process git.exe -Wait -ArgumentList 'update-git-for-windows -y' ;
-          git.exe --version ;
       # GitHub issue about disk space availability on GitHub Actions macOS runners
       # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
       - name: Remove unused Xcode to prevent low disk space issues
@@ -332,12 +320,6 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
-      - name: Get latest Git (Win) https://github.com/actions/runner-images/issues/10843
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          git.exe --version ;
-          Start-Process git.exe -Wait -ArgumentList 'update-git-for-windows -y' ;
-          git.exe --version ;
       # GitHub issue about disk space availability on GitHub Actions macOS runners
       # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
       - name: Remove unused Xcode to prevent low disk space issues
@@ -459,12 +441,6 @@ jobs:
           ]
         python-version: ["3.10"]
     steps:
-      - name: Get latest Git (Win) https://github.com/actions/runner-images/issues/10843
-        if: startsWith(runner.os, 'Windows')
-        run: |
-          git.exe --version ;
-          Start-Process git.exe -Wait -ArgumentList 'update-git-for-windows -y' ;
-          git.exe --version ;
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
