@@ -2,7 +2,7 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-anyio==4.7.0
+anyio==4.8.0
     # via httpx
 astroid==3.3.8
     # via pylint
@@ -71,14 +71,14 @@ markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.13.0
+mypy==1.14.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
     #   refurb
 mypy-extensions==1.0.0
     # via mypy
-nodeenv==1.9.1 ; platform_system == 'Linux'
+nodeenv==1.9.1 ; sys_platform == 'linux'
     # via pyright
 orderly-set==5.2.2
     # via deepdiff
@@ -99,13 +99,13 @@ pluggy==1.5.0
     # via pytest
 psutil==6.0.0
     # via zzbase
-pygments==2.18.0
+pygments==2.19.1
     # via sphinx
 pylint==3.3.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.391 ; platform_system == 'Linux'
+pyright==1.1.392 ; sys_platform == 'linux'
     # via ocs (pyproject.toml)
 pytest==8.3.4
     # via
@@ -144,11 +144,11 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.8.4
+ruff==0.8.6
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==75.6.0
+setuptools==75.8.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-dependency
@@ -197,7 +197,7 @@ types-psutil==6.0.0.20240621
     # via zzbase
 types-requests==2.32.0.20240712
     # via zzbase
-types-setuptools==75.6.0.20241223
+types-setuptools==75.8.0.20250110
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -217,7 +217,7 @@ urllib3==2.3.0
     # via
     #   requests
     #   types-requests
-uv==0.5.12
+uv==0.5.21
     # via
     #   ocs (pyproject.toml)
     #   zzbase
