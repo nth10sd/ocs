@@ -202,11 +202,11 @@ jobs:
       # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
       - name: Remove unused Xcode to prevent low disk space issues
         run: |
-          df -h
+          df -h ; ls -lahtd /Applications/Xcode*
           if [ -d /Applications/Xcode_14.3.1.app/ ] ; then sudo rm -rf /Applications/Xcode_14.3.1.app ; fi
           if [ -d /Applications/Xcode_15.0.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.0.1.app ; fi
           if [ -d /Applications/Xcode_15.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.1.app ; fi
-          df -h
+          df -h ; ls -lahtd /Applications/Xcode*
       - name: Set Xcode version
         shell: bash
         run: |
@@ -324,11 +324,11 @@ jobs:
       # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
       - name: Remove unused Xcode to prevent low disk space issues
         run: |
-          df -h
+          df -h ; ls -lahtd /Applications/Xcode*
           if [ -d /Applications/Xcode_14.3.1.app/ ] ; then sudo rm -rf /Applications/Xcode_14.3.1.app ; fi
           if [ -d /Applications/Xcode_15.0.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.0.1.app ; fi
           if [ -d /Applications/Xcode_15.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.1.app ; fi
-          df -h
+          df -h ; ls -lahtd /Applications/Xcode*
       - name: Set Xcode version
         shell: bash
         run: |
