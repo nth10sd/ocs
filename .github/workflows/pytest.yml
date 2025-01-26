@@ -154,7 +154,9 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
+          pip uninstall -y uv ;  # Temporarily remove uv to make compilation work on CI after bug 1934094 landed
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture ;
+          pip install --upgrade uv ;
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
