@@ -180,8 +180,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
 
+      # As of 20250131, temporarily ignore exit code while pruning uv cache, only Linux for now
       - name: Minimize uv cache, --ci will only keep locally-built packages
-        run: uv cache prune --ci
+        run: uv cache prune --ci || true
 
   macOS-x86_64: # Remove when the Intel runners on CI no longer exist
     runs-on: macos-13 # Update Xcode version to the latest available as well
