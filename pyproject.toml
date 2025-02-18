@@ -32,7 +32,7 @@ dependencies = [
     'types-toml==0.10.8.7; python_version <= "3.10"',
     "typing-extensions ~= 4.12.2",                    # Directly import Self from typing on Python 3.11+
     'tomli ~= 2.2.1; python_version <= "3.10"',
-    "uv >= 0.5.21",                                   # CI looks out for the comparison: >=
+    "uv >= 0.6.1",                                   # CI looks out for the comparison: >=
     "wheel==0.45.1",
 ]
 dynamic = ["version", "readme"]
@@ -40,12 +40,12 @@ dynamic = ["version", "readme"]
 [project.optional-dependencies]
 test = [
     "bashate ~= 2.1.1",
-    'coverage ~= 7.6.10; python_version >= "3.11"',
-    'coverage[toml] ~= 7.6.10; python_version <= "3.10"',
-    "mypy ~= 1.14.1",
+    'coverage ~= 7.6.12; python_version >= "3.11"',
+    'coverage[toml] ~= 7.6.12; python_version <= "3.10"',
+    "mypy ~= 1.15.0",
     "overrides ~= 7.7.0",
-    "pylint ~= 3.3.3",
-    'pyright==1.1.392; platform_system == "Linux"',
+    "pylint ~= 3.3.4",
+    'pyright==1.1.394; platform_system == "Linux"',
     "pytest ~= 8.3.4",
     "pytest-cov ~= 6.0.0",
     "pytest-dependency ~= 0.6.0",
