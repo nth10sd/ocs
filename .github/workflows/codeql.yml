@@ -29,10 +29,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.uv-cache
-          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-            uv-${{ runner.os }}
+            uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
+            uv-${{ runner.os }}-${{ runner.arch }}-
+            uv-${{ runner.os }}-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:

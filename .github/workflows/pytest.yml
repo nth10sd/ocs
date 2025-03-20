@@ -58,10 +58,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.uv-cache
-          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-            uv-${{ runner.os }}
+            uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
+            uv-${{ runner.os }}-${{ runner.arch }}-
+            uv-${{ runner.os }}-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -240,10 +241,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.uv-cache
-          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-            uv-${{ runner.os }}
+            uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
+            uv-${{ runner.os }}-${{ runner.arch }}-
+            uv-${{ runner.os }}-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -363,10 +365,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.uv-cache
-          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-            uv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-            uv-${{ runner.os }}
+            uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
+            uv-${{ runner.os }}-${{ runner.arch }}-
+            uv-${{ runner.os }}-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
@@ -475,8 +478,11 @@ jobs:
           # 20221026 This only worked w/set-output in the pip cache dir step on Win
           # path: ${{ steps.pip-cache.outputs.dir }}
           path: ~\AppData\Local\pip\Cache
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
+          key: pip-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            pip-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/requirements.txt') }}
+            pip-${{ runner.os }}-${{ runner.arch }}-
+            pip-${{ runner.os }}-
       - name: Use deploy key
         uses: webfactory/ssh-agent@v0.7.0
         with:
