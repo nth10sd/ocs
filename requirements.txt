@@ -101,7 +101,7 @@ psutil==6.0.0
     # via zzbase
 pygments==2.19.1
     # via sphinx
-pylint==3.3.5
+pylint==3.3.6
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
@@ -144,7 +144,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.11.0
+ruff==0.11.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -218,7 +218,7 @@ urllib3==2.3.0
     # via
     #   requests
     #   types-requests
-uv==0.6.8
+uv==0.6.9
     # via
     #   ocs (pyproject.toml)
     #   zzbase
