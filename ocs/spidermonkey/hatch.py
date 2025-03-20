@@ -521,19 +521,19 @@ def verify_binary(shell: SMShell) -> None:
     # Testing for debug / opt builds are different, as there are hybrid debug-opt builds
     if query_build_cfg(binary, "debug") != shell.build_opts.enable_debug:
         raise ValueError(
-            f'Debug status of shell is: {query_build_cfg(binary, "debug")}, '
+            f"Debug status of shell is: {query_build_cfg(binary, 'debug')}, "
             f"compared to intended input: {shell.build_opts.enable_debug}",
         )
 
     if query_build_cfg(binary, "asan") != shell.build_opts.enable_address_sanitizer:
         raise ValueError(
-            f'Asan status of shell is: {query_build_cfg(binary, "asan")}, '
+            f"Asan status of shell is: {query_build_cfg(binary, 'asan')}, "
             f"compared to intended input: {shell.build_opts.enable_address_sanitizer}",
         )
     # Checking for profiling status does not work with mozilla-beta and mozilla-release
     if query_build_cfg(binary, "profiling") == shell.build_opts.disable_profiling:
         raise ValueError(
-            f'Profiling status of shell is: {query_build_cfg(binary, "profiling")}, '
+            f"Profiling status of shell is: {query_build_cfg(binary, 'profiling')}, "
             f"compared to intended input: {not shell.build_opts.disable_profiling}",
         )
     if not Hp.IS_WIN_MB_AARCH64:
@@ -542,7 +542,7 @@ def verify_binary(shell: SMShell) -> None:
         ) != shell.build_opts.enable_simulator_arm32:
             raise ValueError(
                 "ARM32 simulator status of shell is: "
-                f'{query_build_cfg(binary, "arm-simulator")}, '
+                f"{query_build_cfg(binary, 'arm-simulator')}, "
                 f"compared to intended: {shell.build_opts.enable_simulator_arm32}",
             )
         if (
@@ -551,7 +551,7 @@ def verify_binary(shell: SMShell) -> None:
         ) != shell.build_opts.enable_simulator_arm64:
             raise ValueError(
                 "ARM64 simulator status of shell is: "
-                f'{query_build_cfg(binary, "arm64-simulator")}, '
+                f"{query_build_cfg(binary, 'arm64-simulator')}, "
                 f"compared to intended 32-bit status: {shell.build_opts.enable_32bit}",
                 f"and intended ARM64 status: {shell.build_opts.enable_simulator_arm64}",
             )
