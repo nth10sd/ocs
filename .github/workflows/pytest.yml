@@ -13,24 +13,36 @@ on:
 
 jobs:
   Linux:
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        python-version: ["3.10"]
         build-type:
           [
             "",
             "--enable-address-sanitizer",
             "--enable-debug",
             "--enable-debug --disable-optimize --enable-oom-breakpoint --disable-profiling",
-            "--enable-debug --disable-optimize --enable-simulator=arm64",
-            "--disable-debug --enable-simulator=arm64",
             "--enable-valgrind",
-            "--enable-32bit",
-            "--enable-debug --disable-optimize --enable-32bit",
-            "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",
           ]
-        python-version: ["3.10"]
+        os: ["ubuntu-22.04", "ubuntu-22.04-arm"]
+        include:
+          - os: "ubuntu-22.04"
+            build-type: "--enable-debug --disable-optimize --enable-simulator=arm64"
+            python-version: "3.10"
+          - os: "ubuntu-22.04"
+            build-type: "--disable-debug --enable-simulator=arm64"
+            python-version: "3.10"
+          - os: "ubuntu-22.04"
+            build-type: "--enable-32bit"
+            python-version: "3.10"
+          - os: "ubuntu-22.04"
+            build-type: "--enable-debug --disable-optimize --enable-32bit"
+            python-version: "3.10"
+          - os: "ubuntu-22.04"
+            build-type: "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit"
+            python-version: "3.10"
     env:
       # From https://docs.astral.sh/uv/guides/integration/github/#caching
       UV_CACHE_DIR: /tmp/.uv-cache
@@ -93,13 +105,13 @@ jobs:
       - name: Install Valgrind for some builds
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
-      - name: Install 32-bit prerequisites for some builds
+      - name: Install 32-bit prerequisites for some builds, only on x86_64 hosts
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
-        run: sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386
+        run: if uname -m | grep -q 'x86_64' ; then sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386 ; fi
       - name: List free space
         run: df -h
-      - name: Remove unneeded browsers
-        run: sudo apt-get remove google-chrome-stable microsoft-edge-stable
+      - name: Remove unneeded browsers, only on x86_64 hosts
+        run: if uname -m | grep -q 'x86_64' ; then sudo apt-get remove google-chrome-stable microsoft-edge-stable ; fi
       - name: Run apt-get autoremove and apt-get clean
         run: sudo apt-get autoremove ; sudo apt-get clean
       - name: List free space again
@@ -137,9 +149,9 @@ jobs:
         if: startsWith(runner.os, 'Linux')
         run: git clean -fd
 
-      - name: Install 32-bit Rust toolchain for some builds
+      - name: Install 32-bit Rust toolchain for some builds, only on x86_64 hosts
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
-        run: rustup target add i686-unknown-linux-gnu
+        run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
