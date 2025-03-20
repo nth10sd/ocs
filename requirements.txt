@@ -2,11 +2,11 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-anyio==4.8.0
+anyio==4.9.0
     # via httpx
-astroid==3.3.8
+astroid==3.3.9
     # via pylint
-attrs==25.1.0
+attrs==25.3.0
     # via pytest-mypy
 babel==2.17.0
     # via sphinx
@@ -24,7 +24,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.6.12
+coverage[toml]==7.7.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -46,7 +46,7 @@ exceptiongroup==1.2.2 ; python_full_version < '3.11'
     #   pytest
 execnet==2.1.1
     # via pytest-xdist
-filelock==3.17.0
+filelock==3.18.0
     # via pytest-mypy
 h11==0.14.0
     # via httpcore
@@ -61,11 +61,11 @@ idna==3.10
     #   requests
 imagesize==1.4.1
     # via sphinx
-iniconfig==2.0.0
+iniconfig==2.1.0
     # via pytest
-isort==6.0.0
+isort==6.0.1
     # via pylint
-jinja2==3.1.5
+jinja2==3.1.6
     # via sphinx
 markupsafe==3.0.2
     # via jinja2
@@ -93,7 +93,7 @@ packaging==24.2
     #   zzbase
 pbr==6.1.1
     # via bashate
-platformdirs==4.3.6
+platformdirs==4.3.7
     # via pylint
 pluggy==1.5.0
     # via pytest
@@ -101,13 +101,13 @@ psutil==6.0.0
     # via zzbase
 pygments==2.19.1
     # via sphinx
-pylint==3.3.4
+pylint==3.3.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.394 ; sys_platform == 'linux'
+pyright==1.1.397 ; sys_platform == 'linux'
     # via ocs (pyproject.toml)
-pytest==8.3.4
+pytest==8.3.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -144,7 +144,7 @@ refurb==2.0.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.8.6
+ruff==0.11.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -155,7 +155,7 @@ setuptools==75.8.0
     #   pytest-dependency
     #   setuptools-scm
     #   zzbase
-setuptools-scm[toml]==8.1.0
+setuptools-scm[toml]==8.2.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -218,7 +218,7 @@ urllib3==2.3.0
     # via
     #   requests
     #   types-requests
-uv==0.6.1
+uv==0.6.8
     # via
     #   ocs (pyproject.toml)
     #   zzbase
