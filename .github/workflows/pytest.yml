@@ -83,7 +83,7 @@ jobs:
         run: git checkout -- requirements.txt
 
       - name: Run with ruff
-        run: python -u -m ruff check .
+        run: python -u -m ruff check
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
         run: python -u -m refurb .
@@ -266,7 +266,7 @@ jobs:
         run: git checkout -- requirements.txt
 
       - name: Run with ruff
-        run: python -u -m ruff check .
+        run: python -u -m ruff check
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -390,7 +390,7 @@ jobs:
         run: git checkout -- requirements.txt
 
       - name: Run with ruff
-        run: python -u -m ruff check .
+        run: python -u -m ruff check
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -512,7 +512,7 @@ jobs:
         run: pip install --upgrade -e . ;
 
       - name: Run with ruff
-        run: python -u -m ruff check .
+        run: python -u -m ruff check
 
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |
