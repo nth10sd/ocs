@@ -8,6 +8,8 @@ astroid==3.3.9
     # via pylint
 babel==2.17.0
     # via sphinx
+basedpyright==1.29.1
+    # via ocs (pyproject.toml)
 certifi==2025.4.26
     # via
     #   httpcore
@@ -74,8 +76,8 @@ mypy==1.15.0
     #   refurb
 mypy-extensions==1.1.0
     # via mypy
-nodeenv==1.9.1 ; sys_platform == 'linux'
-    # via pyright
+nodejs-wheel-binaries==22.15.0
+    # via basedpyright
 orderly-set==5.2.2
     # via deepdiff
 overrides==7.7.0
@@ -99,8 +101,6 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyright==1.1.399 ; sys_platform == 'linux'
-    # via ocs (pyproject.toml)
 pytest==8.3.5
     # via
     #   ocs (pyproject.toml)
@@ -207,7 +207,6 @@ typing-extensions==4.12.2
     #   anyio
     #   astroid
     #   mypy
-    #   pyright
     #   zzbase
 urllib3==2.4.0
     # via

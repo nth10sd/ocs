@@ -39,12 +39,12 @@ dynamic = ["version", "readme"]
 
 [project.optional-dependencies]
 test = [
+    "basedpyright ~= 1.29.1",
     'coverage ~= 7.8.0; python_version >= "3.11"',
     'coverage[toml] ~= 7.8.0; python_version <= "3.10"',
     "mypy ~= 1.15.0",
     "overrides ~= 7.7.0",
     "pylint ~= 3.3.7",
-    'pyright==1.1.399; platform_system == "Linux"',
     "pytest ~= 8.3.5",
     "pytest-cov ~= 6.1.1",
     "pytest-dependency ~= 0.6.0",
@@ -71,6 +71,10 @@ readme = { file = ["README.md", "CHANGELOG.md"] }
 write_to = "ocs/_version.txt"
 
 ##### Other tools #####
+
+[tool.basedpyright]
+exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
+typeCheckingMode = "standard"
 
 [tool.coverage.report]
 # Taken from: https://coverage.readthedocs.io/en/coverage-5.5/config.html#syntax
@@ -200,9 +204,6 @@ score = "no"
 # Min Python version to use for typing related checks, e.g. ``3.7``
 # This should be equal to the min supported Python version of the project
 py-version = "3.10"
-
-[tool.pyright]
-exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
 
 [tool.pytest.ini_options]
 addopts = [

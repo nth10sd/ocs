@@ -86,12 +86,12 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run basedpyright
+        if: startsWith(runner.os, 'Linux')
+        run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
         if: startsWith(runner.os, 'Linux')
         run: python -u -m refurb .
-      - name: Run pyright
-        if: startsWith(runner.os, 'Linux')
-        run: python -u -m pyright
 
       - name: Set Linux environment variables
         run: |
