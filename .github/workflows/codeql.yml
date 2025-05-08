@@ -56,7 +56,7 @@ jobs:
       - name: Run with ruff
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+        run: python -u -m ty check --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
 
       # CodeQL analysis section START
       # Linux-only, enable on GitHub for public repos and private repos on Enterprise plan with Advanced Security
