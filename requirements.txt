@@ -192,6 +192,8 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     #   zzbase
 tomlkit==0.13.2
     # via pylint
+ty==0.0.0a7
+    # via ocs (pyproject.toml)
 types-psutil==6.0.0.20240621
     # via zzbase
 types-requests==2.32.0.20240712
