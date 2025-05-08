@@ -134,6 +134,9 @@ jobs:
       - name: Run shellcheck
         if: startsWith(runner.os, 'Linux')
         run: rg -t sh --files | xargs shellcheck
+      - name: Install bashate via uv tool
+        if: startsWith(runner.os, 'Linux')
+        run: uv tool install bashate
       - name: Run bashate
         if: startsWith(runner.os, 'Linux')
         run: rg -t sh --files | xargs bashate -i E006
