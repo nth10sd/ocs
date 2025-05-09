@@ -220,9 +220,6 @@ log_level = "DEBUG"
 markers = ["online", "slow"]
 xfail_strict = true
 
-[tool.refurb]
-ignore = ["110"]
-
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [

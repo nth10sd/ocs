@@ -89,7 +89,7 @@ jobs:
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
-        run: uvx --with-requirements=requirements.txt refurb .
+        run: uvx --with-requirements=pyproject.toml refurb --ignore FURB110 .
 
       - name: Set Linux environment variables
         run: |
