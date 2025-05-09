@@ -87,11 +87,9 @@ jobs:
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
       - name: Run basedpyright
-        if: startsWith(runner.os, 'Linux')
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
-        if: startsWith(runner.os, 'Linux')
-        run: python -u -m refurb .
+        run: uvx --with-requirements=requirements.txt refurb .
 
       - name: Set Linux environment variables
         run: |
@@ -134,12 +132,9 @@ jobs:
       - name: Run shellcheck
         if: startsWith(runner.os, 'Linux')
         run: rg -t sh --files | xargs shellcheck
-      - name: Install bashate via uv tool
-        if: startsWith(runner.os, 'Linux')
-        run: uv tool install bashate
       - name: Run bashate
         if: startsWith(runner.os, 'Linux')
-        run: rg -t sh --files | xargs bashate -i E006
+        run: rg -t sh --files | xargs uvx bashate -i E006
       - name: Generate Sphinx docs (inspect this output for Sphinx errors)
         if: startsWith(runner.os, 'Linux')
         run: |
