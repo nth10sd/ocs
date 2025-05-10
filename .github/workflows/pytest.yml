@@ -84,8 +84,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with ty (As of 20250509, ty version 0.0.0a8, these rules are not yet working well, requiring questionable code changes)
+        run: python -u -m ty check --error-on-warning --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
@@ -269,8 +269,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with ty (As of 20250509, ty version 0.0.0a8, these rules are not yet working well, requiring questionable code changes)
+        run: python -u -m ty check --error-on-warning --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -397,8 +397,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with ty (As of 20250509, ty version 0.0.0a8, these rules are not yet working well, requiring questionable code changes)
+        run: python -u -m ty check --error-on-warning --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -523,8 +523,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with ty (As of 20250509, ty version 0.0.0a8, these rules are not yet working well, requiring questionable code changes)
+        run: python -u -m ty check --error-on-warning --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
