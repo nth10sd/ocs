@@ -246,7 +246,7 @@ exclude = [
     "venv",
 ]
 include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
-src = ["python"]
+src = ["python/"]
 target-version = "py310"
 unsafe-fixes = true
 
