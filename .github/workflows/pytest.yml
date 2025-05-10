@@ -86,6 +86,8 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
@@ -119,12 +121,12 @@ jobs:
         run: df -h
       - name: Search for existing linter ignore lines in Python
         run: |
-          rg -t py --stats "(?:(?:flake8|noqa|pylint|pyright|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
+          rg -t py --stats "(?:(?:flake8|noqa|pylint|pyrefly|pyright|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
             $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") || true
       - name: Ensure we are not increasing the number of ignore lines as a guideline
         run: |
           if [ $(rg -t py --stats \
-                    "(?:(?:flake8|noqa|pylint|pyright|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
+                    "(?:(?:flake8|noqa|pylint|pyrefly|pyright|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
                     $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") \
                       | awk "/ matches/ && "\!"/ contained matches/" \
                       | cut -d " " -f1) -lt 7 ] ;
@@ -269,6 +271,8 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -395,6 +399,8 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -519,6 +525,8 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty (As of 20250507, ty version 0.0.0a7, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "inconsistent-mro" --ignore "no-matching-overload" --ignore "possibly-unbound-attribute" --ignore "unresolved-import"
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |

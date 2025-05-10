@@ -45,6 +45,7 @@ test = [
     "mypy ~= 1.15.0",
     "overrides ~= 7.7.0",
     "pylint ~= 3.3.7",
+    "pyrefly ~= 0.14.1",
     "pytest ~= 8.3.5",
     "pytest-cov ~= 6.1.1",
     "pytest-dependency ~= 0.6.0",
@@ -56,9 +57,9 @@ test = [
     "pytest-ruff ~= 0.4.1",
     "pytest-vulture ~= 2.2.2",
     "pytest-xdist ~= 3.6.1",
-    "ruff ~= 0.11.8",
+    "ruff ~= 0.11.9",
     "sphinx ~= 8.1.3",
-    "ty ~= 0.0.0a7",
+    "ty ~= 0.0.0a8",
     "vulture ~= 2.14",
 ]
 
@@ -203,6 +204,9 @@ score = "no"
 # Min Python version to use for typing related checks, e.g. ``3.7``
 # This should be equal to the min supported Python version of the project
 py-version = "3.10"
+
+[tool.pyrefly]
+search_path = []
 
 [tool.pytest.ini_options]
 addopts = [
