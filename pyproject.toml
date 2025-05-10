@@ -208,6 +208,10 @@ py-version = "3.10"
 [tool.pyrefly]
 search_path = []
 
+[tool.pyrefly.errors]
+bad-override = false  # Disabled as of immature 20250509 pyrefly version 0.14.1
+missing-attribute = false  # Disabled as of immature 20250509 pyrefly version 0.14.1
+
 [tool.pytest.ini_options]
 addopts = [
     "-n=auto",
