@@ -57,7 +57,7 @@ def get_repo_hash_and_id(
             raise SystemExit("\nAborting...\n")
 
         if update_default == "d":
-            subprocess.run(
+            _ = subprocess.run(
                 [HG_BINARY, "-R", str(repo_dir), "update", "default"],
                 check=True,
             )

@@ -16,7 +16,7 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog=PACKAGE_NAME, description="Usage: %(prog)s [options]"
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "-b",
         "--build-opts",  # Specify how the shell will be built.
         type=lambda x: x.removeprefix('"').removesuffix('"'),
@@ -24,7 +24,7 @@ def parse_args(args: list[str]) -> argparse.Namespace:
         'note that the "equals" symbol is needed for a single build flag, run -h with '
         "other package to get a generated list",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "-r",
         "--revision",
         help="Specify revision to build",

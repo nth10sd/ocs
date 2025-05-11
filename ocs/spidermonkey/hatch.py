@@ -155,7 +155,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
 
     shell.configure()
     try:
-        subprocess.run(
+        _ = subprocess.run(
             shell.cfg_cmd_excl_env,
             check=True,
             cwd=shell.js_objdir,
@@ -177,14 +177,14 @@ def configure_js_shell_compile(shell: SMShell) -> None:
                 if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
                 else shell.git_hash
             )
-            f.write(
+            _ = f.write(
                 f"Configuration of {repo_name} rev {hash_} "
                 "failed with the following output:\n",
             )
-            f.write(ex.stdout.decode("utf-8", errors="replace"))
+            _ = f.write(ex.stdout.decode("utf-8", errors="replace"))
         raise
 
-    sm_compile(shell)
+    _ = sm_compile(shell)
     verify_binary(shell)
     shell.env_dump_and_cleanup()
 
@@ -240,12 +240,14 @@ def sm_compile(shell: SMShell) -> Path:
             )
 
     if shell.shell_compiled_path.is_file():
-        shutil.copy2(str(shell.shell_compiled_path), str(shell.shell_cache_js_bin_path))
+        _ = shutil.copy2(
+            str(shell.shell_compiled_path), str(shell.shell_cache_js_bin_path)
+        )
         for run_lib in shell.shell_compiled_runlibs_path:
             if run_lib.is_file():
-                shutil.copy2(str(run_lib), str(shell.shell_cache_dir))
+                _ = shutil.copy2(str(run_lib), str(shell.shell_cache_dir))
         if Hp.IS_WIN_MB and shell.build_opts.enable_address_sanitizer:
-            shutil.copy2(
+            _ = shutil.copy2(
                 str(
                     zzconsts.CLANG_BINARY.parents[1]
                     / "lib"
@@ -282,11 +284,11 @@ def sm_compile(shell: SMShell) -> Path:
                 if (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
                 else shell.git_hash
             )
-            f.write(
+            _ = f.write(
                 f"Compilation of {repo_name} rev {hash_} "
                 "failed with the following output:\n",
             )
-            f.write(out)
+            _ = f.write(out)
         raise OSError(f"{zzconsts.MAKE_BINARY_PATH} did not result in a js shell.")
 
     return shell.shell_compiled_path
@@ -337,7 +339,7 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
             update_to_rev,
             shell.build_opts.repo_dir,
         )
-        subprocess.run(
+        _ = subprocess.run(
             [
                 zzconsts.HG_BINARY,
                 "-R",
@@ -367,9 +369,9 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
         ):  # Switch to contextlib.suppress when we are fully on Python 3
             shell.shell_cache_js_bin_path.unlink()
         with cached_no_shell.open("a", encoding="utf-8", errors="replace") as f:
-            f.write(f"\nCaught exception {ex!r} ({ex})\n")
-            f.write("Backtrace:\n")
-            f.write(f"{traceback.format_exc()}\n")
+            _ = f.write(f"\nCaught exception {ex!r} ({ex})\n")
+            _ = f.write("Backtrace:\n")
+            _ = f.write(f"{traceback.format_exc()}\n")
         OCS_SM_HATCH_LOG.exception(
             "Compilation failure details in: %s", cached_no_shell
         )

@@ -40,7 +40,7 @@ def test_shell_compile() -> Path:
         "Monkeypatching coverage rev"
         not in (VENV_SITE_PKGS / "coverage" / "inorout.py").read_text()
     ):
-        patch_files(  # Do not assert, as we do not care if patch is already applied
+        _ = patch_files(  # Do not assert, as we do not care if patch is already applied
             VENV_SITE_PKGS,
             (
                 VENV_SITE_PKGS

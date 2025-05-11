@@ -33,7 +33,7 @@ def test_parser() -> None:
 def test_parser_no_equals() -> None:
     """Test the parser with no equals sign for -b or --build-opts."""
     with pytest.raises(SystemExit):
-        parse_args(
+        _ = parse_args(
             [
                 "-b",
                 "--enable-debug --enable-simulator=arm64",
