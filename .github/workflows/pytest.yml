@@ -564,14 +564,14 @@ jobs:
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p $HOME/trees && hg --version -q ;
-          while ($True) {
-            try {
-              hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/
-              break
-            } catch {
-              echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
-              rm $HOME/trees/mozilla-central/ -r -fo ;
-              sleep 2 ;
+          while ($true) {
+            $result = & hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/ 2>&1 ;
+            if ($result -match "abort") {
+              echo "Clone failed. Retrying..." ;
+              sleep 3 ;
+            } else {
+              echo "Clone successful!" ;
+              return ;
             }
           }
 
