@@ -544,10 +544,10 @@ jobs:
         run: rm C:\mozilla-build\python3 -r -fo
       - name: Install uv so we can use uv python
         run: pip install --upgrade uv
-      - name: Get the desired Python
+      - name: Get the desired Python (Also update symlink in the next step)
         run: uv python install 3.10.17
       - name: Copy uv's Python into the correct MozillaBuild location
-        run: ln -s $env:APPDATA\uv\python\cpython-3.10.15-windows-x86_64-none C:\mozilla-build\python3
+        run: ln -s $env:APPDATA\uv\python\cpython-3.10.17-windows-x86_64-none C:\mozilla-build\python3
       - name: Dump a list of available Pythons
         run: uv python list
       - name: Copy Python binary to python3.exe to make Mozilla build process happy
