@@ -532,7 +532,7 @@ jobs:
         run: |
           while ($True) {
             try {
-              choco upgrade hg ripgrep -y ; choco install mozillabuild sd-cli -y ;
+              choco upgrade ripgrep -y ; choco install mozillabuild sd-cli -y ;
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;
@@ -544,6 +544,8 @@ jobs:
         run: rm C:\mozilla-build\python3 -r -fo
       - name: Install uv so we can use uv python
         run: pip install --upgrade uv==0.4.13
+      - name: Install Mercurial
+        run: uv tool install mercurial
       - name: Get the desired Python
         run: uv python install 3.10.15
       - name: Copy uv's Python into the correct MozillaBuild location
