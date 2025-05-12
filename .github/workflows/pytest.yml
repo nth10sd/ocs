@@ -562,7 +562,7 @@ jobs:
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
       - name: Install Mercurial after ensuring uv tool environment has been added
-        run: $env:PATH = "$env:pythonLocation`\Scripts;$env:PATH" ; uv tool install mercurial ; hg --version -q || true
+        run: $env:PATH = "$env:pythonLocation`\Scripts;$env:USERPROFILE`\.local`\bin;$env:PATH" ; uv tool install mercurial ; hg --version -q || true
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p $HOME/trees && hg --version -q ;
