@@ -227,6 +227,7 @@ addopts = [
 ]
 log_level = "DEBUG"
 markers = ["online", "slow"]
+testpaths = ["tests/"]
 xfail_strict = true
 
 [tool.ruff]
