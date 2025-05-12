@@ -544,8 +544,6 @@ jobs:
         run: rm C:\mozilla-build\python3 -r -fo
       - name: Install uv so we can use uv python
         run: pip install --upgrade uv==0.4.13
-      - name: Install Mercurial
-        run: uv tool install mercurial
       - name: Get the desired Python
         run: uv python install 3.10.15
       - name: Copy uv's Python into the correct MozillaBuild location
@@ -563,6 +561,8 @@ jobs:
         run: |
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
+      - name: Install Mercurial after ensuring uv tool environment has been added
+        run: $env:PATH = "$env:USERPROFILE`\.local`\bin;$env:PATH" ; uv tool install mercurial
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
           mkdir -p $HOME/trees && hg --version -q ;
