@@ -3,11 +3,30 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 
 from ocs.util.constants import PACKAGE_NAME
 
 
-def parse_args(args: list[str]) -> argparse.Namespace:
+@dataclass
+class CLIArgs(argparse.Namespace):
+    """A CLI argument dataclass with types, needed to make basedpyright happy."""
+
+    def __init__(
+        self,
+        # pylint: disable-next=unused-argument
+        build_opts_via_cli: str,  # noqa: ARG002
+        # pylint: disable-next=unused-argument
+        revision: str,  # noqa: ARG002
+    ) -> None:
+        """Initialize and inherit behaviour of argparse.Namespace, e.g. exceptions."""
+        super().__init__()
+
+    build_opts_via_cli: str
+    revision: str
+
+
+def parse_args(args: list[str]) -> CLIArgs:
     """Add parser options for compiling SpiderMonkey.
 
     :param args: Arguments to be parsed
@@ -18,7 +37,7 @@ def parse_args(args: list[str]) -> argparse.Namespace:
     )
     _ = parser.add_argument(
         "-b",
-        "--build-opts",  # Specify how the shell will be built.
+        "--build-opts-via-cli",  # Specify how the shell will be built.
         type=lambda x: x.removeprefix('"').removesuffix('"'),
         help='Specify build options, e.g. -b="--disable-debug --enable-optimize", '
         'note that the "equals" symbol is needed for a single build flag, run -h with '
@@ -30,7 +49,10 @@ def parse_args(args: list[str]) -> argparse.Namespace:
         help="Specify revision to build",
     )
     for arg in args:  # Must happen before parser.parse_args runs on args
-        if any(arg.startswith(x) for x in ("-b", "--build-opts")) and "=" not in arg:
-            parser.error('"=" is needed for -b or --build-opts due to argparse')
+        if (
+            any(arg.startswith(x) for x in ("-b", "--build-opts-via-cli"))
+            and "=" not in arg
+        ):
+            parser.error('"=" is needed for -b or --build-opts-via-cli due to argparse')
 
-    return parser.parse_args(args)
+    return parser.parse_args(args, namespace=CLIArgs("", ""))

@@ -14,6 +14,7 @@ from typing import IO
 from typing import TYPE_CHECKING
 
 from overrides import EnforceOverrides
+from typing_extensions import override
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.js_shells.spidermonkey.hatch import SMShell
 from zzbase.js_shells.spidermonkey.hatch import SMShellError
@@ -53,7 +54,7 @@ class OldSMShell(SMShell):
     :param hg_hash: Mercurial (hg) changeset hash
     """
 
-    __slots__ = ()
+    __slots__: list[str] = []
 
     @classmethod
     def main(cls: type[Self], args: list[str] | None = None) -> int:
@@ -72,6 +73,7 @@ class OldSMShell(SMShell):
             OCS_SM_HATCH_LOG.exception("The run function encountered an error")
             raise
 
+    @override
     @staticmethod
     def run(argv: list[str]) -> int:
         """Build a shell and place it in the autobisectjs cache.
@@ -82,7 +84,7 @@ class OldSMShell(SMShell):
         """
         options = parse_args(argv)
         parse_shell_opts_list: list[str] = (
-            options.build_opts.split() if options.build_opts else []
+            options.build_opts_via_cli.split() if options.build_opts_via_cli else []
         )
         options.build_opts = build_options.parse_shell_opts(parse_shell_opts_list)
 
