@@ -11,9 +11,9 @@ import subprocess
 import sys
 import traceback
 from typing import IO
-from typing import TYPE_CHECKING
 
 from overrides import EnforceOverrides
+from typing_extensions import Self  # Directly import from typing on Python 3.11+
 from typing_extensions import override
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.js_shells.spidermonkey.hatch import SMShell
@@ -32,9 +32,6 @@ from zzbase.vcs import hg_helpers
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import hg_helpers as ocs_hg_helpers
 from ocs.util import misc_progs
-
-if TYPE_CHECKING:
-    from typing_extensions import Self  # Directly import from typing on Python 3.11+
 
 OCS_SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
