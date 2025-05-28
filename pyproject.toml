@@ -284,6 +284,21 @@ force-single-line = true
 force-sort-within-sections = true
 known-local-folder = ["ocs"]
 
+[tool.ty.rules]
+# As of 20250527, ty version 0.0.1a7
+# https://github.com/astral-sh/ty/blob/main/docs/reference/rules.md
+division-by-zero = "error"
+invalid-ignore-comment = "error"
+possibly-unbound-attribute = "error"
+possibly-unbound-implicit-call = "error"
+possibly-unbound-import = "error"
+possibly-unresolved-reference = "error"
+redundant-cast = "error"
+undefined-reveal = "error"
+unknown-rule = "error"
+unsupported-base = "error"
+unused-ignore-comment = "error"
+
 [tool.vulture]
 # check-entry-points = 0  # maturin repos only
 exclude = ["build/", "docs/source/conf_correct.py"]
