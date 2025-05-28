@@ -8,7 +8,9 @@ astroid==3.3.10
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.29.1
+basedpyright==1.29.2
+    # via ocs (pyproject.toml)
+beartype==0.21.0
     # via ocs (pyproject.toml)
 certifi==2025.4.26
     # via
@@ -22,7 +24,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.8.0
+coverage[toml]==7.8.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -75,7 +77,7 @@ mypy==1.15.0
     #   pytest-mypy
 mypy-extensions==1.1.0
     # via mypy
-nodejs-wheel-binaries==22.15.1
+nodejs-wheel-binaries==22.16.0
     # via basedpyright
 orderly-set==5.4.1
     # via deepdiff
@@ -100,7 +102,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.16.0
+pyrefly==0.17.0
     # via ocs (pyproject.toml)
 pytest==8.3.5
     # via
@@ -133,11 +135,11 @@ pytest-ruff==0.4.1
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
-pytest-xdist==3.6.1
+pytest-xdist==3.7.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.11.10
+ruff==0.11.11
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -183,7 +185,7 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     #   zzbase
 tomlkit==0.13.2
     # via pylint
-ty==0.0.1a5
+ty==0.0.1a7
     # via ocs (pyproject.toml)
 types-psutil==6.0.0.20241011
     # via zzbase
@@ -209,7 +211,7 @@ urllib3==2.4.0
     # via
     #   requests
     #   types-requests
-uv==0.7.5
+uv==0.7.8
     # via
     #   ocs (pyproject.toml)
     #   zzbase
