@@ -94,7 +94,7 @@ platformdirs==4.3.8
     # via pylint
 pluggy==1.6.0
     # via pytest
-psutil==6.0.0
+psutil==7.0.0
     # via zzbase
 pygments==2.19.1
     # via sphinx
@@ -187,7 +187,7 @@ tomlkit==0.13.2
     # via pylint
 ty==0.0.1a7
     # via ocs (pyproject.toml)
-types-psutil==6.0.0.20241011
+types-psutil==7.0.0.20250516
     # via zzbase
 types-requests==2.32.0.20250515
     # via zzbase
