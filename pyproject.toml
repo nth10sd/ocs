@@ -227,6 +227,9 @@ addopts = [
     "--pylint-error-types=CRWEFI",
     "--strict-markers",
 ]
+filterwarnings = [
+    "error::UserWarning",  # Only beartype issues in this package are interesting
+]
 log_level = "DEBUG"
 markers = ["online", "slow"]
 testpaths = ["tests/"]
