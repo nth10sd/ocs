@@ -46,6 +46,7 @@ def parse_args(args: list[str]) -> CLIArgs:
     _ = parser.add_argument(
         "-r",
         "--revision",
+        default="",
         help="Specify revision to build",
     )
     for arg in args:  # Must happen before parser.parse_args runs on args

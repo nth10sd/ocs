@@ -229,6 +229,7 @@ addopts = [
 ]
 filterwarnings = [
     "error::UserWarning",  # Only beartype issues in this package are interesting
+    "ignore::pytest.PytestReturnNotNoneWarning",  # test_shell_compile returns path to compiled js shell
 ]
 log_level = "DEBUG"
 markers = ["online", "slow"]

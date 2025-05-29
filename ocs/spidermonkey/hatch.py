@@ -106,7 +106,7 @@ class OldSMShell(SMShell):
                     raise OldSMShellError("Repository is not clean")
                 shell = OldSMShell(options.build_opts, git_hash=local_orig_git_hash)
 
-            obtain_shell(shell, update_to_rev=options.revision)
+            obtain_shell(shell, options.revision)
 
             shell_cache_abs_dir = shell.shell_cache_js_bin_path.parents[-3]
             OCS_SM_HATCH_LOG.info(  # Output with "~" instead of the full absolute dir
@@ -295,7 +295,7 @@ def sm_compile(shell: SMShell) -> Path:
 
 def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     shell: SMShell,
-    update_to_rev: str | None = None,
+    update_to_rev: str,
     *,
     _update_latest_txt: bool = False,
 ) -> None:
