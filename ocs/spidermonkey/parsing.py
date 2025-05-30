@@ -56,4 +56,10 @@ def parse_args(args: list[str]) -> CLIArgs:
         ):
             parser.error('"=" is needed for -b or --build-opts-via-cli due to argparse')
 
-    return parser.parse_args(args, namespace=CLIArgs("", ""))
+    return parser.parse_args(
+        args,
+        namespace=CLIArgs(
+            "",  # build_opts_via_cli
+            "",  # revision
+        ),
+    )
