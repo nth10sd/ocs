@@ -40,10 +40,6 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-exceptiongroup==1.3.0 ; python_full_version < '3.11'
-    # via
-    #   anyio
-    #   pytest
 execnet==2.1.1
     # via pytest-xdist
 filelock==3.18.0
@@ -82,7 +78,9 @@ nodejs-wheel-binaries==22.16.0
 orderly-set==5.4.1
     # via deepdiff
 overrides==7.7.0
-    # via ocs (pyproject.toml)
+    # via
+    #   ocs (pyproject.toml)
+    #   zzbase
 packaging==25.0
     # via
     #   ocs (pyproject.toml)
@@ -139,17 +137,19 @@ pytest-xdist==3.7.0
     # via ocs (pyproject.toml)
 requests==2.32.3
     # via sphinx
-ruff==0.11.11
+roman-numerals-py==3.1.0
+    # via sphinx
+ruff==0.11.12
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==80.7.1
+setuptools==80.9.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-dependency
     #   setuptools-scm
     #   zzbase
-setuptools-scm[toml]==8.3.1
+setuptools-scm==8.3.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -157,7 +157,7 @@ sniffio==1.3.1
     # via anyio
 snowballstemmer==3.0.1
     # via sphinx
-sphinx==8.1.3
+sphinx==8.2.3
     # via ocs (pyproject.toml)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
@@ -171,18 +171,6 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomli==2.2.1 ; python_full_version <= '3.11'
-    # via
-    #   ocs (pyproject.toml)
-    #   coverage
-    #   mypy
-    #   pylint
-    #   pytest
-    #   pytest-pylint
-    #   setuptools-scm
-    #   sphinx
-    #   vulture
-    #   zzbase
 tomlkit==0.13.2
     # via pylint
 ty==0.0.1a7
@@ -191,11 +179,7 @@ types-psutil==7.0.0.20250516
     # via zzbase
 types-requests==2.32.0.20250515
     # via zzbase
-types-setuptools==80.7.0.20250516
-    # via
-    #   ocs (pyproject.toml)
-    #   zzbase
-types-toml==0.10.8.20240310 ; python_full_version < '3.11'
+types-setuptools==80.9.0.20250529
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -203,15 +187,13 @@ typing-extensions==4.13.2
     # via
     #   ocs (pyproject.toml)
     #   anyio
-    #   astroid
-    #   exceptiongroup
     #   mypy
     #   zzbase
 urllib3==2.4.0
     # via
     #   requests
     #   types-requests
-uv==0.7.8
+uv==0.7.9
     # via
     #   ocs (pyproject.toml)
     #   zzbase
