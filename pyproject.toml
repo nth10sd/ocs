@@ -272,9 +272,6 @@ ignore = [
     "EM102",   # f-string literals is used in exception constructors, similar to EM101
     "PLR2004", # Difficult to refactor to not use magic values in a big legacy project
     "S603",    # Allow using subprocess methods w/o shell=True, bandit severity is low
-    "TC001",   # TYPE_CHECKING seems incompatible with beartype
-    "TC002",   # TYPE_CHECKING seems incompatible with beartype
-    "TC003",   # TYPE_CHECKING seems incompatible with beartype
     "TRY003",  # Allow specifying long messages outside the exception class
 ]
 select = ["ALL"]
