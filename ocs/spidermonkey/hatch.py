@@ -25,9 +25,7 @@ from zzbase.util.fs_helpers import get_lock_dir_path
 from zzbase.util.fs_helpers import handle_rm_readonly_files
 from zzbase.util.logging import get_logger
 from zzbase.util.utils import LockDir
-from zzbase.util.utils import autoconf_run
 from zzbase.vcs import git_helpers
-from zzbase.vcs import hg_helpers
 
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import hg_helpers as ocs_hg_helpers
@@ -127,30 +125,6 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     js_objdir_path = shell.shell_cache_dir / "objdir-js"
     js_objdir_path.mkdir()
     shell.js_objdir = js_objdir_path
-
-    # Run autoconf 2.13 only on non-Windows platforms if repository revision is before:
-    #   m-c rev 633690:c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3, Fx106
-    #   gecko-dev 511135:b4a2cfe25078c17e2063a6866a3d2caf9d61651f, Fx106
-    # See bug 1787977. m-c rev has been bumped to account for known broken ranges
-    if not Hp.IS_WIN_MB and (
-        (
-            (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-            and hg_helpers.exists_and_is_ancestor(
-                shell.build_opts.repo_dir,
-                shell.hg_hash,
-                "parents(c5dc125ea32ba3e9a7c3fe3cf5be05abd17013a3)",
-            )
-        )
-        or (
-            not (shell.build_opts.repo_dir / ".hg" / "hgrc").is_file()
-            and git_helpers.exists_and_is_ancestor(
-                shell.build_opts.repo_dir,
-                shell.git_hash,
-                "b4a2cfe25078c17e2063a6866a3d2caf9d61651f",
-            )
-        )
-    ):
-        autoconf_run(shell.build_opts.repo_dir / "js" / "src")
 
     shell.configure()
     try:
