@@ -77,7 +77,7 @@ write_to = "ocs/_version.txt"
 [tool.basedpyright]
 exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
 reportImplicitStringConcatenation = false  # Other linters cover this in better ways
-typeCheckingMode = "standard"
+typeCheckingMode = "recommended"
 
 [tool.coverage.report]
 # Taken from: https://coverage.readthedocs.io/en/coverage-5.5/config.html#syntax
@@ -213,7 +213,6 @@ search_path = []
 
 [tool.pyrefly.errors]
 bad-override = false  # Disabled as of immature 20250527 pyrefly version 0.17.0
-missing-attribute = false  # Disabled as of immature 20250527 pyrefly version 0.17.0
 
 [tool.pytest.ini_options]
 addopts = [

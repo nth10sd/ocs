@@ -83,28 +83,28 @@ class OldSMShell(SMShell):
         parse_shell_opts_list: list[str] = (
             options.build_opts_via_cli.split() if options.build_opts_via_cli else []
         )
-        options.build_opts = build_options.parse_shell_opts(parse_shell_opts_list)
+        build_opts = build_options.parse_shell_opts(parse_shell_opts_list)
 
         with LockDir(
-            get_lock_dir_path(Path.home(), options.build_opts.repo_dir),
+            get_lock_dir_path(Path.home(), build_opts.repo_dir),
         ):
             if options.revision:
-                shell = OldSMShell(options.build_opts, hg_hash=options.revision)
-            elif (options.build_opts.repo_dir / ".hg" / "hgrc").is_file():
+                shell = OldSMShell(build_opts, hg_hash=options.revision)
+            elif (build_opts.repo_dir / ".hg" / "hgrc").is_file():
                 local_orig_hg_hash = ocs_hg_helpers.get_repo_hash_and_id(
-                    options.build_opts.repo_dir,
+                    build_opts.repo_dir,
                 )[0]
-                shell = OldSMShell(options.build_opts, hg_hash=local_orig_hg_hash)
+                shell = OldSMShell(build_opts, hg_hash=local_orig_hg_hash)
             else:
                 local_orig_git_hash = git_helpers.get_repo_hash(
-                    options.build_opts.repo_dir,
+                    build_opts.repo_dir,
                 )
                 if not (
-                    git_helpers.is_repo_clean(options.build_opts.repo_dir)
-                    or options.build_opts.overwrite_unclean_repo
+                    git_helpers.is_repo_clean(build_opts.repo_dir)
+                    or build_opts.overwrite_unclean_repo
                 ):
                     raise OldSMShellError("Repository is not clean")
-                shell = OldSMShell(options.build_opts, git_hash=local_orig_git_hash)
+                shell = OldSMShell(build_opts, git_hash=local_orig_git_hash)
 
             obtain_shell(shell, options.revision)
 
@@ -180,7 +180,11 @@ def configure_js_shell_compile(shell: SMShell) -> None:
                 f"Configuration of {repo_name} rev {hash_} "
                 "failed with the following output:\n",
             )
-            _ = f.write(ex.stdout.decode("utf-8", errors="replace"))
+            _ = f.write(
+                ex.stdout.decode(  # pyright: ignore[reportAny]
+                    "utf-8", errors="replace"
+                )
+            )
         raise
 
     _ = sm_compile(shell)
@@ -487,7 +491,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> bool:
     :return: Whether the parameter is supported by the shell
     """
     return bool(
-        json.loads(
+        json.loads(  # pyright: ignore[reportAny]
             test_binary(
                 shell_path,
                 ["-e", f'print(getBuildConfiguration()["{parameter}"])'],
