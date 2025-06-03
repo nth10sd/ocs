@@ -55,7 +55,7 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250527, ty version 0.0.1a7, these rules are not yet working well, requiring questionable code changes)
+      - name: Run with ty (As of 20250602, ty version 0.0.1a8, these rules are not yet working well, requiring questionable code changes)
         run: python -u -m ty check --error-on-warning --ignore "unresolved-import"
 
       # CodeQL analysis section START

@@ -98,7 +98,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.17.1
+pyrefly==0.18.0
     # via ocs (pyproject.toml)
 pytest==8.3.5
     # via
@@ -171,7 +171,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.13.2
     # via pylint
-ty==0.0.1a7
+ty==0.0.1a8
     # via ocs (pyproject.toml)
 types-psutil==7.0.0.20250516
     # via zzbase
@@ -181,7 +181,7 @@ types-setuptools==80.9.0.20250529
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via
     #   ocs (pyproject.toml)
     #   anyio
