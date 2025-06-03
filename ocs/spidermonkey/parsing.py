@@ -15,14 +15,14 @@ class CLIArgs(argparse.Namespace):
     def __init__(
         self,
         # pylint: disable-next=unused-argument
-        build_opts_via_cli: str,  # noqa: ARG002
+        build_opts_via_cli: str | None,  # noqa: ARG002
         # pylint: disable-next=unused-argument
         revision: str,  # noqa: ARG002
     ) -> None:
         """Initialize and inherit behaviour of argparse.Namespace, e.g. exceptions."""
         super().__init__()
 
-    build_opts_via_cli: str
+    build_opts_via_cli: str | None
     revision: str
 
 
@@ -38,7 +38,6 @@ def parse_args(args: list[str]) -> CLIArgs:
     _ = parser.add_argument(
         "-b",
         "--build-opts-via-cli",  # Specify how the shell will be built.
-        required=True,
         type=lambda x: x.removeprefix('"').removesuffix('"'),
         help='Specify build options, e.g. -b="--disable-debug --enable-optimize", '
         'note that the "equals" symbol is needed for a single build flag, run -h with '
