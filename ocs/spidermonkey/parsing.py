@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from ocs.util.constants import PACKAGE_NAME
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CLIArgs(argparse.Namespace):
     """A CLI argument dataclass with types, needed to make basedpyright happy."""
 
@@ -38,16 +38,14 @@ def parse_args(args: list[str]) -> CLIArgs:
     _ = parser.add_argument(
         "-b",
         "--build-opts-via-cli",  # Specify how the shell will be built.
+        required=True,
         type=lambda x: x.removeprefix('"').removesuffix('"'),
         help='Specify build options, e.g. -b="--disable-debug --enable-optimize", '
         'note that the "equals" symbol is needed for a single build flag, run -h with '
         "other package to get a generated list",
     )
     _ = parser.add_argument(
-        "-r",
-        "--revision",
-        default="",
-        help="Specify revision to build",
+        "-r", "--revision", default="", help="Specify revision to build"
     )
     for arg in args:  # Must happen before parser.parse_args runs on args
         if (
@@ -57,9 +55,5 @@ def parse_args(args: list[str]) -> CLIArgs:
             parser.error('"=" is needed for -b or --build-opts-via-cli due to argparse')
 
     return parser.parse_args(
-        args,
-        namespace=CLIArgs(
-            "",  # build_opts_via_cli
-            "",  # revision
-        ),
+        args, namespace=CLIArgs(build_opts_via_cli="", revision="")
     )
