@@ -17,7 +17,7 @@ HG_HELPERS_LOG.setLevel(INFO_LOG_LEVEL)
 
 def get_repo_hash_and_id(
     repo_dir: Path,
-    repo_rev: str = "parents() and default",
+    repo_rev: str | None = None,
 ) -> tuple[str, str, bool]:
     """Return the repository hash and id, and whether it is on default.
 
@@ -29,6 +29,9 @@ def get_repo_hash_and_id(
     :raise SystemExit: When abort is selected
     :return: Changeset hash, local numerical ID, whether repository is on default tip
     """
+    if not repo_rev:
+        repo_rev = "parents() and default"
+
     # This will return null if the repository is not on default.
     hg_log_template_cmds = [
         HG_BINARY,
