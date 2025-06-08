@@ -98,7 +98,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.18.0
+pyrefly==0.18.1
     # via ocs (pyproject.toml)
 pytest==8.3.5
     # via
@@ -137,7 +137,7 @@ requests==2.32.3
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.11.12
+ruff==0.11.13
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -169,7 +169,7 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomlkit==0.13.2
+tomlkit==0.13.3
     # via pylint
 ty==0.0.1a8
     # via ocs (pyproject.toml)
@@ -191,7 +191,7 @@ urllib3==2.4.0
     # via
     #   requests
     #   types-requests
-uv==0.7.9
+uv==0.7.12
     # via
     #   ocs (pyproject.toml)
     #   zzbase
