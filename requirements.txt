@@ -8,9 +8,9 @@ astroid==3.3.10
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.29.2
+basedpyright==1.29.4
     # via ocs (pyproject.toml)
-certifi==2025.4.26
+certifi==2025.6.15
     # via
     #   httpcore
     #   httpx
@@ -22,7 +22,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.8.2
+coverage[toml]==7.9.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -65,7 +65,7 @@ markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.15.0
+mypy==1.16.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -86,21 +86,27 @@ packaging==25.0
     #   setuptools-scm
     #   sphinx
     #   zzbase
+pathspec==0.12.1
+    # via mypy
 platformdirs==4.3.8
     # via pylint
 pluggy==1.6.0
-    # via pytest
+    # via
+    #   pytest
+    #   pytest-cov
 psutil==7.0.0
     # via zzbase
-pygments==2.19.1
-    # via sphinx
+pygments==2.19.2
+    # via
+    #   pytest
+    #   sphinx
 pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.18.1
+pyrefly==0.20.2
     # via ocs (pyproject.toml)
-pytest==8.3.5
+pytest==8.4.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -111,9 +117,10 @@ pytest==8.3.5
     #   pytest-pylint
     #   pytest-randomly
     #   pytest-ruff
+    #   pytest-ty
     #   pytest-vulture
     #   pytest-xdist
-pytest-cov==6.1.1
+pytest-cov==6.2.1
     # via ocs (pyproject.toml)
 pytest-dependency==0.6.0
     # via ocs (pyproject.toml)
@@ -127,17 +134,19 @@ pytest-pylint==0.21.0
     # via ocs (pyproject.toml)
 pytest-randomly==3.16.0
     # via ocs (pyproject.toml)
-pytest-ruff==0.4.1
+pytest-ruff==0.5
+    # via ocs (pyproject.toml)
+pytest-ty==0.1.1
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
 pytest-xdist==3.7.0
     # via ocs (pyproject.toml)
-requests==2.32.3
+requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.11.13
+ruff==0.12.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -171,8 +180,12 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a8
-    # via ocs (pyproject.toml)
+ty==0.0.1a11
+    # via
+    #   ocs (pyproject.toml)
+    #   pytest-ty
+types-defusedxml==0.7.0.20250516
+    # via zzbase
 types-psutil==7.0.0.20250516
     # via zzbase
 types-requests==2.32.0.20250515
@@ -187,11 +200,11 @@ typing-extensions==4.14.0
     #   anyio
     #   mypy
     #   zzbase
-urllib3==2.4.0
+urllib3==2.5.0
     # via
     #   requests
     #   types-requests
-uv==0.7.12
+uv==0.7.13
     # via
     #   ocs (pyproject.toml)
     #   zzbase
