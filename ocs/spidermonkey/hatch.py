@@ -369,7 +369,7 @@ def arch_of_binary(binary: Path) -> str:
     """
     # We can possibly use the python-magic-bin PyPI library in the future
     unsplit_file_type = subprocess.run(
-        [zzconsts.FILE_BINARY, str(binary)],
+        [zzconsts.FILE_BINARY, str(binary)],  # ty: ignore[possibly-unbound-attribute]
         check=True,
         cwd=Path.cwd(),
         stdout=subprocess.PIPE,
