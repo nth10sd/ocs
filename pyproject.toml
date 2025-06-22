@@ -209,9 +209,6 @@ py-version = "3.11"
 python-version = "3.11"
 search-path = []
 
-[tool.pyrefly.errors]
-bad-override = false  # Disabled as of immature 20250602 pyrefly version 0.18.0
-
 [tool.pytest.ini_options]
 addopts = [
     "-n=auto",
