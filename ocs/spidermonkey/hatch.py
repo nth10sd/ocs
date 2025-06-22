@@ -402,8 +402,8 @@ def test_binary(
     shell_path: Path,
     args: list[str],
     *,
-    use_vg: bool = False,
-    stderr: int | IO[bytes] | None = subprocess.STDOUT,
+    use_vg: bool = False,  # noqa: PT028
+    stderr: int | IO[bytes] | None = subprocess.STDOUT,  # noqa: PT028
 ) -> tuple[str, int]:
     """Test the given shell with the given args.
 
