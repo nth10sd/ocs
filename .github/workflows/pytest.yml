@@ -84,8 +84,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250620, ty version 0.0.1a11, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "unresolved-import"
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
@@ -269,8 +269,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250620, ty version 0.0.1a11, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "unresolved-import"
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -397,8 +397,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250620, ty version 0.0.1a11, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "unresolved-import"
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -523,8 +523,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty (As of 20250620, ty version 0.0.1a11, these rules are not yet working well, requiring questionable code changes)
-        run: python -u -m ty check --error-on-warning --ignore "unresolved-import"
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
         run: pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
