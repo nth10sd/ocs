@@ -84,8 +84,9 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty
-        run: python -u -m ty check --error-on-warning
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        shell: bash
+        run: find . -type f -name "*.py" | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
@@ -103,8 +104,6 @@ jobs:
 
       - name: Install 64-bit SpiderMonkey prerequisites
         run: sudo apt-get update ; sudo apt-get install ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) mercurial ripgrep
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        run: rg -t py --files --path-separator $(python3 -c 'from platform import system;print("//" if system().lower() == "windows" else "/")') | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install Valgrind for some builds
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
@@ -170,7 +169,7 @@ jobs:
           BUILDSM: ${{ matrix.build-type }}
         run: |
           pip uninstall -y uv ;  # Temporarily remove uv to make compilation work on CI after bug 1934094 landed
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture ;
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --ty --vulture ;
           pip install --upgrade uv ;
 
       - name: Print the .busted log, if any, when any previous compile steps fail
@@ -269,8 +268,9 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty
-        run: python -u -m ty check --error-on-warning
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        shell: bash
+        run: find . -type f -name "*.py" | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -286,8 +286,6 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        run: rg -t py --files --path-separator $(python3 -c 'from platform import system;print("//" if system().lower() == "windows" else "/")') | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -302,7 +300,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --ty --vulture
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -398,8 +396,9 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty
-        run: python -u -m ty check --error-on-warning
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        shell: bash
+        run: find . -type f -name "*.py" | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -415,8 +414,6 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        run: rg -t py --files --path-separator $(python3 -c 'from platform import system;print("//" if system().lower() == "windows" else "/")') | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
         run: |
@@ -431,7 +428,7 @@ jobs:
         env:
           BUILDSM: ${{ matrix.build-type }}
         run: |
-          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --vulture
+          python -u -m pytest --cov --mypy --pylint --ruff --ruff-format --ty --vulture
 
       - name: Print the .busted log, if any, when any previous compile steps fail
         if: ${{ failure() }}
@@ -524,8 +521,9 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty
-        run: python -u -m ty check --error-on-warning
+      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        shell: bash
+        run: find . -type f -name "*.py" | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |
           while ($True) {
@@ -537,9 +535,6 @@ jobs:
               sleep 2 ;
             }
           }
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        shell: bash
-        run: rg -t py --files --path-separator $(python3 -c 'from platform import system;print("//" if system().lower() == "windows" else "/")') | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Remove Python from MozillaBuild
         run: rm C:\mozilla-build\python3 -r -fo

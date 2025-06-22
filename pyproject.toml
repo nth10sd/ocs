@@ -52,7 +52,7 @@ test = [
     "pytest-pylint ~= 0.21.0",
     "pytest-randomly ~= 3.16.0",
     "pytest-ruff ~= 0.5",
-    "pytest-ty ~= 0.1.1",  # Does not seem to work properly yet as of 0.1.1
+    "pytest-ty ~= 0.1.1",
     "pytest-vulture ~= 2.2.2",
     "pytest-xdist ~= 3.7.0",
     "ruff ~= 0.12.0",
@@ -294,6 +294,9 @@ unknown-rule = "error"
 unresolved-import = "ignore"  # As of 20250620, ty version 0.0.1a11 is immature
 unsupported-base = "error"
 unused-ignore-comment = "error"
+
+[tool.ty.terminal]
+error-on-warning = true  # Quits with a non-zero exit code if a warning appears
 
 [tool.vulture]
 # check-entry-points = 0  # maturin repos only

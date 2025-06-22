@@ -55,8 +55,6 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty
-        run: python -u -m ty check --error-on-warning
 
       # CodeQL analysis section START
       # Linux-only, enable on GitHub for public repos and private repos on Enterprise plan with Advanced Security
