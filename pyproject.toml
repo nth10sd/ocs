@@ -284,7 +284,7 @@ known-local-folder = ["ocs"]
 # https://github.com/astral-sh/ty/blob/main/docs/reference/rules.md
 division-by-zero = "error"
 invalid-ignore-comment = "error"
-possibly-unbound-attribute = "error"
+possibly-unbound-attribute = "ignore"  # As of 20250620, ty version 0.0.1a11 is immature
 possibly-unbound-implicit-call = "error"
 possibly-unbound-import = "error"
 possibly-unresolved-reference = "error"
