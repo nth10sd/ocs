@@ -538,6 +538,7 @@ jobs:
             }
           }
       - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
+        shell: bash
         run: rg -t py --files | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Remove Python from MozillaBuild
