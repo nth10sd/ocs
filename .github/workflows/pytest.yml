@@ -352,9 +352,10 @@ jobs:
       - name: Remove unused Xcode to prevent low disk space issues
         run: |
           df -h ; ls -lahtd /Applications/Xcode*
-          if [ -d /Applications/Xcode_15.4.app/ ] ; then sudo rm -rf /Applications/Xcode_15.4.app ; fi
           if [ -d /Applications/Xcode_16.app/ ] ; then sudo rm -rf /Applications/Xcode_16.app ; fi
           if [ -d /Applications/Xcode_16.1.app/ ] ; then sudo rm -rf /Applications/Xcode_16.1.app ; fi
+          if [ -d /Applications/Xcode_16.2.app/ ] ; then sudo rm -rf /Applications/Xcode_16.2.app ; fi
+          if [ -d /Applications/Xcode_16.3.app/ ] ; then sudo rm -rf /Applications/Xcode_16.3.app ; fi
           df -h ; ls -lahtd /Applications/Xcode*
       - name: Set Xcode version
         shell: bash
