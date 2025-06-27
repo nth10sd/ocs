@@ -84,6 +84,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
@@ -267,6 +269,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -394,6 +398,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -518,6 +524,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
