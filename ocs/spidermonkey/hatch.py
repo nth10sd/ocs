@@ -16,8 +16,8 @@ from typing import Self
 from overrides import EnforceOverrides
 from typing_extensions import override
 from zzbase.js_shells.spidermonkey import build_options
-from zzbase.js_shells.spidermonkey.hatch import SMShell
-from zzbase.js_shells.spidermonkey.hatch import SMShellError
+from zzbase.js_shells.spidermonkey.hatch import NotSoNewSMShell
+from zzbase.js_shells.spidermonkey.hatch import NotSoNewSMShellError
 from zzbase.util import constants as zzconsts
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.fs_helpers import env_with_path
@@ -37,11 +37,11 @@ OCS_SM_HATCH_LOG = get_logger(
 OCS_SM_HATCH_LOG.setLevel(INFO_LOG_LEVEL)
 
 
-class OldSMShellError(SMShellError, EnforceOverrides):
+class OldSMShellError(NotSoNewSMShellError, EnforceOverrides):
     """Error class unique to OldSMShell objects."""
 
 
-class OldSMShell(SMShell):
+class OldSMShell(NotSoNewSMShell):
     """A OldSMShell object represents an actual compiled shell binary.
 
     :param build_opts: Object containing the build options defined in build_options.py
@@ -115,7 +115,7 @@ class OldSMShell(SMShell):
         return 0
 
 
-def configure_js_shell_compile(shell: SMShell) -> None:
+def configure_js_shell_compile(shell: NotSoNewSMShell) -> None:
     """Configure, compile and copy a js shell according to required parameters.
 
     :param shell: Potential compiled shell object
@@ -166,7 +166,7 @@ def configure_js_shell_compile(shell: SMShell) -> None:
     shell.env_dump_and_cleanup()
 
 
-def sm_compile(shell: SMShell) -> Path:
+def sm_compile(shell: NotSoNewSMShell) -> Path:
     """Compile a binary and copy essential compiled files into a desired structure.
 
     :param shell: SpiderMonkey shell parameters
@@ -272,7 +272,7 @@ def sm_compile(shell: SMShell) -> Path:
 
 
 def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
-    shell: SMShell,
+    shell: NotSoNewSMShell,
     update_to_rev: str,
     *,
     _update_latest_txt: bool = False,
@@ -478,7 +478,7 @@ def query_build_cfg(shell_path: Path, parameter: str) -> bool:
     )
 
 
-def verify_binary(shell: SMShell) -> None:
+def verify_binary(shell: NotSoNewSMShell) -> None:
     """Verify that the binary is compiled as intended.
 
     :param shell: Compiled binary object
