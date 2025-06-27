@@ -14,4 +14,4 @@ def test_main() -> None:
     with pytest.raises(SystemExit) as exc:
         start.main()
 
-    assert exc.value.code == 1  # ty: ignore[unresolved-attribute]
+    assert exc.value.code == 1  # ty: ignore[unresolved-attribute,unused-ignore-comment]
