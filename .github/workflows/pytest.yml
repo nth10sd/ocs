@@ -84,9 +84,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        shell: bash
-        run: find . -type d \( -path ./target \) -prune -o -type f -name "*.py" -print | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
@@ -268,9 +267,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        shell: bash
-        run: find . -type d \( -path ./target \) -prune -o -type f -name "*.py" -print | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -396,9 +394,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        shell: bash
-        run: find . -type d \( -path ./target \) -prune -o -type f -name "*.py" -print | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -521,9 +518,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly and print out differences if any (Can be removed when pyrefly matures)
-        shell: bash
-        run: find . -type d \( -path ./target \) -prune -o -type f -name "*.py" -print | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |
           while ($True) {
