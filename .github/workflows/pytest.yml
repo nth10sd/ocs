@@ -84,8 +84,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
+      - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
@@ -267,8 +267,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
+      - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
@@ -394,8 +394,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
+      - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -518,8 +518,8 @@ jobs:
 
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with pyrefly
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores
+      - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
+        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
         run: |
           while ($True) {
