@@ -31,18 +31,18 @@ dependencies = [
     "setuptools-scm >= 8.3.1",
     "types-setuptools==80.9.0.20250529",              # Bump types-* only with mypy
     "typing-extensions ~= 4.14.0",
-    "uv >= 0.7.15",                                  # CI looks out for the comparison: >=
+    "uv >= 0.7.17",                                  # CI looks out for the comparison: >=
     "wheel==0.45.1",
 ]
 dynamic = ["version", "readme"]
 
 [project.optional-dependencies]
 test = [
-    "basedpyright ~= 1.29.4",
+    "basedpyright ~= 1.29.5",
     "coverage ~= 7.9.1",
     "mypy ~= 1.16.1",
     "pylint ~= 3.3.7",
-    "pyrefly ~= 0.21.0",
+    "pyrefly ~= 0.22.0",
     "pytest ~= 8.4.1",
     "pytest-cov ~= 6.2.1",
     "pytest-dependency ~= 0.6.0",
