@@ -22,7 +22,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.9.1
+coverage[toml]==7.9.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -104,7 +104,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.22.0
+pyrefly==0.22.2
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
@@ -140,13 +140,13 @@ pytest-ty==0.1.2
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
-pytest-xdist==3.7.0
+pytest-xdist==3.8.0
     # via ocs (pyproject.toml)
 requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.1
+ruff==0.12.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -178,9 +178,11 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
+tomli==2.2.1 ; python_full_version <= '3.11'
+    # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a12
+ty==0.0.1a13
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -188,23 +190,19 @@ types-defusedxml==0.7.0.20250516
     # via zzbase
 types-psutil==7.0.0.20250516
     # via zzbase
-types-requests==2.32.0.20250515
-    # via zzbase
 types-setuptools==80.9.0.20250529
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-typing-extensions==4.14.0
+typing-extensions==4.14.1
     # via
     #   ocs (pyproject.toml)
     #   anyio
     #   mypy
     #   zzbase
 urllib3==2.5.0
-    # via
-    #   requests
-    #   types-requests
-uv==0.7.17
+    # via requests
+uv==0.7.19
     # via
     #   ocs (pyproject.toml)
     #   zzbase
