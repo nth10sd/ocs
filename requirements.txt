@@ -4,13 +4,13 @@ alabaster==1.0.0
     # via sphinx
 anyio==4.9.0
     # via httpx
-astroid==3.3.10
+astroid==3.3.11
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.30.1
+basedpyright==1.31.0
     # via ocs (pyproject.toml)
-certifi==2025.7.9
+certifi==2025.7.14
     # via
     #   httpcore
     #   httpx
@@ -73,7 +73,7 @@ mypy-extensions==1.1.0
     # via mypy
 nodejs-wheel-binaries==22.17.0
     # via basedpyright
-orderly-set==5.4.1
+orderly-set==5.5.0
     # via deepdiff
 overrides==7.7.0
     # via
@@ -104,7 +104,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.23.1
+pyrefly==0.24.2
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
@@ -146,7 +146,7 @@ requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.2
+ruff==0.12.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -202,7 +202,7 @@ typing-extensions==4.14.1
     #   zzbase
 urllib3==2.5.0
     # via requests
-uv==0.7.20
+uv==0.7.21
     # via
     #   ocs (pyproject.toml)
     #   zzbase
