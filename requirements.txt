@@ -65,7 +65,7 @@ markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.16.1
+mypy==1.17.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
