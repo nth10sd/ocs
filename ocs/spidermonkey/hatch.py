@@ -11,7 +11,6 @@ import subprocess
 import sys
 import traceback
 from typing import IO
-from typing import Self
 
 from overrides import EnforceOverrides
 from typing_extensions import override
@@ -52,7 +51,7 @@ class OldSMShell(NotSoNewSMShell):
     __slots__: list[str] = []
 
     @classmethod
-    def main(cls: type[Self], args: list[str] | None = None) -> int:
+    def main(cls, args: list[str] | None = None) -> int:
         """OldSMShell class main method.
 
         :param args: Additional parameters
