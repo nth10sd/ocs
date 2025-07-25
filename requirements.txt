@@ -38,6 +38,8 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
+dulwich==0.23.2
+    # via zzbase
 execnet==2.1.1
     # via pytest-xdist
 filelock==3.18.0
@@ -201,7 +203,9 @@ typing-extensions==4.14.1
     #   mypy
     #   zzbase
 urllib3==2.5.0
-    # via requests
+    # via
+    #   dulwich
+    #   requests
 uv==0.8.2
     # via
     #   ocs (pyproject.toml)
