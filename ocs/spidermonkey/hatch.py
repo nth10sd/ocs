@@ -19,6 +19,7 @@ from zzbase.js_shells.spidermonkey.hatch import NotSoNewSMShell
 from zzbase.js_shells.spidermonkey.hatch import NotSoNewSMShellError
 from zzbase.util import constants as zzconsts
 from zzbase.util.constants import HostPlatform as Hp
+from zzbase.util.file_inspectors import arch_of_binary
 from zzbase.util.fs_helpers import env_with_path
 from zzbase.util.fs_helpers import get_lock_dir_path
 from zzbase.util.fs_helpers import handle_rm_readonly_files
@@ -355,46 +356,6 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
 
     if Hp.IS_WIN_MB:
         misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
-
-
-def arch_of_binary(binary: Path) -> str:
-    """Test if a binary is 32-bit or 64-bit.
-
-    :param binary: Path to compiled binary
-    :raise ValueError: If a Windows binary was not compiled in Windows
-    :raise ValueError: If a 64-bit binary was compiled though 32-bit was desired
-    :raise ValueError: If a 32-bit binary was compiled though 64-bit was desired
-    :return: Platform architecture of compiled binary
-    """
-    # We can possibly use the python-magic-bin PyPI library in the future
-    unsplit_file_type = subprocess.run(
-        [zzconsts.FILE_BINARY, str(binary)],
-        check=True,
-        cwd=Path.cwd(),
-        stdout=subprocess.PIPE,
-        timeout=99,
-    ).stdout.decode("utf-8", errors="replace")
-    filetype = unsplit_file_type.split(":", 1)[1]
-    if Hp.IS_WIN_MB:
-        if "MS Windows" not in filetype:
-            raise ValueError(
-                "A Windows binary was not compiled in Windows, "
-                f"but rather the following type: {filetype}",
-            )
-        return (
-            "32"
-            if ("Intel 80386 32-bit" in filetype or "PE32 executable" in filetype)
-            else "64"
-        )
-    if "32-bit" in filetype or "i386" in filetype:
-        if "64-bit" in filetype:
-            raise ValueError(f"We should not have a 64-bit binary filetype: {filetype}")
-        return "32"
-    if "64-bit" in filetype:
-        if "32-bit" in filetype:
-            raise ValueError(f"We should not have a 32-bit binary filetype: {filetype}")
-        return "64"
-    return "INVALID"
 
 
 def test_binary(
