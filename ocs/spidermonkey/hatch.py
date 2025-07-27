@@ -20,6 +20,7 @@ from zzbase.js_shells.spidermonkey.hatch import NotSoNewSMShellError
 from zzbase.util import constants as zzconsts
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.util.file_inspectors import arch_of_binary
+from zzbase.util.file_inspectors import verify_full_win_pageheap
 from zzbase.util.fs_helpers import env_with_path
 from zzbase.util.fs_helpers import get_lock_dir_path
 from zzbase.util.fs_helpers import handle_rm_readonly_files
@@ -29,7 +30,6 @@ from zzbase.vcs import git_helpers
 
 from ocs.spidermonkey.parsing import parse_args
 from ocs.util import hg_helpers as ocs_hg_helpers
-from ocs.util import misc_progs
 
 OCS_SM_HATCH_LOG = get_logger(
     __name__, fmt="%(asctime)s %(levelname)-8s [%(funcName)s] %(message)s"
@@ -271,7 +271,7 @@ def sm_compile(shell: NotSoNewSMShell) -> Path:
     return shell.shell_compiled_path
 
 
-def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
+def obtain_shell(  # pylint: disable=too-complex
     shell: NotSoNewSMShell,
     update_to_rev: str,
     *,
@@ -298,8 +298,7 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
     if shell.shell_cache_js_bin_path.is_file():
         OCS_SM_HATCH_LOG.info("Found cached shell...")
         # Assuming that since binary is present, others (e.g. symbols) are also present
-        if Hp.IS_WIN_MB:
-            misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
+        verify_full_win_pageheap(shell.shell_cache_js_bin_path)
         return
 
     if cached_no_shell.is_file():
@@ -354,8 +353,7 @@ def obtain_shell(  # noqa: C901  # pylint: disable=too-complex
         )
         raise
 
-    if Hp.IS_WIN_MB:
-        misc_progs.verify_full_win_pageheap(shell.shell_cache_js_bin_path)
+    verify_full_win_pageheap(shell.shell_cache_js_bin_path)
 
 
 def test_binary(
