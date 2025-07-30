@@ -148,7 +148,7 @@ requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.5
+ruff==0.12.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -206,7 +206,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.3
+uv==0.8.4
     # via
     #   ocs (pyproject.toml)
     #   zzbase
