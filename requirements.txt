@@ -38,7 +38,7 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-dulwich==0.23.2
+dulwich==0.24.1
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
@@ -67,13 +67,13 @@ markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.17.0
+mypy==1.17.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
 mypy-extensions==1.1.0
     # via mypy
-nodejs-wheel-binaries==22.17.1
+nodejs-wheel-binaries==22.18.0
     # via basedpyright
 orderly-set==5.5.0
     # via deepdiff
@@ -106,7 +106,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.26.0
+pyrefly==0.26.1
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
