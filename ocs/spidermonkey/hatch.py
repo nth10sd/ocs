@@ -128,7 +128,7 @@ def configure_js_shell_compile(shell: NotSoNewSMShell) -> None:
 
     shell.configure()
     try:
-        _ = subprocess.run(
+        _ = subprocess.run(  # pyrefly: ignore[no-matching-overload]
             shell.cfg_cmd_excl_env,
             check=True,
             cwd=shell.js_objdir,
@@ -183,7 +183,7 @@ def sm_compile(shell: NotSoNewSMShell) -> Path:
     # Note that having a non-zero exit code does not mean that the operation did not
     # succeed, for example when compiling a shell. A non-zero exit code can appear even
     # though a shell compiled successfully. Thus, we should *not* use check=True here.
-    out = subprocess.run(
+    out = subprocess.run(  # pyrefly: ignore[no-matching-overload]
         cmd_list,
         check=False,
         cwd=shell.js_objdir,
@@ -201,7 +201,7 @@ def sm_compile(shell: NotSoNewSMShell) -> Path:
             OCS_SM_HATCH_LOG.info(
                 "Trying once more due to the compiler running out of memory..."
             )
-            out = subprocess.run(
+            out = subprocess.run(  # pyrefly: ignore[no-matching-overload]
                 cmd_list,
                 check=False,
                 cwd=shell.js_objdir,
