@@ -158,14 +158,10 @@ jobs:
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
-      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      - name: Clone firefox repository from GitHub
         run: |
-          mkdir -p "$HOME"/trees && hg --version -q ;
-          until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
-            echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
-            rm -rf "$HOME"/trees/mozilla-central/ ;
-            sleep 2 ;
-          done
+          mkdir -p "$HOME"/trees ;
+          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox
 
       - name: Run tools using pytest under code coverage
         env:
@@ -288,14 +284,10 @@ jobs:
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
 
-      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      - name: Clone firefox repository from GitHub
         run: |
-          mkdir -p "$HOME"/trees && hg --version -q ;
-          until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
-            echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
-            rm -rf "$HOME"/trees/mozilla-central/ ;
-            sleep 2 ;
-          done
+          mkdir -p "$HOME"/trees ;
+          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox
 
       - name: Run tools using pytest under code coverage
         env:
@@ -415,14 +407,10 @@ jobs:
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
 
-      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      - name: Clone firefox repository from GitHub
         run: |
-          mkdir -p "$HOME"/trees && hg --version -q ;
-          until time hg clone --stream https://hg.mozilla.org/mozilla-central/ "$HOME"/trees/mozilla-central/ ; do
-            echo "Error cloning m-c. Deleting its failed clone directory, then retrying in 2 seconds..." ;
-            rm -rf "$HOME"/trees/mozilla-central/ ;
-            sleep 2 ;
-          done
+          mkdir -p "$HOME"/trees ;
+          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox
 
       - name: Run tools using pytest under code coverage
         env:
@@ -525,7 +513,7 @@ jobs:
         run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
-      - name: Install prerequisites, bz.mercurial-scm.org/show_bug.cgi?id=6910
+      - name: Install prerequisites
         run: |
           while ($True) {
             try {
@@ -558,21 +546,10 @@ jobs:
         run: |
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
-      - name: Install Mercurial after ensuring uv tool environment has been added
-        run: $env:PATH = "$env:pythonLocation`\Scripts;$env:USERPROFILE`\.local`\bin;$env:PATH" ; uv tool install mercurial ; hg --version -q || true
-      - name: Clone Mercurial mozilla-central repo as a stream, retrying in times of failure
+      - name: Clone firefox repository from GitHub
         run: |
-          mkdir -p $HOME/trees && hg --version -q ;
-          while ($true) {
-            $result = & hg clone --stream https://hg.mozilla.org/mozilla-central/ $HOME/trees/mozilla-central/ 2>&1 ;
-            if ($result -match "abort") {
-              echo "Clone failed. Retrying..." ;
-              sleep 3 ;
-            } else {
-              echo "Clone successful!" ;
-              return ;
-            }
-          }
+          mkdir -p $HOME/trees ;
+          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git $HOME/trees/firefox
 
       - name: Create deploy key file
         env:
