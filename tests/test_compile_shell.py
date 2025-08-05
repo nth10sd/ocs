@@ -6,11 +6,15 @@ import contextlib
 from functools import cache
 import os
 from pathlib import Path
+import subprocess
 
 import pytest
 from zzbase.js_shells.spidermonkey import build_options
+from zzbase.js_shells.spidermonkey.hatch import SMShell
 from zzbase.patching.common import patch_files
+from zzbase.util.constants import GIT_BINARY
 from zzbase.util.constants import MC_PATH
+from zzbase.util.constants import TREES_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.vcs.git_helpers import get_repo_hash
@@ -29,9 +33,9 @@ def test_shell_compile() -> Path:
     :raise ValueError: If default_parameters_debug is not in build_opts
     :return: Path to the compiled shell.
     """
-    assert MC_PATH.is_dir()
+    assert MC_PATH.is_dir() or (TREES_PATH / "firefox").is_dir()
     # Change the repository location by uncommenting this line and specifying the
-    # correct one: "-R ~/trees/mozilla-central/")
+    # correct one: "-R ~/trees/firefox/")
 
     # Look for custom coverage.py patch
     if (
@@ -66,22 +70,49 @@ def test_shell_compile() -> Path:
     build_opts = os.getenv("BUILDSM", default_parameters_debug).rstrip()
 
     opts_parsed = build_options.parse_shell_opts(
-        build_opts.split() if build_opts else []
+        build_opts.split() if build_opts else [], is_hg=MC_PATH.is_dir()
     )
     repo_hash = (
         hg_helpers.get_repo_hash_and_id(opts_parsed.repo_dir)[0]
         if (opts_parsed.repo_dir / ".hg" / "hgrc").is_file()
         else get_repo_hash(opts_parsed.repo_dir)
     )
-    old_smshell = (
-        OldSMShell(opts_parsed, hg_hash=repo_hash)
-        if (opts_parsed.repo_dir / ".hg" / "hgrc").is_file()
-        else OldSMShell(opts_parsed, git_hash=repo_hash)
-    )
-    # Ensure exit code is 0
-    assert not old_smshell.run([f"-b={build_opts}"])
+    if MC_PATH.is_dir():
+        old_smshell = OldSMShell(opts_parsed, hg_hash=repo_hash)
+        # Ensure exit code is 0
+        assert not old_smshell.run([f"-b={build_opts}"])
 
-    file_name = f"{build_options.compute_shell_type(opts_parsed)}-{repo_hash}"
+        file_name = f"{build_options.compute_shell_type(opts_parsed)}-{repo_hash}"
+    else:
+        smshell = SMShell(opts_parsed, git_hash=repo_hash)
+        # Ensure exit code is 0
+        assert not smshell.run([f"-b={build_opts}"])
+
+        numerical_head_value = (  # Not using get_repo_num_val that seems 2-3x slower
+            subprocess.run(
+                [
+                    GIT_BINARY,
+                    "-C",
+                    opts_parsed.repo_dir,
+                    "rev-list",
+                    "--count",
+                    "--first-parent",
+                    "HEAD",
+                ],
+                check=True,
+                stdout=subprocess.PIPE,
+            )
+            .stdout.decode("utf-8", errors="surrogateescape")
+            .rstrip()
+            if (opts_parsed.repo_dir / ".git" / "config").is_file()
+            else ""
+        )
+        file_name = (
+            f"{build_options.compute_shell_type(opts_parsed)}"
+            f"-{repo_hash[:12]}"
+            f"{f'-{numerical_head_value}'}"
+        )
+
     js_bin_path = SHELL_CACHE / file_name / file_name
     js_bin_path = js_bin_path.with_suffix(".exe") if Hp.IS_WIN_MB else js_bin_path
     assert js_bin_path.is_file()
