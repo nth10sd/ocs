@@ -15,11 +15,11 @@ python -u -m pip install --break-system-packages -r requirements.txt ;
 python -u -m pip install --break-system-packages --upgrade -e . ;
 
 # Run mach bootstrap
-pushd "$HOME"/trees/mozilla-central/ || exit ;
-# No to mercurial changes, pushing commits upstream and telemetry submission
+pushd "$HOME"/trees/firefox/ || exit ;
+# Yes to git changes, no to pushing commits upstream and telemetry submission
 ./mach bootstrap --app=js << EOF
 
-n
+y
 
 n
 
@@ -60,7 +60,7 @@ unset BUILDSM
 popd || exit ;
 
 # Remove m-c to free up more space for tarball creation
-rm -rf "$HOME"/trees/mozilla-central/ ;
+rm -rf "$HOME"/trees/firefox/ ;
 
 # Create a tarball and SHA-256 checksum only if pytest ran without any errors
 if [ ! -f "$HOME"/pytest-failure.txt ]; then
