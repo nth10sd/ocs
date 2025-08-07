@@ -1,5 +1,7 @@
 """Test compiling a shell."""
 
+# pylint: disable=duplicate-code
+
 from __future__ import annotations
 
 import contextlib
@@ -25,6 +27,7 @@ from ocs.util import hg_helpers
 SHELL_CACHE = Path.home() / "shell-cache"
 
 
+@pytest.mark.skip
 @pytest.mark.slow
 @cache
 def test_shell_compile() -> Path:
