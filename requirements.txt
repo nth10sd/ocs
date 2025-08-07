@@ -2,15 +2,15 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-anyio==4.9.0
+anyio==4.10.0
     # via httpx
 astroid==3.3.11
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.31.0
+basedpyright==1.31.1
     # via ocs (pyproject.toml)
-certifi==2025.7.14
+certifi==2025.8.3
     # via
     #   httpcore
     #   httpx
@@ -22,7 +22,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.10.1
+coverage[toml]==7.10.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -106,7 +106,7 @@ pylint==3.3.7
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.26.1
+pyrefly==0.27.1
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
@@ -148,7 +148,7 @@ requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.7
+ruff==0.12.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -184,7 +184,7 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a16
+ty==0.0.1a17
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -206,7 +206,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.4
+uv==0.8.6
     # via
     #   ocs (pyproject.toml)
     #   zzbase
