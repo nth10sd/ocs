@@ -70,7 +70,7 @@ class OldSMShell(NotSoNewSMShell):
 
     @override
     @staticmethod
-    def run(argv: list[str]) -> int:  # pyrefly: ignore[bad-override]
+    def run(argv: list[str]) -> int:
         """Build a shell and place it in the autobisectjs cache.
 
         :param argv: Additional parameters
