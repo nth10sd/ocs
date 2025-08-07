@@ -13,4 +13,6 @@ def test_main() -> None:
     with pytest.raises(SystemExit) as exc:
         start.main()
 
-    assert not exc.value.code  # ty: ignore[unresolved-attribute,unused-ignore-comment]
+    # Due to immature ty now, we may be able to remove hasattr check in the future
+    # As of 20250806, ty version 0.0.1a16 is immature
+    assert not exc.value.code if hasattr(exc.value, "code") else 1
