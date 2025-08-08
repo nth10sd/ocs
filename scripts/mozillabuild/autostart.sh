@@ -16,10 +16,10 @@ python -u -m pip install --break-system-packages --upgrade -e . ;
 
 # Run mach bootstrap
 pushd "$HOME"/trees/firefox/ || exit ;
-# Yes to git changes, no to pushing commits upstream and telemetry submission
+# No to exclusion checks, pushing commits upstream and telemetry submission
 ./mach bootstrap --app=js << EOF
 
-y
+n
 
 n
 
