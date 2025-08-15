@@ -42,7 +42,7 @@ dulwich==0.24.1
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
-filelock==3.18.0
+filelock==3.19.1
     # via pytest-mypy
 h11==0.16.0
     # via httpcore
@@ -148,7 +148,7 @@ requests==2.32.4
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.8
+ruff==0.12.9
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -184,7 +184,7 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a17
+ty==0.0.1a18
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -206,7 +206,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.10
+uv==0.8.11
     # via
     #   ocs (pyproject.toml)
     #   zzbase
