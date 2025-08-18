@@ -214,7 +214,7 @@ search-path = []
 
 [tool.pyrefly.errors]
 # Continue switch to inline ignore lines when pyrefly continues to mature
-redundant-condition = false  # As of 20250729, pyrefly version 0.26.0 is immature
+redundant-condition = false  # As of 20250817, pyrefly version 0.29.0 is immature
 
 [tool.pytest.ini_options]
 addopts = [
