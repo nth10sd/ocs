@@ -287,18 +287,19 @@ force-sort-within-sections = true
 known-local-folder = ["ocs"]
 
 [tool.ty.rules]
-# As of 20250620, ty version 0.0.1a11
+# As of 20250817, ty version 0.0.1a18
 # https://github.com/astral-sh/ty/blob/main/docs/reference/rules.md
 division-by-zero = "error"
 invalid-ignore-comment = "error"
-possibly-unbound-attribute = "ignore"  # As of 20250620, ty version 0.0.1a11 is immature
+possibly-unbound-attribute = "error"
 possibly-unbound-implicit-call = "error"
 possibly-unbound-import = "error"
 possibly-unresolved-reference = "error"
 redundant-cast = "error"
 undefined-reveal = "error"
 unknown-rule = "error"
-unresolved-import = "ignore"  # As of 20250620, ty version 0.0.1a11 is immature
+unresolved-global = "error"
+unresolved-import = "ignore"  # As of 20250817, ty version 0.0.1a18 is immature
 unsupported-base = "error"
 unused-ignore-comment = "error"
 
