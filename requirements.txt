@@ -22,7 +22,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.10.3
+coverage[toml]==7.10.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -106,7 +106,7 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.28.1
+pyrefly==0.29.0
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
@@ -144,7 +144,7 @@ pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
 pytest-xdist==3.8.0
     # via ocs (pyproject.toml)
-requests==2.32.4
+requests==2.32.5
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
@@ -158,7 +158,7 @@ setuptools==80.9.0
     #   pytest-dependency
     #   setuptools-scm
     #   zzbase
-setuptools-scm==8.3.1
+setuptools-scm==9.2.0
     # via
     #   ocs (pyproject.toml)
     #   zzbase
