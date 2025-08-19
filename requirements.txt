@@ -184,7 +184,7 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a18
+ty==0.0.1a19
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -206,7 +206,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.11
+uv==0.8.12
     # via
     #   ocs (pyproject.toml)
     #   zzbase
