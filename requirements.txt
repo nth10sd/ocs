@@ -8,7 +8,7 @@ astroid==3.3.11
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.31.2
+basedpyright==1.31.3
     # via ocs (pyproject.toml)
 certifi==2025.8.3
     # via
@@ -106,7 +106,7 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.29.0
+pyrefly==0.29.1
     # via ocs (pyproject.toml)
 pytest==8.4.1
     # via
