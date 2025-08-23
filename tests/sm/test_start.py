@@ -6,17 +6,16 @@ import contextlib
 from functools import cache
 import os
 from pathlib import Path
-import subprocess
 
 import pytest
 from zzbase.js_shells.spidermonkey import build_options
 from zzbase.patching.common import patch_files
-from zzbase.util.constants import GIT_BINARY
 from zzbase.util.constants import MC_PATH
 from zzbase.util.constants import TREES_PATH
 from zzbase.util.constants import VENV_SITE_PKGS
 from zzbase.util.constants import HostPlatform as Hp
 from zzbase.vcs.git_helpers import get_repo_hash
+from zzbase.vcs.git_helpers import get_repo_num_val
 
 from ocs.sm import start
 from ocs.spidermonkey.hatch import OldSMShell
@@ -87,22 +86,8 @@ def test_main() -> None:
         with pytest.raises(SystemExit) as exc:
             start.main([f"-b={build_opts}"])
 
-        numerical_head_value = (  # Not using get_repo_num_val that seems 2-3x slower
-            subprocess.run(
-                [
-                    GIT_BINARY,
-                    "-C",
-                    opts_parsed.repo_dir,
-                    "rev-list",
-                    "--count",
-                    "--first-parent",
-                    "HEAD",
-                ],
-                check=True,
-                stdout=subprocess.PIPE,
-            )
-            .stdout.decode("utf-8", errors="surrogateescape")
-            .rstrip()
+        numerical_head_value = (
+            str(get_repo_num_val(opts_parsed.repo_dir))
             if (opts_parsed.repo_dir / ".git" / "config").is_file()
             else ""
         )
