@@ -22,7 +22,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.10.5
+coverage[toml]==7.10.6
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -90,7 +90,7 @@ packaging==25.0
     #   zzbase
 pathspec==0.12.1
     # via mypy
-platformdirs==4.3.8
+platformdirs==4.4.0
     # via pylint
 pluggy==1.6.0
     # via
@@ -148,7 +148,7 @@ requests==2.32.5
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.10
+ruff==0.12.11
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -206,7 +206,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.13
+uv==0.8.14
     # via
     #   ocs (pyproject.toml)
     #   zzbase
