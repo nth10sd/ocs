@@ -106,9 +106,9 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.31.0
+pyrefly==0.32.0
     # via ocs (pyproject.toml)
-pytest==8.4.1
+pytest==8.4.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -122,7 +122,7 @@ pytest==8.4.1
     #   pytest-ty
     #   pytest-vulture
     #   pytest-xdist
-pytest-cov==6.2.1
+pytest-cov==6.3.0
     # via ocs (pyproject.toml)
 pytest-dependency==0.6.0
     # via ocs (pyproject.toml)
@@ -148,7 +148,7 @@ requests==2.32.5
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.11
+ruff==0.12.12
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
