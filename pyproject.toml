@@ -30,7 +30,7 @@ dependencies = [
     "setuptools==80.9.0",
     "setuptools-scm >= 8.3.1",
     "types-setuptools==80.9.0.20250529",              # Bump types-* only with mypy
-    "typing-extensions ~= 4.14.0",
+    "typing-extensions ~= 4.15.0",
     "uv >= 0.8.15",                                  # CI looks out for the comparison: >=
     "wheel==0.45.1",
 ]
@@ -44,7 +44,7 @@ test = [
     "pylint ~= 3.3.8",
     "pyrefly ~= 0.32.0",
     "pytest ~= 8.4.2",
-    "pytest-cov ~= 6.3.0",
+    "pytest-cov ~= 7.0.0",
     "pytest-dependency ~= 0.6.0",
     "pytest-instafail ~= 0.5.0",
     "pytest-mypy ~= 1.0.1",

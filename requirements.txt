@@ -42,6 +42,8 @@ dulwich==0.24.1
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
+ffpuppet==0.18.4
+    # via lithium-reducer
 filelock==3.19.1
     # via pytest-mypy
 h11==0.16.0
@@ -63,6 +65,8 @@ isort==6.0.1
     # via pylint
 jinja2==3.1.6
     # via sphinx
+lithium-reducer==4.0.0
+    # via zzbase
 markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
@@ -97,7 +101,9 @@ pluggy==1.6.0
     #   pytest
     #   pytest-cov
 psutil==7.0.0
-    # via zzbase
+    # via
+    #   ffpuppet
+    #   zzbase
 pygments==2.19.2
     # via
     #   pytest
@@ -122,7 +128,7 @@ pytest==8.4.2
     #   pytest-ty
     #   pytest-vulture
     #   pytest-xdist
-pytest-cov==6.3.0
+pytest-cov==7.0.0
     # via ocs (pyproject.toml)
 pytest-dependency==0.6.0
     # via ocs (pyproject.toml)
@@ -196,7 +202,7 @@ types-setuptools==80.9.0.20250529
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via
     #   ocs (pyproject.toml)
     #   anyio
@@ -218,5 +224,7 @@ wheel==0.45.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
+xvfbwrapper==0.2.13 ; sys_platform == 'linux'
+    # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
