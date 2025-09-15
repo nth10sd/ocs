@@ -121,15 +121,15 @@ jobs:
         run: df -h
       - name: Search for existing linter ignore lines in Python
         run: |
-          rg -t py --stats "(?:(?:flake8|noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
-            $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") || true
+          rg -t js -t ts -t py --stats "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
+            $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" ! -name "conf_correct.py") || true
       - name: Ensure we are not increasing the number of ignore lines as a guideline
         run: |
-          if [ $(rg -t py --stats \
-                    "(?:(?:flake8|noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME)" \
-                    $(find . -type f -name "*.py" -not -path "./build/lib/*" ! -name "conf_correct.py") \
+          if [ $(rg -t js -t ts -t py --stats \
+                    "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
+                    $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" ! -name "conf_correct.py") \
                       | awk "/ matches/ && "\!"/ contained matches/" \
-                      | cut -d " " -f1) -lt 19 ] ;
+                      | cut -d " " -f1) -lt 16 ] ;
           then exit 0 ; else exit 1 ; fi ;
       - name: Run shellcheck
         if: startsWith(runner.os, 'Linux')
