@@ -259,14 +259,11 @@ exclude = [
     "venv",
 ]
 include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
-src = ["python/"]
 target-version = "py311"
-unsafe-fixes = true
 
 [tool.ruff.lint]
 ignore = [
     "COM812",  # Seems to add trailing comma even when arguments already fit on one line
-    "D104",    # __init__.py files can be completely blank and not require a docstring
     "D203",    # D211 is used by default, which is incompatible with this
     "D213",    # D212 is used by default, which is incompatible with this
     "EM101",   # String literals is used in exception constructors, stack is readable
@@ -281,6 +278,10 @@ select = ["ALL"]
 force-single-line = true
 force-sort-within-sections = true
 known-local-folder = ["ocs"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["D104"]  # __init__.py files can be blank & not require a docstring
+"!ocs/**.py" = ["S101"]  # Allow assert keyword use in tests/ but not in package
 
 [tool.ty.rules]
 # As of 20250817, ty version 0.0.1a18
