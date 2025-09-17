@@ -112,7 +112,7 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.32.0
+pyrefly==0.33.0
     # via ocs (pyproject.toml)
 pytest==8.4.2
     # via
@@ -224,7 +224,7 @@ wheel==0.45.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.13 ; sys_platform == 'linux'
+xvfbwrapper==0.2.14 ; sys_platform == 'linux'
     # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
