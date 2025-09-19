@@ -98,8 +98,8 @@ jobs:
           echo "LLVM_CONFIG=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
           echo "LLVM_SYMBOLIZER=/usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer" >> $GITHUB_ENV ;
           echo "SHELL=/bin/bash" >> $GITHUB_ENV ;
-      - name: Set Linux llvm-config and llvm-symbolizer symlinks
-        run: sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-config /usr/bin/llvm-config && sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
+      - name: Set Linux llvm-symbolizer symlink
+        run: sudo ln -s /usr/lib/llvm-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)/bin/llvm-symbolizer /usr/bin/llvm-symbolizer
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
