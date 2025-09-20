@@ -317,7 +317,7 @@ def obtain_shell(  # pylint: disable=too-complex
         )
         _ = subprocess.run(
             [
-                zzconsts.HG_BINARY,
+                zzconsts.HG_BINARY,  # ty: ignore[possibly-unbound-attribute]
                 "-R",
                 str(shell.build_opts.repo_dir),
                 "update",
