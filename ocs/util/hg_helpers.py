@@ -6,7 +6,7 @@ from logging import INFO as INFO_LOG_LEVEL
 from pathlib import Path
 import subprocess
 
-from zzbase.util.constants import HG_BINARY  # ty: ignore[possibly-unbound-import]
+from zzbase.util.constants import HG_BINARY
 from zzbase.util.logging import get_logger
 
 HG_HELPERS_LOG = get_logger(
