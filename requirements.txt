@@ -71,7 +71,7 @@ markupsafe==3.0.2
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.18.1
+mypy==1.18.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -112,7 +112,7 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.33.0
+pyrefly==0.33.1
     # via ocs (pyproject.toml)
 pytest==8.4.2
     # via
@@ -154,7 +154,7 @@ requests==2.32.5
     # via sphinx
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.13.0
+ruff==0.13.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -190,7 +190,7 @@ tomli==2.2.1 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a20
+ty==0.0.1a21
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -212,7 +212,7 @@ urllib3==2.5.0
     # via
     #   dulwich
     #   requests
-uv==0.8.17
+uv==0.8.19
     # via
     #   ocs (pyproject.toml)
     #   zzbase
