@@ -200,7 +200,7 @@ jobs:
         run: uv cache prune --ci || true
 
   macOS-x86_64: # Remove when the Intel runners on CI no longer exist
-    runs-on: macos-13 # Update Xcode version to the latest available as well
+    runs-on: macos-15-intel # Update Xcode version to the latest available as well
     strategy:
       fail-fast: false
       matrix:
@@ -228,11 +228,9 @@ jobs:
           if [ -d /Applications/Xcode_15.0.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.0.1.app ; fi
           if [ -d /Applications/Xcode_15.1.app/ ] ; then sudo rm -rf /Applications/Xcode_15.1.app ; fi
           df -h ; ls -lahtd /Applications/Xcode*
-      - name: Set Xcode version
-        shell: bash
-        run: |
-          sudo xcode-select -s "/Applications/Xcode_15.2.app/Contents/Developer"
-          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_15.2.app" >> $GITHUB_ENV
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
