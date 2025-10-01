@@ -67,7 +67,7 @@ jinja2==3.1.6
     # via sphinx
 lithium-reducer==4.0.0
     # via zzbase
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via jinja2
 mccabe==0.7.0
     # via pylint
@@ -112,7 +112,7 @@ pylint==3.3.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.34.0
+pyrefly==0.35.0
     # via ocs (pyproject.toml)
 pytest==8.4.2
     # via
