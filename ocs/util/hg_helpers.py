@@ -89,4 +89,4 @@ def get_repo_hash_and_id(
         raise ValueError("hg_id_full should not be an empty string")
     (hg_id_hash, hg_id_local_num) = hg_id_full.split(" ")
     HG_HELPERS_LOG.debug("Finished getting the repository's hash and local id number")
-    return hg_id_hash, hg_id_local_num, is_on_default
+    return hg_id_hash, hg_id_local_num, is_on_default  # pyrefly: ignore[unbound-name]
