@@ -31,7 +31,6 @@ def test_main() -> None:
 
     :raise ValueError: If default_parameters_debug is not in build_opts
     """
-    exc = None
     assert MC_PATH.is_dir() or (TREES_PATH / "firefox").is_dir()
     # Change the repository location by uncommenting this line and specifying the
     # correct one: "-R ~/trees/firefox/")
@@ -83,8 +82,7 @@ def test_main() -> None:
 
         file_name = f"{build_options.compute_shell_type(opts_parsed)}-{repo_hash}"
     else:
-        with pytest.raises(SystemExit) as exc:
-            start.main([f"-b={build_opts}"])
+        start.main([f"-b={build_opts}"])
 
         numerical_head_value = (
             str(get_repo_num_val(opts_parsed.repo_dir))
@@ -103,9 +101,3 @@ def test_main() -> None:
 
     with contextlib.suppress(OSError):
         SHELL_CACHE.rmdir()  # Cleanup shell-cache test directory only if empty
-
-    # Due to immature ty now, we may be able to remove hasattr check in the future
-    # As of 20250806, ty version 0.0.1a16 is immature
-    if exc is not None:
-        assert isinstance(exc.value, SystemExit)
-        assert not exc.value.code
