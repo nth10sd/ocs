@@ -170,12 +170,6 @@ load-plugins = [
 # Pickle collected data for later comparisons
 persistent = "no"
 
-[tool.pylint.similarities]
-ignore-comments = "no"
-# Ignore imports when computing similarities
-ignore-imports = "yes"
-min-similarity-lines = 5
-
 [tool.pylint.messages_control]
 disable = ["locally-disabled", "suppressed-message"]
 enable = [
@@ -202,6 +196,12 @@ accept-no-yields-doc = "no"
 [tool.pylint.reports]
 # Activate the evaluation score
 score = "no"
+
+[tool.pylint.similarities]
+ignore-comments = "yes"
+# Ignore imports when computing similarities
+ignore-imports = "yes"
+min-similarity-lines = 8
 
 [tool.pylint.typing]
 # Min Python version to use for typing related checks, e.g. ``3.7``
