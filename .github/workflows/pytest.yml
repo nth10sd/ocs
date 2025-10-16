@@ -106,7 +106,7 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
       - name: Install 64-bit SpiderMonkey prerequisites
-        run: sudo apt-get update ; sudo apt-get install ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) mercurial ripgrep
+        run: sudo apt-get update ; sudo apt-get install ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
       - name: Install Valgrind for some builds
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
@@ -282,7 +282,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
 
       - name: Clone firefox repository from GitHub
         run: |
@@ -405,7 +405,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar mercurial pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
 
       - name: Clone firefox repository from GitHub
         run: |
