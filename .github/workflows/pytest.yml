@@ -113,6 +113,12 @@ jobs:
       - name: Install 32-bit prerequisites for some builds, only on x86_64 hosts
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386 ; fi
+      - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          python -u -m basedpyright --ignoreexternal --verifytypes $(python -c 'import pathlib;print([x for x in pathlib.Path("pyproject.toml").read_text().split("\n") if "name = " in x][0].removeprefix("name = \"").removesuffix("\""))') \
+          | rg "Type completeness score" \
+          | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
       - name: List free space
         run: df -h
       - name: Remove unneeded browsers, only on x86_64 hosts
@@ -283,6 +289,12 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+      - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          python -u -m basedpyright --ignoreexternal --verifytypes $(python -c 'import pathlib;print([x for x in pathlib.Path("pyproject.toml").read_text().split("\n") if "name = " in x][0].removeprefix("name = \"").removesuffix("\""))') \
+          | rg "Type completeness score" \
+          | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
       - name: Clone firefox repository from GitHub
         run: |
@@ -406,6 +418,12 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
         run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+      - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          python -u -m basedpyright --ignoreexternal --verifytypes $(python -c 'import pathlib;print([x for x in pathlib.Path("pyproject.toml").read_text().split("\n") if "name = " in x][0].removeprefix("name = \"").removesuffix("\""))') \
+          | rg "Type completeness score" \
+          | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
       - name: Clone firefox repository from GitHub
         run: |
@@ -524,6 +542,12 @@ jobs:
               sleep 2 ;
             }
           }
+      - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
+        if: startsWith(runner.os, 'Linux')
+        run: |
+          python -u -m basedpyright --ignoreexternal --verifytypes $(python -c 'import pathlib;print([x for x in pathlib.Path("pyproject.toml").read_text().split("\n") if "name = " in x][0].removeprefix("name = \"").removesuffix("\""))') \
+          | rg "Type completeness score" \
+          | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
       - name: Remove Python from MozillaBuild
         run: rm C:\mozilla-build\python3 -r -fo
