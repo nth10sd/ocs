@@ -78,7 +78,7 @@ jobs:
       - name: Print differences in git repository needed to make CI work
         run: git diff
       - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt -e .
+        run: uv pip install -r requirements.txt --config-settings editable_mode=strict -e .
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
@@ -258,7 +258,7 @@ jobs:
       - name: Print differences in git repository needed to make CI work
         run: git diff
       - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt -e .
+        run: uv pip install -r requirements.txt --config-settings editable_mode=strict -e .
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
@@ -381,7 +381,7 @@ jobs:
       - name: Print differences in git repository needed to make CI work
         run: git diff
       - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt -e .
+        run: uv pip install -r requirements.txt --config-settings editable_mode=strict -e .
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
@@ -505,7 +505,7 @@ jobs:
         run: git checkout -- requirements.txt ;
       - name: Install package in development mode
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: pip install --upgrade -e . ;
+        run: pip install --upgrade --config-settings editable_mode=strict -e . ;
 
       - name: Run with ruff
         run: python -u -m ruff check
