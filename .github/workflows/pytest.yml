@@ -276,7 +276,7 @@ jobs:
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
-        run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
+        run: brew install llvm || true ; brew link --overwrite python@3.13 ; brew install llvm ; ls -l /usr/local/Cellar/llvm/
       - name: Set macOS environment variables
         run: |
           echo "LLVM_CONFIG=/usr/local/Cellar/llvm/$(pushd /usr/local/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
@@ -288,7 +288,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -405,7 +405,7 @@ jobs:
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
       - name: Make sure LLVM is installed and look for available LLVM versions
-        run: brew install llvm || true ; brew link --overwrite python@3.12 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
+        run: brew install llvm || true ; brew link --overwrite python@3.13 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
       - name: Set macOS environment variables
         run: |
           echo "LLVM_CONFIG=/opt/homebrew/Cellar/llvm/$(pushd /opt/homebrew/Cellar/llvm/ > /dev/null ; ls -d */ | sed 's/.$//' ; popd > /dev/null;)/bin/llvm-config" >> $GITHUB_ENV ;
@@ -417,7 +417,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.12 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
         if: startsWith(runner.os, 'Linux')
         run: |
