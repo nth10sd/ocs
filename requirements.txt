@@ -33,7 +33,7 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-dulwich==0.24.4
+dulwich==0.24.5
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
@@ -142,7 +142,7 @@ requests==2.32.5
     #   zzbase
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.14.0
+ruff==0.14.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -176,7 +176,7 @@ tomli==2.3.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a22
+ty==0.0.1a23
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
