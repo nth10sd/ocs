@@ -64,7 +64,7 @@ def test_main() -> None:
     build_opts = os.getenv("BUILDSM", default_parameters_debug).rstrip()
 
     opts_parsed = build_options.parse_shell_opts(
-        build_opts.split() if build_opts else [], is_hg=False
+        build_opts.split() if build_opts else []
     )
     repo_hash = get_repo_hash(opts_parsed.repo_dir)
     start.main([f"-b={build_opts}"])
