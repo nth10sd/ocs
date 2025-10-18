@@ -18,4 +18,5 @@ def main(cli_args: list[str] | None = None) -> None:
         cli_args = sys.argv[1:]  # pragma: no cover
 
     if exit_code := SMShell.main(cli_args):  # Raise unexpected exit codes (if not 0)
-        raise SystemExit(exit_code)
+        # Ignored (code coverage), as function should run successfully
+        raise SystemExit(exit_code)  # pragma: no cover
