@@ -57,7 +57,7 @@ fi ;
 unset BUILDSM
 popd || exit ;
 
-# Remove m-c to free up more space for tarball creation
+# Remove repository to free up more space for tarball creation
 rm -rf "$HOME"/trees/firefox/ ;
 
 # Create a tarball and SHA-256 checksum only if pytest ran without any errors
