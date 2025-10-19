@@ -86,3 +86,48 @@ def test_main() -> None:
 
     with contextlib.suppress(OSError):
         SHELL_CACHE.rmdir()  # Cleanup shell-cache test directory only if empty
+
+
+def test_main_no_parameters(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test the main function that does not have any parameters passed in.
+
+    :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions
+    """
+    with monkeypatch.context() as m1:
+        m1.setattr(
+            "sys.argv",
+            ["THIS_IS_IGNORED", '-b="--enable-debug"', '-R="~/trees/firefox"'],
+        )
+
+        with monkeypatch.context() as m2:
+
+            def f(_: object) -> int:
+                """Lambda test function.
+
+                :return: 0 for testing only
+                """
+                return 0
+
+            m2.setattr("zzbase.js_shells.spidermonkey.hatch.SMShell.main", f)
+
+            start.main()
+
+
+def test_main_unexpected_compilation_exit_code(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test the SMShell main function when it returns an unexpected exit code.
+
+    :param monkeypatch: Fixture from pytest for monkeypatching some variables/functions
+    """
+    with monkeypatch.context() as m:
+
+        def f(_: object) -> int:
+            """Lambda test function.
+
+            :return: 1 for testing having to deal with an unexpected non-zero exit code
+            """
+            return 1
+
+        m.setattr("zzbase.js_shells.spidermonkey.hatch.SMShell.main", f)
+        # Test a failed compile, with an unexpected non-zero exit code
+        with pytest.raises(SystemExit):
+            start.main(['-b="--enable-debug"'])
