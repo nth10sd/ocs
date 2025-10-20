@@ -1,0 +1,7 @@
+"""Test start.py from <package name>.jsc."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+SHELL_CACHE = Path.home() / "shell-cache"
