@@ -33,7 +33,7 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-dulwich==0.24.5
+dulwich==0.24.6
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
@@ -45,7 +45,7 @@ idna==3.11
     # via requests
 imagesize==1.4.1
     # via sphinx
-iniconfig==2.1.0
+iniconfig==2.3.0
     # via pytest
 isort==6.1.0
     # via pylint
@@ -86,7 +86,7 @@ pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
-psutil==7.1.0
+psutil==7.1.1
     # via
     #   ffpuppet
     #   zzbase
@@ -152,7 +152,7 @@ setuptools==80.9.0
     #   pytest-dependency
     #   setuptools-scm
     #   zzbase
-setuptools-scm==9.2.1
+setuptools-scm==9.2.2
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -201,7 +201,7 @@ urllib3==2.5.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.9.3
+uv==0.9.4
     # via
     #   ocs (pyproject.toml)
     #   zzbase

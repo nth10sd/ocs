@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "setuptools==80.9.0",
-    "setuptools-scm >= 9.2.1",
+    "setuptools-scm >= 9.2.2",
     "wheel==0.45.1",
 ]
 build-backend = "setuptools.build_meta"
@@ -29,10 +29,10 @@ dependencies = [
     "overrides ~= 7.7.0",
     "packaging ~= 25.0",
     "setuptools==80.9.0",
-    "setuptools-scm >= 9.2.1",
+    "setuptools-scm >= 9.2.2",
     "types-setuptools==80.9.0.20250822",              # Bump types-* only with mypy
     "typing-extensions ~= 4.15.0",
-    "uv >= 0.9.3",                                  # CI looks out for the comparison: >=
+    "uv >= 0.9.4",                                  # CI looks out for the comparison: >=
     "wheel==0.45.1",
 ]
 dynamic = ["version", "readme"]
