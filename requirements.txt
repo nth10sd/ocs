@@ -6,7 +6,7 @@ astroid==3.3.11
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.31.7
+basedpyright==1.32.0
     # via ocs (pyproject.toml)
 certifi==2025.10.5
     # via requests
@@ -98,7 +98,7 @@ pylint==3.3.9
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.37.0
+pyrefly==0.38.2
     # via ocs (pyproject.toml)
 pytest==8.4.2
     # via
@@ -201,7 +201,7 @@ urllib3==2.5.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.9.4
+uv==0.9.5
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -213,7 +213,7 @@ wheel==0.45.1
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.14 ; sys_platform == 'linux'
+xvfbwrapper==0.2.15 ; sys_platform == 'linux'
     # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
