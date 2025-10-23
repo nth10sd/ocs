@@ -70,9 +70,9 @@ jobs:
             ${{ secrets.CRASH2COV_TOKEN }}
             ${{ secrets.ZZBASE_TOKEN }}
 
-      - name: Install uv
+      - name: Install uv and ripgrep
         shell: bash
-        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
+        run: python -u -m pip install --upgrade ripgrep uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -106,7 +106,7 @@ jobs:
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
 
       - name: Install 64-bit SpiderMonkey prerequisites
-        run: sudo apt-get update ; sudo apt-get install ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;) ripgrep
+        run: sudo apt-get update ; sudo apt-get install ccache libclang1-$(pushd /usr/lib/ > /dev/null ; ls -d llvm-*/ | tail -n 1 | sed 's/.$//' | cut -d "-" -f 2 ; popd > /dev/null;)
       - name: Install Valgrind for some builds
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
@@ -256,9 +256,9 @@ jobs:
             ${{ secrets.CRASH2COV_TOKEN }}
             ${{ secrets.ZZBASE_TOKEN }}
 
-      - name: Install uv
+      - name: Install uv and ripgrep
         shell: bash
-        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
+        run: python -u -m pip install --upgrade ripgrep uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -288,7 +288,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -385,9 +385,9 @@ jobs:
             ${{ secrets.CRASH2COV_TOKEN }}
             ${{ secrets.ZZBASE_TOKEN }}
 
-      - name: Install uv
+      - name: Install uv and ripgrep
         shell: bash
-        run: python -u -m pip install --upgrade uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
+        run: python -u -m pip install --upgrade ripgrep uv=="$(python -u -c 'from pathlib import Path;print(list(set([x for x in Path("pyproject.toml").read_text(encoding="utf-8").splitlines() if "uv >= " in x]))[0].split("# ", maxsplit=1)[0].strip().split("\"")[1].removeprefix("uv >= "))')"
       - name: Remove subdomain to make requirements.txt setup work in CI
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
@@ -417,7 +417,7 @@ jobs:
       - name: Check versions
         run: gcc --version; g++ --version; clang --version; clang++ --version; llvm-symbolizer --version; llvm-config --version
       - name: Install 32/64-bit SpiderMonkey prerequisites and forcibly overwrite existing brew issues when linking Python
-        run: brew install ccache gawk gnu-tar pkg-config python ripgrep zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
+        run: brew install ccache gawk gnu-tar pkg-config python zlib || true ; brew link --overwrite python@3.13 ; brew autoremove
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
         if: startsWith(runner.os, 'Linux')
         run: |
@@ -506,9 +506,9 @@ jobs:
 
       # uv (0.3.2) pip seems to have issues accessing the GitHub Actions env and PATHs, whereas pip seems fine
 
-      - name: Install pip prerequisites
+      - name: Install pip prerequisites and ripgrep
         if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: python -u -m pip install --upgrade pip setuptools wheel ;
+        run: python -u -m pip install --upgrade pip ripgrep setuptools wheel ;
       - name: Remove subdomain to make requirements.txt setup work in CI
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt ;
@@ -535,7 +535,7 @@ jobs:
         run: |
           while ($True) {
             try {
-              choco upgrade ripgrep -y ; choco install mozillabuild sd-cli -y ;
+              choco install mozillabuild sd-cli -y ;
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;
