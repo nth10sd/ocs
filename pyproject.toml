@@ -299,7 +299,6 @@ possibly-unresolved-reference = "error"
 redundant-cast = "error"
 undefined-reveal = "error"
 unresolved-global = "error"
-unresolved-import = "ignore"  # As of 20251023, ty version 0.0.1a24 is immature
 unsupported-base = "error"
 unused-ignore-comment = "error"
 useless-overload-body = "error"
