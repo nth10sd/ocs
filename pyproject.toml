@@ -137,7 +137,7 @@ max-line-length = 88
 allow-any-import-level = ["resource", "winreg"]
 
 [tool.pylint.main]
-ignore-paths = ["target/testdir-*/*"]  # Especially for maturin projects
+ignore-paths = ["^build/*, ^target/testdir-*/*"]  # Especially for maturin projects
 # Use multiple processes to speed up Pylint.
 # Note that sometimes the duplicate-code checker runs properly only when set to 1
 jobs = 3
@@ -209,6 +209,7 @@ min-similarity-lines = 8
 py-version = "3.11"
 
 [tool.pyrefly]
+project-excludes = ["build/"]
 python-version = "3.11"
 search-path = []
 
