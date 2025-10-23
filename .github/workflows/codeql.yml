@@ -49,7 +49,7 @@ jobs:
       - name: Print differences in git repository needed to make CI work
         run: git diff
       - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt -e .
+        run: uv pip install -r requirements.txt --config-settings editable_mode=strict -e .
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
