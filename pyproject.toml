@@ -39,7 +39,7 @@ dynamic = ["version", "readme"]
 
 [project.optional-dependencies]
 test = [
-    "basedpyright ~= 1.32.0",
+    "basedpyright ~= 1.32.1",
     "coverage ~= 7.11.0",
     "mypy ~= 1.18.2",
     "pylint ~= 3.3.9",
@@ -58,7 +58,7 @@ test = [
     "pytest-xdist ~= 3.8.0",
     "ruff ~= 0.14.1",
     "sphinx ~= 8.2.3",
-    "ty ~= 0.0.1a23",
+    "ty ~= 0.0.1a24",
     "vulture ~= 2.14",
 ]
 
@@ -284,21 +284,21 @@ known-local-folder = ["ocs"]
 "!ocs/**.py" = ["S101"]  # Allow assert keyword use in tests/ but not in package
 
 [tool.ty.rules]
-# As of 20251012, ty version 0.0.1a22
+# As of 20251023, ty version 0.0.1a24
 # https://github.com/astral-sh/ty/blob/main/docs/reference/rules.md
 ambiguous-protocol-member = "error"
 deprecated = "error"
 division-by-zero = "error"
 invalid-ignore-comment = "error"
+ignore-comment-unknown-rule = "error"
 possibly-missing-attribute = "error"
 possibly-missing-implicit-call = "error"
 possibly-missing-import = "error"
 possibly-unresolved-reference = "error"
 redundant-cast = "error"
 undefined-reveal = "error"
-unknown-rule = "error"
 unresolved-global = "error"
-unresolved-import = "ignore"  # As of 20251012, ty version 0.0.1a22 is immature
+unresolved-import = "ignore"  # As of 20251023, ty version 0.0.1a24 is immature
 unsupported-base = "error"
 unused-ignore-comment = "error"
 useless-overload-body = "error"

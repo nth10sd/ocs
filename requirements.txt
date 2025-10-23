@@ -6,7 +6,7 @@ astroid==3.3.11
     # via pylint
 babel==2.17.0
     # via sphinx
-basedpyright==1.32.0
+basedpyright==1.32.1
     # via ocs (pyproject.toml)
 certifi==2025.10.5
     # via requests
@@ -33,7 +33,7 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-dulwich==0.24.6
+dulwich==0.24.7
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
@@ -176,7 +176,7 @@ tomli==2.3.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a23
+ty==0.0.1a24
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
