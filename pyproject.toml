@@ -299,6 +299,7 @@ possibly-unresolved-reference = "error"
 redundant-cast = "error"
 undefined-reveal = "error"
 unresolved-global = "error"
+unresolved-import = "ignore"  # Disabled for this repository
 unsupported-base = "error"
 unused-ignore-comment = "error"
 useless-overload-body = "error"
