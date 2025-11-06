@@ -575,9 +575,9 @@ jobs:
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
-          mkdir -p $HOME/trees ;
-          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
-          git -C "$HOME"/trees/firefox rev-parse HEAD
+          mkdir -p $HOME\trees ;
+          git clone --depth 1 --no-single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
+          git -C $HOME\trees\firefox rev-parse HEAD
 
       - name: Create deploy key file
         env:
