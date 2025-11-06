@@ -33,11 +33,11 @@ distro==1.9.0
     #   zzbase
 docutils==0.21.2
     # via sphinx
-dulwich==0.24.7
+dulwich==0.24.8
     # via zzbase
 execnet==2.1.1
     # via pytest-xdist
-ffpuppet==0.18.4
+ffpuppet==0.18.5
     # via lithium-reducer
 filelock==3.20.0
     # via pytest-mypy
@@ -86,7 +86,7 @@ pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
-psutil==7.1.2
+psutil==7.1.3
     # via
     #   ffpuppet
     #   zzbase
@@ -98,7 +98,7 @@ pylint==3.3.9
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.39.1
+pyrefly==0.40.0
     # via ocs (pyproject.toml)
 pytest==8.4.2
     # via
@@ -142,7 +142,7 @@ requests==2.32.5
     #   zzbase
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.14.2
+ruff==0.14.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -176,7 +176,7 @@ tomli==2.3.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.13.3
     # via pylint
-ty==0.0.1a24
+ty==0.0.1a25
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -201,7 +201,7 @@ urllib3==2.5.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.9.5
+uv==0.9.7
     # via
     #   ocs (pyproject.toml)
     #   zzbase
