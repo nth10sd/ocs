@@ -213,7 +213,7 @@ project-excludes = ["build/"]
 python-version = "3.11"
 search-path = []
 
-[tool.pytest.ini_options]
+[tool.pytest]
 addopts = [
     "-n=auto",
     "--dist=loadscope",
