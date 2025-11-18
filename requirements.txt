@@ -17,7 +17,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.11.3
+coverage[toml]==7.12.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -63,7 +63,7 @@ mypy==1.18.2
     #   pytest-mypy
 mypy-extensions==1.1.0
     # via mypy
-nodejs-wheel-binaries==22.20.0
+nodejs-wheel-binaries==24.11.1
     # via basedpyright
 orderly-set==5.5.0
     # via deepdiff
@@ -98,7 +98,7 @@ pylint==3.3.9
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.41.2
+pyrefly==0.42.1
     # via ocs (pyproject.toml)
 pytest==9.0.1
     # via
@@ -201,7 +201,7 @@ urllib3==2.5.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.9.9
+uv==0.9.10
     # via
     #   ocs (pyproject.toml)
     #   zzbase
