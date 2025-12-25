@@ -284,6 +284,9 @@ known-local-folder = ["ocs"]
 "**/__init__.py" = ["D104"]  # __init__.py files can be blank & not require a docstring
 "!ocs/**.py" = ["S101"]  # Allow assert keyword use in tests/ but not in package
 
+[tool.ty.analysis]
+respect-type-ignore-comments = false  # Disable support for `type: ignore` comments
+
 [tool.ty.rules]
 # As of 20251023, ty version 0.0.1a24
 # https://github.com/astral-sh/ty/blob/main/docs/reference/rules.md
