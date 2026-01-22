@@ -130,12 +130,12 @@ jobs:
       - name: Search for existing linter ignore lines in Python
         run: |
           rg -t js -t ts -t py --stats "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
-            $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" ! -name "conf_correct.py") || true
+            $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" -not -path "./node_modules/*" ! -name "conf_correct.py") || true
       - name: Ensure we are not increasing the number of ignore lines as a guideline
         run: |
           if [ $(rg -t js -t ts -t py --stats \
                     "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
-                    $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" ! -name "conf_correct.py") \
+                    $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" -not -path "./node_modules/*" ! -name "conf_correct.py") \
                       | awk "/ matches$/ && "\!"/ contained matches$/" \
                       | cut -d " " -f1) -lt 9 ] ;
           then exit 0 ; else exit 1 ; fi ;
@@ -470,15 +470,15 @@ jobs:
       fail-fast: false
       matrix:
         build-type: [
-          # Empty space needed only for Win CI, will be .rstrip() later
-          # The "" null string cannot seem to propagate properly from
-          # PowerShell -> batch script -> bash
-          " ",
-          "--enable-address-sanitizer", # DllMain patch and bug 1802675 patch added
-          "--enable-debug --disable-optimize",
-          "--enable-debug --disable-optimize --enable-simulator=arm64",
-          "--disable-debug --enable-simulator=arm64",
-        ]
+            # Empty space needed only for Win CI, will be .rstrip() later
+            # The "" null string cannot seem to propagate properly from
+            # PowerShell -> batch script -> bash
+            " ",
+            "--enable-address-sanitizer", # DllMain patch and bug 1802675 patch added
+            "--enable-debug --disable-optimize",
+            "--enable-debug --disable-optimize --enable-simulator=arm64",
+            "--disable-debug --enable-simulator=arm64",
+          ]
         python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v5
