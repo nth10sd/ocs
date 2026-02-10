@@ -67,7 +67,7 @@ version = { attr = "ocs.__version__" }
 readme = { file = ["README.md", "CHANGELOG.md"] }
 
 [tool.setuptools_scm]
-write_to = "ocs/_version.txt"
+version_file = "ocs/_version.txt"
 
 ##### Other tools #####
 
