@@ -1,75 +1,66 @@
-[build-system]
-requires = [
-    "setuptools==80.9.0",
-    "setuptools-scm >= 9.2.2",
-    "wheel >= 0.46.3",
-]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "ocs"
 # Use the following command to find all places to update Python versions
 #   rg --hidden --files | rg -v ".min.js" | xargs rg -I "3[\.]*10" | rg "(py|ver)"
 requires-python = ">=3.11"
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Topic :: Software Development :: Testing",
-    "Topic :: Utilities",
+  "Development Status :: 2 - Pre-Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Utilities",
 ]
 dependencies = [
-    "distro ~= 1.9.0",
-    "overrides ~= 7.7.0",
-    "packaging ~= 26.0",
-    "setuptools==80.9.0",
-    "setuptools-scm >= 9.2.2",
-    "types-setuptools==80.9.0.20250822",              # Bump types-* only with mypy
-    "typing-extensions ~= 4.15.0",
-    "uv >= 0.9.27",                                  # CI looks out for the comparison: >=
-    "wheel >= 0.46.3",
+  "distro ~= 1.9.0",
+  "overrides ~= 7.7.0",
+  "packaging ~= 26.0",
+  "setuptools==80.9.0",
+  "setuptools-scm >= 9.2.2",
+  "types-setuptools==80.9.0.20250822",  # Bump types-* only with mypy
+  "typing-extensions ~= 4.15.0",
+  "uv >= 0.9.27",  # CI looks out for the comparison: >=
+  "wheel >= 0.46.3",
 ]
-dynamic = ["version", "readme"]
+dynamic = ["readme", "version"]
 
 [project.optional-dependencies]
 test = [
-    "basedpyright ~= 1.37.2",
-    "coverage ~= 7.13.2",
-    "mypy ~= 1.19.1",
-    "pylint ~= 4.0.4",
-    "pyrefly ~= 0.50.0",
-    "pytest ~= 9.0.2",
-    "pytest-cov ~= 7.0.0",
-    "pytest-dependency ~= 0.6.0",
-    "pytest-instafail ~= 0.5.0",
-    "pytest-mypy ~= 1.0.1",
-    "pytest-order ~= 1.3.0",
-    "pytest-pylint ~= 0.21.0",
-    "pytest-randomly ~= 4.0.1",
-    "pytest-ruff ~= 0.5",
-    "pytest-ty ~= 0.1.4",
-    "pytest-vulture ~= 2.2.2",
-    "pytest-xdist ~= 3.8.0",
-    "ruff ~= 0.14.14",
-    "sphinx ~= 9.0.4",
-    "ty ~= 0.0.14",
-    "vulture ~= 2.14",
+  "basedpyright ~= 1.37.2",
+  "coverage ~= 7.13.2",
+  "mypy ~= 1.19.1",
+  "pylint ~= 4.0.4",
+  "pyrefly ~= 0.50.0",
+  "pytest ~= 9.0.2",
+  "pytest-cov ~= 7.0.0",
+  "pytest-dependency ~= 0.6.0",
+  "pytest-instafail ~= 0.5.0",
+  "pytest-mypy ~= 1.0.1",
+  "pytest-order ~= 1.3.0",
+  "pytest-pylint ~= 0.21.0",
+  "pytest-randomly ~= 4.0.1",
+  "pytest-ruff ~= 0.5",
+  "pytest-ty ~= 0.1.4",
+  "pytest-vulture ~= 2.2.2",
+  "pytest-xdist ~= 3.8.0",
+  "ruff ~= 0.14.14",
+  "sphinx ~= 9.0.4",
+  "ty ~= 0.0.14",
+  "vulture ~= 2.14",
 ]
 
-[tool.setuptools.dynamic]
-version = { attr = "ocs.__version__" }
-readme = { file = ["README.md", "CHANGELOG.md"] }
-
-[tool.setuptools_scm]
-version_file = "ocs/_version.txt"
-
-##### Other tools #####
+[build-system]
+requires = [
+  "setuptools==80.9.0",
+  "setuptools-scm >= 9.2.2",
+  "wheel >= 0.46.3",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.basedpyright]
 exclude = ["**/node_modules", "**/__pycache__", "**/.*", "build/"]
@@ -80,27 +71,27 @@ typeCheckingMode = "recommended"
 [tool.coverage.report]
 # Taken from: https://coverage.readthedocs.io/en/coverage-5.5/config.html#syntax
 exclude_lines = [
-    "def __repr__",               # Ignore missing debug-only code
-    "except ImportError(.*):",    # Likely Python version-specific code
-    "if 0:",                      # Ignore non-runnable code not being run
-    "if TYPE_CHECKING:",
-    "if __name__ == .__main__.:", # Ignore non-runnable code not being run
-    "pragma: no cover",
-    "raise AssertionError",       # Ignore tests not hitting defensive assertion code
-    "raise NotImplementedError",  # Ignore tests not hitting defensive assertion code
+  "def __repr__",  # Ignore missing debug-only code
+  "except ImportError(.*):",  # Likely Python version-specific code
+  "if 0:",  # Ignore non-runnable code not being run
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",  # Ignore non-runnable code not being run
+  "pragma: no cover",
+  "raise AssertionError",  # Ignore tests not hitting defensive assertion code
+  "raise NotImplementedError",  # Ignore tests not hitting defensive assertion code
 ]
-fail_under = 25 # Minimum code coverage percent
+fail_under = 25  # Minimum code coverage percent
 show_missing = true
 
 [tool.coverage.run]
 concurrency = ["multiprocessing"]
 omit = [
-    "*/.egg/*",
-    "*/.eggs/*",
-    "*/.tox/*",
-    "*/__main__.py",
-    "*/build/*",
-    "*/dist/*",
+  "*/.egg/*",
+  "*/.eggs/*",
+  "*/.tox/*",
+  "*/__main__.py",
+  "*/build/*",
+  "*/dist/*",
 ]
 parallel = true
 sigterm = true
@@ -136,37 +127,40 @@ max-line-length = 88
 allow-any-import-level = ["resource", "winreg"]
 
 [tool.pylint.main]
-ignore-paths = ["^build/*, ^target/testdir-*/*"]  # Especially for maturin projects
+ignore-paths = [
+  "^build/*",
+  "^target/testdir-*/*",
+]  # Especially for maturin projects
 # Use multiple processes to speed up Pylint.
 # Note that sometimes the duplicate-code checker runs properly only when set to 1
 jobs = 3
 # Whole list retrieved on 2025-10-12 from: https://pylint.pycqa.org/en/latest/user_guide/checkers/extensions.html
 load-plugins = [
-    "pylint.extensions.bad_builtin",
-    "pylint.extensions.broad_try_clause",
-    "pylint.extensions.check_elif",
-    "pylint.extensions.code_style",
-    "pylint.extensions.comparison_placement",
-    "pylint.extensions.confusing_elif",
-    "pylint.extensions.consider_refactoring_into_while_condition",
-    "pylint.extensions.consider_ternary_expression",
-    "pylint.extensions.dict_init_mutate",
-    "pylint.extensions.docparams",
-    "pylint.extensions.docstyle",
-    "pylint.extensions.dunder",
-    "pylint.extensions.empty_comment",
-    "pylint.extensions.eq_without_hash",
-    "pylint.extensions.for_any_all",
-    # "pylint.extensions.magic_value",  # Too-opinionated
-    "pylint.extensions.mccabe",
-    "pylint.extensions.no_self_use",
-    "pylint.extensions.overlapping_exceptions",
-    "pylint.extensions.private_import",
-    "pylint.extensions.redefined_loop_name",
-    "pylint.extensions.redefined_variable_type",
-    "pylint.extensions.set_membership",
-    "pylint.extensions.typing",
-    "pylint.extensions.while_used",
+  "pylint.extensions.bad_builtin",
+  "pylint.extensions.broad_try_clause",
+  "pylint.extensions.check_elif",
+  "pylint.extensions.code_style",
+  "pylint.extensions.comparison_placement",
+  "pylint.extensions.confusing_elif",
+  "pylint.extensions.consider_refactoring_into_while_condition",
+  "pylint.extensions.consider_ternary_expression",
+  "pylint.extensions.dict_init_mutate",
+  "pylint.extensions.docparams",
+  "pylint.extensions.docstyle",
+  "pylint.extensions.dunder",
+  "pylint.extensions.empty_comment",
+  "pylint.extensions.eq_without_hash",
+  "pylint.extensions.for_any_all",
+  # "pylint.extensions.magic_value",  # Too-opinionated
+  "pylint.extensions.mccabe",
+  "pylint.extensions.no_self_use",
+  "pylint.extensions.overlapping_exceptions",
+  "pylint.extensions.private_import",
+  "pylint.extensions.redefined_loop_name",
+  "pylint.extensions.redefined_variable_type",
+  "pylint.extensions.set_membership",
+  "pylint.extensions.typing",
+  "pylint.extensions.while_used",
 ]
 # Pickle collected data for later comparisons
 persistent = "no"
@@ -174,16 +168,16 @@ persistent = "no"
 [tool.pylint.messages_control]
 disable = ["locally-disabled", "suppressed-message"]
 enable = [
-    "bad-inline-option",
-    "consider-using-augmented-assign",
-    "deprecated-pragma",
-    "file-ignored",
-    "prefer-typing-namedtuple",
-    "raw-checker-failed",
-    "use-implicit-booleaness-not-comparison-to-string",
-    "use-implicit-booleaness-not-comparison-to-zero",
-    "use-symbolic-message-instead",
-    "useless-suppression",
+  "bad-inline-option",
+  "consider-using-augmented-assign",
+  "deprecated-pragma",
+  "file-ignored",
+  "prefer-typing-namedtuple",
+  "raw-checker-failed",
+  "use-implicit-booleaness-not-comparison-to-string",
+  "use-implicit-booleaness-not-comparison-to-zero",
+  "use-symbolic-message-instead",
+  "useless-suppression",
 ]
 
 [tool.pylint.parameter_documentation]
@@ -214,18 +208,18 @@ search-path = []
 
 [tool.pytest]
 addopts = [
-    "-n=auto",
-    "--dist=loadscope",
-    "--durations=7",
-    "--error-on-failed-ordering",
-    "--instafail",
-    "--no-cov-on-fail",
-    "--order-dependencies",
-    "--pylint-error-types=CRWEFI",
+  "--dist=loadscope",
+  "--durations=7",
+  "--error-on-failed-ordering",
+  "--instafail",
+  "--no-cov-on-fail",
+  "--order-dependencies",
+  "--pylint-error-types=CRWEFI",
+  "-n=auto",
 ]
 filterwarnings = [
-    "error::UserWarning",  # Only beartype issues in this package are interesting
-    "ignore::pytest.PytestReturnNotNoneWarning",  # test_shell_compile returns path to compiled js shell
+  "error::UserWarning",  # Only beartype issues in this package are interesting
+  "ignore::pytest.PytestReturnNotNoneWarning",  # test_shell_compile returns path to compiled js shell
 ]
 log_level = "DEBUG"
 markers = ["online", "slow"]
@@ -235,41 +229,41 @@ testpaths = ["tests/"]
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
 exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
 ]
 include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
 target-version = "py311"
 
 [tool.ruff.lint]
 ignore = [
-    "COM812",  # Seems to add trailing comma even when arguments already fit on one line
-    "D203",    # D211 is used by default, which is incompatible with this
-    "D213",    # D212 is used by default, which is incompatible with this
-    "EM101",   # String literals is used in exception constructors, stack is readable
-    "EM102",   # f-string literals is used in exception constructors, similar to EM101
-    "PLR2004", # Difficult to refactor to not use magic values in a big legacy project
-    "S603",    # Allow using subprocess methods w/o shell=True, bandit severity is low
-    "TRY003",  # Allow specifying long messages outside the exception class
+  "COM812",  # Seems to add trailing comma even when arguments already fit on one line
+  "D203",  # D211 is used by default, which is incompatible with this
+  "D213",  # D212 is used by default, which is incompatible with this
+  "EM101",  # String literals is used in exception constructors, stack is readable
+  "EM102",  # f-string literals is used in exception constructors, similar to EM101
+  "PLR2004",  # Difficult to refactor to not use magic values in a big legacy project
+  "S603",  # Allow using subprocess methods w/o shell=True, bandit severity is low
+  "TRY003",  # Allow specifying long messages outside the exception class
 ]
 select = ["ALL"]
 
@@ -279,8 +273,21 @@ force-sort-within-sections = true
 known-local-folder = ["ocs"]
 
 [tool.ruff.lint.per-file-ignores]
-"**/__init__.py" = ["D104"]  # __init__.py files can be blank & not require a docstring
-"!ocs/**.py" = ["S101"]  # Allow assert keyword use in tests/ but not in package
+"**/__init__.py" = [
+  "D104",  # __init__.py files can be blank & not require a docstring
+]
+"!ocs/**.py" = [
+  "S101",  # Allow assert keyword use in tests/ but not in package
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "ocs.__version__" }
+readme = { file = ["README.md", "CHANGELOG.md"] }
+
+[tool.setuptools_scm]
+version_file = "ocs/_version.txt"
+
+## ### Other tools ### ##
 
 [tool.ty.analysis]
 respect-type-ignore-comments = false  # Disable support for `type: ignore` comments
