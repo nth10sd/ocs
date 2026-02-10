@@ -24,7 +24,7 @@ dependencies = [
   "setuptools-scm >= 9.2.2",
   "types-setuptools==80.9.0.20250822",  # Bump types-* only with mypy
   "typing-extensions ~= 4.15.0",
-  "uv >= 0.9.27",  # CI looks out for the comparison: >=
+  "uv >= 0.10.0",
   "wheel >= 0.46.3",
 ]
 dynamic = ["readme", "version"]
