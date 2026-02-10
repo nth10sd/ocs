@@ -2,11 +2,11 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-astroid==4.0.3
+astroid==4.0.4
     # via pylint
-babel==2.17.0
+babel==2.18.0
     # via sphinx
-basedpyright==1.37.2
+basedpyright==1.37.4
     # via ocs (pyproject.toml)
 certifi==2026.1.4
     # via requests
@@ -17,7 +17,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.13.2
+coverage[toml]==7.13.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -101,13 +101,12 @@ pylint==4.0.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.50.0
+pyrefly==0.52.0
     # via ocs (pyproject.toml)
 pytest==9.0.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
-    #   pytest-dependency
     #   pytest-instafail
     #   pytest-mypy
     #   pytest-order
@@ -118,8 +117,6 @@ pytest==9.0.2
     #   pytest-vulture
     #   pytest-xdist
 pytest-cov==7.0.0
-    # via ocs (pyproject.toml)
-pytest-dependency==0.6.0
     # via ocs (pyproject.toml)
 pytest-instafail==0.5.0
     # via ocs (pyproject.toml)
@@ -145,14 +142,13 @@ requests==2.32.5
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.14.14
+ruff==0.15.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==80.9.0
+setuptools==80.10.2
     # via
     #   ocs (pyproject.toml)
-    #   pytest-dependency
     #   setuptools-scm
     #   zzbase
 setuptools-scm==9.2.2
@@ -179,7 +175,7 @@ tomli==2.4.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.14.0
     # via pylint
-ty==0.0.14
+ty==0.0.15
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -189,7 +185,7 @@ types-psutil==7.0.0.20251001
     # via zzbase
 types-requests==2.32.4.20250913
     # via zzbase
-types-setuptools==80.9.0.20250822
+types-setuptools==80.10.0.20260124
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -204,7 +200,7 @@ urllib3==2.6.3
     #   dulwich
     #   requests
     #   types-requests
-uv==0.9.27
+uv==0.10.0
     # via
     #   ocs (pyproject.toml)
     #   zzbase

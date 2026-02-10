@@ -20,9 +20,9 @@ dependencies = [
   "distro ~= 1.9.0",
   "overrides ~= 7.7.0",
   "packaging ~= 26.0",
-  "setuptools==80.9.0",
+  "setuptools==80.10.2",
   "setuptools-scm >= 9.2.2",
-  "types-setuptools==80.9.0.20250822",  # Bump types-* only with mypy
+  "types-setuptools==80.10.0.20260124",  # Bump types-* only with mypy
   "typing-extensions ~= 4.15.0",
   "uv >= 0.10.0",
   "wheel >= 0.46.3",
@@ -31,11 +31,11 @@ dynamic = ["readme", "version"]
 
 [project.optional-dependencies]
 test = [
-  "basedpyright ~= 1.37.2",
-  "coverage ~= 7.13.2",
+  "basedpyright ~= 1.37.4",
+  "coverage ~= 7.13.4",
   "mypy ~= 1.19.1",
   "pylint ~= 4.0.4",
-  "pyrefly ~= 0.50.0",
+  "pyrefly ~= 0.52.0",
   "pytest ~= 9.0.2",
   "pytest-cov ~= 7.0.0",
   "pytest-instafail ~= 0.5.0",
@@ -47,15 +47,15 @@ test = [
   "pytest-ty ~= 0.1.4",
   "pytest-vulture ~= 2.2.2",
   "pytest-xdist ~= 3.8.0",
-  "ruff ~= 0.14.14",
+  "ruff ~= 0.15.0",
   "sphinx ~= 9.0.4",
-  "ty ~= 0.0.14",
+  "ty ~= 0.0.15",
   "vulture ~= 2.14",
 ]
 
 [build-system]
 requires = [
-  "setuptools==80.9.0",
+  "setuptools==80.10.2",
   "setuptools-scm >= 9.2.2",
   "wheel >= 0.46.3",
 ]
