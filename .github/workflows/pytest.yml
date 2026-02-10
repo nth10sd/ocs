@@ -82,6 +82,10 @@ jobs:
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
+      - name: Run with the tombi linter on TOML files
+        run: uvx tombi lint
+      - name: Run with the tombi formatter on TOML files
+        run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
       - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
@@ -269,6 +273,10 @@ jobs:
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
+      - name: Run with the tombi linter on TOML files
+        run: uvx tombi lint
+      - name: Run with the tombi formatter on TOML files
+        run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
       - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
@@ -399,6 +407,10 @@ jobs:
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
+      - name: Run with the tombi linter on TOML files
+        run: uvx tombi lint
+      - name: Run with the tombi formatter on TOML files
+        run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
       - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
@@ -528,6 +540,10 @@ jobs:
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: pip install --upgrade --config-settings editable_mode=strict -e . ;
 
+      - name: Run with the tombi linter on TOML files
+        run: uvx tombi lint
+      - name: Run with the tombi formatter on TOML files
+        run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
       - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
