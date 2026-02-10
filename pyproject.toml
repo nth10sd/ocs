@@ -254,6 +254,11 @@ include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
 target-version = "py311"
 
 [tool.ruff.lint]
+external = [
+  "FURB111",  # refurb 2.2.0 has this, but not ruff 0.15.0
+  "FURB123",  # refurb 2.2.0 has this, but not ruff 0.15.0
+  "FURB184",  # refurb 2.2.0 has this, but not ruff 0.15.0
+]
 ignore = [
   "COM812",  # Seems to add trailing comma even when arguments already fit on one line
   "D203",  # D211 is used by default, which is incompatible with this
