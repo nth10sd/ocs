@@ -88,8 +88,8 @@ jobs:
         run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
-        run: python -u -m ty check --error-on-warning --ignore=unresolved-import --ignore=unused-ignore-comment
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
@@ -279,8 +279,8 @@ jobs:
         run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
-        run: python -u -m ty check --error-on-warning --ignore=unresolved-import --ignore=unused-ignore-comment
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -413,8 +413,8 @@ jobs:
         run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
-        run: python -u -m ty check --error-on-warning --ignore=unresolved-import --ignore=unused-ignore-comment
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -546,8 +546,8 @@ jobs:
         run: uvx tombi format --check --diff
       - name: Run with ruff
         run: python -u -m ruff check
-      - name: Run with ty, but ignore unresolved-import error (and hence the unused-ignore-comment error) only on CI, due to CI venv differences
-        run: python -u -m ty check --error-on-warning --ignore=unresolved-import --ignore=unused-ignore-comment
+      - name: Run with ty
+        run: python -u -m ty check --error-on-warning
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install prerequisites
