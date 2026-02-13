@@ -141,7 +141,7 @@ jobs:
                     "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
                     $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" -not -path "./node_modules/*" ! -name "conf_correct.py") \
                       | awk "/ matches$/ && "\!"/ contained matches$/" \
-                      | cut -d " " -f1) -lt 9 ] ;
+                      | cut -d " " -f1) -lt 1 ] ;
           then exit 0 ; else exit 1 ; fi ;
       - name: Run shellcheck
         if: startsWith(runner.os, 'Linux')
