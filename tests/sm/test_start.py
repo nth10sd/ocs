@@ -7,14 +7,14 @@ from functools import cache
 import os
 from pathlib import Path
 
-import pytest  # ty: ignore[unresolved-import]
-from zzbase.js_shells.spidermonkey import build_options  # ty: ignore[unresolved-import]
-from zzbase.patching.common import patch_files  # ty: ignore[unresolved-import]
-from zzbase.util.constants import TREES_PATH  # ty: ignore[unresolved-import]
-from zzbase.util.constants import VENV_SITE_PKGS  # ty: ignore[unresolved-import]
-from zzbase.util.constants import HostPlatform as Hp  # ty: ignore[unresolved-import]
-from zzbase.vcs.git_helpers import get_repo_hash  # ty: ignore[unresolved-import]
-from zzbase.vcs.git_helpers import get_repo_num_val  # ty: ignore[unresolved-import]
+import pytest
+from zzbase.js_shells.spidermonkey import build_options
+from zzbase.patching.common import patch_files
+from zzbase.util.constants import TREES_PATH
+from zzbase.util.constants import VENV_SITE_PKGS
+from zzbase.util.constants import HostPlatform as Hp
+from zzbase.vcs.git_helpers import get_repo_hash
+from zzbase.vcs.git_helpers import get_repo_num_val
 
 from ocs.sm import start
 
