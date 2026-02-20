@@ -6,7 +6,7 @@ astroid==4.0.4
     # via pylint
 babel==2.18.0
     # via sphinx
-basedpyright==1.38.0
+basedpyright==1.38.1
     # via ocs (pyproject.toml)
 certifi==2026.1.4
     # via requests
@@ -33,13 +33,13 @@ distro==1.9.0
     #   zzbase
 docutils==0.22.4
     # via sphinx
-dulwich==1.0.0
+dulwich==1.1.0
     # via zzbase
 execnet==2.1.2
     # via pytest-xdist
-ffpuppet==0.18.7
+ffpuppet==0.19.0
     # via lithium-reducer
-filelock==3.21.2
+filelock==3.24.3
     # via pytest-mypy
 idna==3.11
     # via requests
@@ -51,7 +51,7 @@ isort==7.0.0
     # via pylint
 jinja2==3.1.6
     # via sphinx
-librt==0.8.0 ; platform_python_implementation != 'PyPy'
+librt==0.8.1 ; platform_python_implementation != 'PyPy'
     # via mypy
 lithium-reducer==4.0.0
     # via zzbase
@@ -83,7 +83,7 @@ packaging==26.0
     #   zzbase
 pathspec==1.0.4
     # via mypy
-platformdirs==4.7.0
+platformdirs==4.9.2
     # via pylint
 pluggy==1.6.0
     # via
@@ -101,7 +101,7 @@ pylint==4.0.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.52.0
+pyrefly==0.53.0
     # via ocs (pyproject.toml)
 pytest==9.0.2
     # via
@@ -130,7 +130,7 @@ pytest-randomly==4.0.1
     # via ocs (pyproject.toml)
 pytest-ruff==0.5
     # via ocs (pyproject.toml)
-pytest-ty==0.1.4
+pytest-ty==0.1.5
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
@@ -142,7 +142,7 @@ requests==2.32.5
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.15.1
+ruff==0.15.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -175,7 +175,7 @@ tomli==2.4.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.14.0
     # via pylint
-ty==0.0.16
+ty==0.0.17
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -200,7 +200,7 @@ urllib3==2.6.3
     #   dulwich
     #   requests
     #   types-requests
-uv==0.10.2
+uv==0.10.4
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -212,7 +212,7 @@ wheel==0.46.3
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.18 ; sys_platform == 'linux'
+xvfbwrapper==0.2.20 ; sys_platform == 'linux'
     # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
