@@ -65,7 +65,7 @@ mypy==1.19.1
     #   pytest-mypy
 mypy-extensions==1.1.0
     # via mypy
-nodejs-wheel-binaries==24.13.1
+nodejs-wheel-binaries==24.14.0
     # via basedpyright
 orderly-set==5.5.0
     # via deepdiff
@@ -142,7 +142,7 @@ requests==2.32.5
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.15.3
+ruff==0.15.4
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -200,7 +200,7 @@ urllib3==2.6.3
     #   dulwich
     #   requests
     #   types-requests
-uv==0.10.6
+uv==0.10.7
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -212,7 +212,7 @@ wheel==0.46.3
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.20 ; sys_platform == 'linux'
+xvfbwrapper==0.2.21 ; sys_platform == 'linux'
     # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
