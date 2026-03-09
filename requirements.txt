@@ -10,7 +10,7 @@ basedpyright==1.38.2
     # via ocs (pyproject.toml)
 certifi==2026.2.25
     # via requests
-charset-normalizer==3.4.4
+charset-normalizer==3.4.5
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
@@ -83,7 +83,7 @@ packaging==26.0
     #   zzbase
 pathspec==1.0.4
     # via mypy
-platformdirs==4.9.2
+platformdirs==4.9.4
     # via pylint
 pluggy==1.6.0
     # via
@@ -130,7 +130,7 @@ pytest-randomly==4.0.1
     # via ocs (pyproject.toml)
 pytest-ruff==0.5
     # via ocs (pyproject.toml)
-pytest-ty==0.1.5
+pytest-ty==0.2.0
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
@@ -142,7 +142,7 @@ requests==2.32.5
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.15.4
+ruff==0.15.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -175,7 +175,7 @@ tomli==2.4.0 ; python_full_version <= '3.11'
     # via coverage
 tomlkit==0.14.0
     # via pylint
-ty==0.0.20
+ty==0.0.21
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -200,11 +200,11 @@ urllib3==2.6.3
     #   dulwich
     #   requests
     #   types-requests
-uv==0.10.8
+uv==0.10.9
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-vulture==2.14
+vulture==2.15
     # via
     #   ocs (pyproject.toml)
     #   pytest-vulture
@@ -212,7 +212,7 @@ wheel==0.46.3
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.21 ; sys_platform == 'linux'
+xvfbwrapper==0.2.22 ; sys_platform == 'linux'
     # via ffpuppet
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in

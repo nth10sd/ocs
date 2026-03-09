@@ -44,13 +44,13 @@ test = [
   "pytest-pylint ~= 0.21.0",
   "pytest-randomly ~= 4.0.1",
   "pytest-ruff ~= 0.5",
-  "pytest-ty ~= 0.1.5",
+  "pytest-ty ~= 0.2.0",
   "pytest-vulture ~= 2.2.2",
   "pytest-xdist ~= 3.8.0",
-  "ruff ~= 0.15.4",
+  "ruff ~= 0.15.5",
   "sphinx ~= 9.0.4",
-  "ty ~= 0.0.20",
-  "vulture ~= 2.14",
+  "ty ~= 0.0.21",
+  "vulture ~= 2.15",
 ]
 
 [build-system]
