@@ -649,6 +649,7 @@ jobs:
         run: cat $HOME/shell-cache/*/*.busted* -Tail 100
 
       - name: Export artifact name to GitHub environment
+        shell: bash
         run: echo artifactName=$(python3 -c "from pathlib import Path;print(list(Path(x.stem).stem for x in Path(\"~/shell-cache\").expanduser().glob(\"*.tar.zst\"))[0])") >> $GITHUB_ENV
       - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
         uses: actions/upload-artifact@v7
