@@ -18,11 +18,8 @@ pushd "$HOME"/trees/firefox/ || exit ;
 MACH_HIDE_DEV_DRIVE_SUGGESTION=1 ./mach bootstrap --app=js << EOF
 
 y
-
 n
-
 n
-
 EOF
 popd || exit ;
 
