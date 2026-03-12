@@ -171,7 +171,7 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p "$HOME"/trees ;
-          git clone --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
+          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
           git -C "$HOME"/trees/firefox rev-parse HEAD
 
       - name: Run tools using pytest under code coverage
@@ -319,7 +319,7 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p "$HOME"/trees ;
-          git clone --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
+          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
           git -C "$HOME"/trees/firefox rev-parse HEAD
 
       - name: Run tools using pytest under code coverage
@@ -464,7 +464,7 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p "$HOME"/trees ;
-          git clone --no-single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
+          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
           git -C "$HOME"/trees/firefox rev-parse HEAD
 
       - name: Run tools using pytest under code coverage
@@ -622,7 +622,7 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p $HOME\trees ;
-          git clone --no-single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
+          git clone --single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
           git -C $HOME\trees\firefox rev-parse HEAD
 
       - name: Create deploy key file
