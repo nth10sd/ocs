@@ -14,10 +14,10 @@ python -u -m uv pip install --break-system-packages --upgrade -e . ;
 
 # Run mach bootstrap
 pushd "$HOME"/trees/firefox/ || exit ;
-# No to exclusion checks, pushing commits upstream and telemetry submission
-./mach bootstrap --app=js << EOF
+# Yes to optimally configure Git, no to pushing commits upstream and telemetry submission
+MACH_HIDE_DEV_DRIVE_SUGGESTION=1 ./mach bootstrap --app=js << EOF
 
-n
+y
 
 n
 
