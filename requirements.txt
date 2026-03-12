@@ -39,7 +39,7 @@ execnet==2.1.2
     # via pytest-xdist
 ffpuppet==0.19.0
     # via lithium-reducer
-filelock==3.25.0
+filelock==3.25.2
     # via pytest-mypy
 idna==3.11
     # via requests
@@ -101,7 +101,7 @@ pylint==4.0.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.55.0
+pyrefly==0.56.0
     # via ocs (pyproject.toml)
 pytest==9.0.2
     # via
