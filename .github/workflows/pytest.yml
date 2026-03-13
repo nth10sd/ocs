@@ -501,7 +501,7 @@ jobs:
         run: uv cache prune --ci
 
   Windows:
-    runs-on: windows-2022 # If changing MSVC version, adjust destination folder for a .pdb file in autostart script
+    runs-on: windows-2025 # If changing MSVC version, adjust destination folder for a .pdb file in autostart script
     strategy:
       fail-fast: false
       matrix:
