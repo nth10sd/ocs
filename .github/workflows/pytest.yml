@@ -617,7 +617,7 @@ jobs:
         run: cp scripts/mozillabuild/autostart.sh C:\mozilla-build\
       - name: Amend MozillaBuild start command
         run: |
-          sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
+          sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
