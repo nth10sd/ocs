@@ -648,21 +648,20 @@ jobs:
         if: ${{ failure() }}
         run: cat $HOME/shell-cache/*/*.busted* -Tail 100
 
-      # Disabled for now, Windows seems unhappy
-      # - name: Export artifact name to GitHub environment
-      #   shell: bash
-      #   run: echo artifactName=$(python3 -c "from pathlib import Path;print(list(Path(x.stem).stem for x in Path(\"~/shell-cache\").expanduser().glob(\"*.tar.zst\"))[0])") >> $GITHUB_ENV
-      # - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
-      #   uses: actions/upload-artifact@v7
-      #   id: artifact-upload-step
-      #   with:
-      #     name: ${{ env.artifactName }}
-      #     path: "~/shell-cache/*.tar.zst*"
-      #     compression-level: 0 # 0-9, 0 no compression, 9 max
-      #     if-no-files-found: error
-      #     retention-days: 9 # Default is 90
-      # - name: Output artifact ID
-      #   run:  echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
+      - name: Export artifact name to GitHub environment
+        shell: bash
+        run: echo artifactName=$(python3 -c "from pathlib import Path;print(list(Path(x.stem).stem for x in Path(\"~/shell-cache\").expanduser().glob(\"*.tar.zst\"))[0])") >> $GITHUB_ENV
+      - name: Archive tarball and checksum # GitHub UI forces download as zipped (not gzipped) files, double-compressing even if files are already compressed
+        uses: actions/upload-artifact@v7
+        id: artifact-upload-step
+        with:
+          name: ${{ env.artifactName }}
+          path: "~/shell-cache/*.tar.zst*"
+          compression-level: 0 # 0-9, 0 no compression, 9 max
+          if-no-files-found: error
+          retention-days: 9 # Default is 90
+      - name: Output artifact ID
+        run:  echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         continue-on-error: true # codecov limits number of uploads allowed for each commit
