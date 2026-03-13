@@ -216,7 +216,7 @@ jobs:
         run: uv cache prune --ci || true
 
   macOS-x86_64: # Remove when the Intel runners on CI no longer exist
-    runs-on: macos-15-intel # Update Xcode version to the latest available as well
+    runs-on: macos-26-intel # Update Xcode version to the latest available as well
     strategy:
       fail-fast: false
       matrix:
@@ -360,7 +360,7 @@ jobs:
         run: uv cache prune --ci
 
   macOS-arm64:
-    runs-on: macos-15 # Update Xcode version to the latest available as well
+    runs-on: macos-26 # Update Xcode version to the latest available as well
     strategy:
       fail-fast: false
       matrix:
