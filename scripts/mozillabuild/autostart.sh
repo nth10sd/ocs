@@ -6,7 +6,7 @@ export BUILDSM="$*" ;
 echo "BUILDSM env variable is: $BUILDSM" ;
 
 python -u -m pip install --break-system-packages --upgrade pip setuptools wheel uv ;
-pushd "$(python -c 'from pathlib import Path;print(Path.home() / "ocs")')" || exit ;
+pushd /d/a/ocs/ocs/ || exit ;
 
 openssl enc -base64 -d <<< SG9zdCAqCkFkZEtleXNUb0FnZW50IHllcwpTdHJpY3RIb3N0S2V5Q2hlY2tpbmcgbm8KCkhvc3QgY3Jhc2gyY292LmdpdGh1Yi5jb20KSG9zdE5hbWUgZ2l0aHViLmNvbQpVc2VyIGdpdApJZGVudGl0eUZpbGUgfi8uc3NoL2lkX2VkMjU1MTlfUk9fY3Jhc2gyY292CklkZW50aXRpZXNPbmx5IHllcwoKSG9zdCB6emJhc2UuZ2l0aHViLmNvbQpIb3N0TmFtZSBnaXRodWIuY29tClVzZXIgZ2l0CklkZW50aXR5RmlsZSB+Ly5zc2gvaWRfZWQyNTUxOV9ST196emJhc2UKSWRlbnRpdGllc09ubHkgeWVzCg== > "$HOME"/.ssh/config ;
 python -u -m uv pip install --break-system-packages -r requirements.txt ;
