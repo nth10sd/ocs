@@ -200,7 +200,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
           compression-level: 0 # 0-9, 0 no compression, 9 max
           if-no-files-found: error
-          retention-days: 9 # Default is 90
+          retention-days: 90 # Default is 90
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         continue-on-error: true # codecov limits number of uploads allowed for each commit
@@ -344,7 +344,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
           compression-level: 0 # 0-9, 0 no compression, 9 max
           if-no-files-found: error
-          retention-days: 9 # Default is 90
+          retention-days: 90 # Default is 90
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         continue-on-error: true # codecov limits number of uploads allowed for each commit
@@ -487,7 +487,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
           compression-level: 0 # 0-9, 0 no compression, 9 max
           if-no-files-found: error
-          retention-days: 9 # Default is 90
+          retention-days: 90 # Default is 90
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         continue-on-error: true # codecov limits number of uploads allowed for each commit
@@ -653,7 +653,7 @@ jobs:
           path: "~/shell-cache/*.tar.zst*"
           compression-level: 0 # 0-9, 0 no compression, 9 max
           if-no-files-found: error
-          retention-days: 9 # Default is 90
+          retention-days: 90 # Default is 90
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         continue-on-error: true # codecov limits number of uploads allowed for each commit
