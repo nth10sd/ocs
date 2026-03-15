@@ -26,9 +26,6 @@ n
 EOF
 popd || exit ;
 
-# After bug 1617793 landed, everything defaults to x86_64-pc-windows-msvc
-rustup toolchain uninstall x86_64-pc-windows-gnu
-
 if [ "$BUILDSM" == "--enable-address-sanitizer" ] ; then
     # For future MSVCs, see where the build process complains about the lack of a .pdb at a new desired destination
     echo "Copying over clang_rt.asan_dynamic-x86_64.pdb ..." ;
