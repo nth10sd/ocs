@@ -61,6 +61,12 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty
         run: python -u -m ty check --error-on-warning
+      # Enable zuban on CI only when zuban gh issue 354 and/or 366 are fixed, happening as of 0.7.0
+      # Otherwise import-not-found issues will be displayed, seemingly only on CI
+      # - name: Run with zuban (default)
+      #   run: zuban check --mode=default
+      # - name: Run with zuban (mypy)
+      #   run: zuban mypy
 
       # CodeQL analysis section START
       # Linux-only, enable on GitHub for public repos and private repos on Enterprise plan with Advanced Security

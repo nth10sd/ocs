@@ -90,6 +90,12 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty
         run: python -u -m ty check --error-on-warning
+      # Enable zuban on CI only when zuban gh issue 354 and/or 366 are fixed, happening as of 0.7.0
+      # Otherwise import-not-found issues will be displayed, seemingly only on CI
+      # - name: Run with zuban (default)
+      #   run: zuban check --mode=default
+      # - name: Run with zuban (mypy)
+      #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Run basedpyright
@@ -133,12 +139,12 @@ jobs:
         run: df -h
       - name: Search for existing linter ignore lines in Python
         run: |
-          rg -t js -t ts -t py --stats "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
+          rg -t js -t ts -t py --stats "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture|zuban): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
             $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" -not -path "./node_modules/*" ! -name "conf_correct.py") || true
       - name: Ensure we are not increasing the number of ignore lines as a guideline
         run: |
           if [ $(rg -t js -t ts -t py --stats \
-                    "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
+                    "(?:(?:noqa|pylint|pyrefly|pyright|ty|type|vulture|zuban): *(?:disable|ignore|noqa|[a-zA-Z]+[0-9]+)| Any|REPLACEME|@ts-expect-error|@ts-ignore|biome-ignore|deno-lint-ignore)" \
                     $(find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.py" \) -not -path "./build/lib/*" -not -path "./node_modules/*" ! -name "conf_correct.py") \
                       | awk "/ matches$/ && "\!"/ contained matches$/" \
                       | cut -d " " -f1) -lt 1 ] ;
@@ -290,6 +296,12 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty
         run: python -u -m ty check --error-on-warning
+      # Enable zuban on CI only when zuban gh issue 354 and/or 366 are fixed, happening as of 0.7.0
+      # Otherwise import-not-found issues will be displayed, seemingly only on CI
+      # - name: Run with zuban (default)
+      #   run: zuban check --mode=default
+      # - name: Run with zuban (mypy)
+      #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
 
@@ -429,6 +441,12 @@ jobs:
         run: python -u -m ruff check
       - name: Run with ty
         run: python -u -m ty check --error-on-warning
+      # Enable zuban on CI only when zuban gh issue 354 and/or 366 are fixed, happening as of 0.7.0
+      # Otherwise import-not-found issues will be displayed, seemingly only on CI
+      # - name: Run with zuban (default)
+      #   run: zuban check --mode=default
+      # - name: Run with zuban (mypy)
+      #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
         run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
       - name: Install prerequisites
