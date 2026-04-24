@@ -181,6 +181,9 @@ jobs:
           ref: main
           path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Create the trees directory in the user folder
+        shell: bash
+        run: mkdir -p "$HOME"/trees
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -356,6 +359,9 @@ jobs:
           ref: main
           path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Create the trees directory in the user folder
+        shell: bash
+        run: mkdir -p "$HOME"/trees
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -541,6 +547,9 @@ jobs:
           ref: main
           path: trees/firefox  # Place it in D:\a\repo\repo\trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Create the trees directory in the user folder
+        shell: bash
+        run: mkdir -p "$HOME"/trees
       - name: Create link to firefox repository
         shell: pwsh
         run: |
