@@ -182,7 +182,7 @@ jobs:
           path: trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
-        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -218,7 +218,7 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Remove Firefox source repository to free up more space for tarball creation
-        run: rm -rf $env:GITHUB_WORKSPACE/trees/firefox/
+        run: rm -rf "${{ github.workspace }}/trees/firefox"/
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Export artifact name to GitHub environment
@@ -359,7 +359,7 @@ jobs:
           path: trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
-        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -393,7 +393,7 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Remove Firefox source repository to free up more space for tarball creation
-        run: rm -rf $env:GITHUB_WORKSPACE/trees/firefox/
+        run: rm -rf "${{ github.workspace }}/trees/firefox"/
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Export artifact name to GitHub environment
@@ -546,7 +546,7 @@ jobs:
           path: trees  # Place it in D:\a\repo\repo\trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
-        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
