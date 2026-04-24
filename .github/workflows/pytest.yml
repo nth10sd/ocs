@@ -185,26 +185,9 @@ jobs:
         shell: bash
         run: mkdir -p "$HOME"/trees
       - name: Create link to firefox repository
-        shell: pwsh
-        run: |
-          $linkPath = "$HOME/trees"
-          $targetPath = "$env:GITHUB_WORKSPACE/trees"
-          # On Windows: Creates a Junction (Stable for C: to D:)
-          # On Linux: Creates a SymbolicLink
-          New-Item -ItemType Junction -Path $linkPath -Value $targetPath -Force
+        run: ln -s "$GITHUB_WORKSPACE/trees" "$HOME/trees"
       - name: Verify link to firefox repository
-        shell: pwsh
-        run: |
-          $link = Get-Item "$HOME/trees"
-          Write-Host "Link Name: $($link.Name)"
-          Write-Host "Link Type: $($link.LinkType)"
-          Write-Host "Target Path: $($link.Target)"
-
-          # Basic logic check: Fail the step if the link is broken
-          if (-not (Test-Path "$HOME/trees")) {
-              Write-Error "Link verification failed: Path not found."
-              exit 1
-          }
+        run: ls -lah "$HOME/trees"
 
       - name: Run tools using pytest under code coverage
         env:
@@ -363,26 +346,9 @@ jobs:
         shell: bash
         run: mkdir -p "$HOME"/trees
       - name: Create link to firefox repository
-        shell: pwsh
-        run: |
-          $linkPath = "$HOME/trees"
-          $targetPath = "$env:GITHUB_WORKSPACE/trees"
-          # On Windows: Creates a Junction (Stable for C: to D:)
-          # On Linux: Creates a SymbolicLink
-          New-Item -ItemType Junction -Path $linkPath -Value $targetPath -Force
+        run: ln -s "$GITHUB_WORKSPACE/trees" "$HOME/trees"
       - name: Verify link to firefox repository
-        shell: pwsh
-        run: |
-          $link = Get-Item "$HOME/trees"
-          Write-Host "Link Name: $($link.Name)"
-          Write-Host "Link Type: $($link.LinkType)"
-          Write-Host "Target Path: $($link.Target)"
-
-          # Basic logic check: Fail the step if the link is broken
-          if (-not (Test-Path "$HOME/trees")) {
-              Write-Error "Link verification failed: Path not found."
-              exit 1
-          }
+        run: ls -lah "$HOME/trees"
 
       - name: Run tools using pytest under code coverage
         env:
