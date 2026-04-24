@@ -174,15 +174,13 @@ jobs:
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
-      - name: Clone firefox repository from GitHub
+      - name: Clone firefox repository from GitHub and print the latest commit hash
         uses: actions/checkout@v4
         with:
           repository: mozilla-firefox/firefox
           ref: main
           path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
-      - name: Print the latest commit hash
-        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -351,15 +349,13 @@ jobs:
           | rg "Type completeness score" \
           | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
-      - name: Clone firefox repository from GitHub
+      - name: Clone firefox repository from GitHub and print the latest commit hash
         uses: actions/checkout@v4
         with:
           repository: mozilla-firefox/firefox
           ref: main
           path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
-      - name: Print the latest commit hash
-        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
@@ -538,15 +534,13 @@ jobs:
         run: |
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
-      - name: Clone firefox repository from GitHub
+      - name: Clone firefox repository from GitHub and print the latest commit hash
         uses: actions/checkout@v4
         with:
           repository: mozilla-firefox/firefox
           ref: main
           path: trees/firefox  # Place it in D:\a\repo\repo\trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
-      - name: Print the latest commit hash
-        run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
       - name: Create link to firefox repository
         shell: pwsh
         run: |
