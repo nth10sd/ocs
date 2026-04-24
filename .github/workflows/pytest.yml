@@ -198,7 +198,7 @@ jobs:
           Write-Host "Target Path: $($link.Target)"
 
           # Basic logic check: Fail the step if the link is broken
-          if (Test-Path "$HOME/trees") {
+          if (-not (Test-Path "$HOME/trees")) {
               Write-Error "Link verification failed: Path not found."
               exit 1
           }
@@ -373,7 +373,7 @@ jobs:
           Write-Host "Target Path: $($link.Target)"
 
           # Basic logic check: Fail the step if the link is broken
-          if (Test-Path "$HOME/trees") {
+          if (-not (Test-Path "$HOME/trees")) {
               Write-Error "Link verification failed: Path not found."
               exit 1
           }
@@ -558,7 +558,7 @@ jobs:
           Write-Host "Target Path: $($link.Target)"
 
           # Basic logic check: Fail the step if the link is broken
-          if (Test-Path "$HOME/trees") {
+          if (-not (Test-Path "$HOME/trees")) {
               Write-Error "Link verification failed: Path not found."
               exit 1
           }
