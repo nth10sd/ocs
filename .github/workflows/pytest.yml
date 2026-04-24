@@ -179,7 +179,7 @@ jobs:
         with:
           repository: mozilla-firefox/firefox
           ref: main
-          path: trees
+          path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
         run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
@@ -356,7 +356,7 @@ jobs:
         with:
           repository: mozilla-firefox/firefox
           ref: main
-          path: trees
+          path: trees/firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
         run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
@@ -543,7 +543,7 @@ jobs:
         with:
           repository: mozilla-firefox/firefox
           ref: main
-          path: trees  # Place it in D:\a\repo\repo\trees
+          path: trees/firefox  # Place it in D:\a\repo\repo\trees
           fetch-depth: 1  # Shallow clone (single branch and no history)
       - name: Print the latest commit hash
         run: git -C "${{ github.workspace }}/trees/firefox" rev-parse HEAD
