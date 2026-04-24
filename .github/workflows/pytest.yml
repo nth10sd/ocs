@@ -179,8 +179,12 @@ jobs:
         with:
           repository: mozilla-firefox/firefox
           ref: main
-          path: ../../../trees/firefox
+          path: firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Create symlink to firefox repository
+        run: |
+          mkdir -p "$HOME"/trees ;
+          ln -s "$GITHUB_WORKSPACE/firefox" ~/trees/firefox ;
 
       - name: Run tools using pytest under code coverage
         env:
@@ -333,8 +337,12 @@ jobs:
         with:
           repository: mozilla-firefox/firefox
           ref: main
-          path: ../../../trees/firefox
+          path: firefox
           fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Create symlink to firefox repository
+        run: |
+          mkdir -p "$HOME"/trees ;
+          ln -s "$GITHUB_WORKSPACE/firefox" ~/trees/firefox ;
 
       - name: Run tools using pytest under code coverage
         env:
