@@ -174,11 +174,36 @@ jobs:
         if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
-      - name: Clone firefox repository from GitHub and print the latest commit hash
+      - name: Clone firefox repository from GitHub
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-firefox/firefox
+          ref: main
+          path: trees
+          fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Print the latest commit hash
+        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+      - name: Create link to firefox repository
+        shell: pwsh
         run: |
-          mkdir -p "$HOME"/trees ;
-          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
-          git -C "$HOME"/trees/firefox rev-parse HEAD
+          $linkPath = "$HOME/trees"
+          $targetPath = "$env:GITHUB_WORKSPACE/trees"
+          # On Windows: Creates a Junction (Stable for C: to D:)
+          # On Linux: Creates a SymbolicLink
+          New-Item -ItemType Junction -Path $linkPath -Value $targetPath -Force
+      - name: Verify link to firefox repository
+        shell: pwsh
+        run: |
+          $link = Get-Item "$HOME/trees"
+          Write-Host "Link Name: $($link.Name)"
+          Write-Host "Link Type: $($link.LinkType)"
+          Write-Host "Target Path: $($link.Target)"
+
+          # Basic logic check: Fail the step if the link is broken
+          if (Test-Path "$HOME/trees") {
+              Write-Error "Link verification failed: Path not found."
+              exit 1
+          }
 
       - name: Run tools using pytest under code coverage
         env:
@@ -193,7 +218,7 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Remove Firefox source repository to free up more space for tarball creation
-        run: rm -rf "$HOME"/trees/firefox/
+        run: rm -rf $env:GITHUB_WORKSPACE/trees/firefox/
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time tar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Export artifact name to GitHub environment
@@ -326,11 +351,36 @@ jobs:
           | rg "Type completeness score" \
           | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
-      - name: Clone firefox repository from GitHub and print the latest commit hash
+      - name: Clone firefox repository from GitHub
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-firefox/firefox
+          ref: main
+          path: trees
+          fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Print the latest commit hash
+        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+      - name: Create link to firefox repository
+        shell: pwsh
         run: |
-          mkdir -p "$HOME"/trees ;
-          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
-          git -C "$HOME"/trees/firefox rev-parse HEAD
+          $linkPath = "$HOME/trees"
+          $targetPath = "$env:GITHUB_WORKSPACE/trees"
+          # On Windows: Creates a Junction (Stable for C: to D:)
+          # On Linux: Creates a SymbolicLink
+          New-Item -ItemType Junction -Path $linkPath -Value $targetPath -Force
+      - name: Verify link to firefox repository
+        shell: pwsh
+        run: |
+          $link = Get-Item "$HOME/trees"
+          Write-Host "Link Name: $($link.Name)"
+          Write-Host "Link Type: $($link.LinkType)"
+          Write-Host "Target Path: $($link.Target)"
+
+          # Basic logic check: Fail the step if the link is broken
+          if (Test-Path "$HOME/trees") {
+              Write-Error "Link verification failed: Path not found."
+              exit 1
+          }
 
       - name: Run tools using pytest under code coverage
         env:
@@ -343,7 +393,7 @@ jobs:
         run: tail -n 100 "$HOME"/shell-cache/*/*.busted*
 
       - name: Remove Firefox source repository to free up more space for tarball creation
-        run: rm -rf "$HOME"/trees/firefox/
+        run: rm -rf $env:GITHUB_WORKSPACE/trees/firefox/
       - name: Create a tarball and SHA-256 checksum
         run: pushd "$HOME"/shell-cache; for f in *; do [[ $f =~ "js-" ]] && time gtar -cpf - "$f" | zstd -T0 --long -19 > "$f".tar.zst && shasum -a 256 -b "$f".tar.zst | tee "$f".tar.zst.sha256; done; popd
       - name: Export artifact name to GitHub environment
@@ -488,11 +538,36 @@ jobs:
         run: |
           sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
 
-      - name: Clone firefox repository from GitHub and print the latest commit hash
+      - name: Clone firefox repository from GitHub
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-firefox/firefox
+          ref: main
+          path: trees  # Place it in D:\a\repo\repo\trees
+          fetch-depth: 1  # Shallow clone (single branch and no history)
+      - name: Print the latest commit hash
+        run: git -C $env:GITHUB_WORKSPACE/trees/firefox rev-parse HEAD
+      - name: Create link to firefox repository
+        shell: pwsh
         run: |
-          mkdir -p $HOME\trees ;
-          git clone --single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
-          git -C $HOME\trees\firefox rev-parse HEAD
+          $linkPath = "$HOME/trees"
+          $targetPath = "$env:GITHUB_WORKSPACE/trees"
+          # On Windows: Creates a Junction (Stable for C: to D:)
+          # On Linux: Creates a SymbolicLink
+          New-Item -ItemType Junction -Path $linkPath -Value $targetPath -Force
+      - name: Verify link to firefox repository
+        shell: pwsh
+        run: |
+          $link = Get-Item "$HOME/trees"
+          Write-Host "Link Name: $($link.Name)"
+          Write-Host "Link Type: $($link.LinkType)"
+          Write-Host "Target Path: $($link.Target)"
+
+          # Basic logic check: Fail the step if the link is broken
+          if (Test-Path "$HOME/trees") {
+              Write-Error "Link verification failed: Path not found."
+              exit 1
+          }
 
       - name: Create deploy key file
         env:
