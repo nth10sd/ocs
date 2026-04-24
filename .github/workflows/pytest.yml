@@ -175,10 +175,12 @@ jobs:
         run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
-        run: |
-          mkdir -p "$HOME"/trees ;
-          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
-          git -C "$HOME"/trees/firefox rev-parse HEAD
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-firefox/firefox
+          ref: main
+          path: ../../../trees/firefox
+          fetch-depth: 1  # Shallow clone (single branch and no history)
 
       - name: Run tools using pytest under code coverage
         env:
@@ -327,10 +329,12 @@ jobs:
           | python -c 'import sys;verifypct=float(sys.stdin.read().rstrip().split(": ")[1].removesuffix("%"));print(f"Type completeness score: {verifypct}%");sys.exit(0) if verifypct >= 100 else sys.exit(1)'
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
-        run: |
-          mkdir -p "$HOME"/trees ;
-          git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
-          git -C "$HOME"/trees/firefox rev-parse HEAD
+        uses: actions/checkout@v4
+        with:
+          repository: mozilla-firefox/firefox
+          ref: main
+          path: ../../../trees/firefox
+          fetch-depth: 1  # Shallow clone (single branch and no history)
 
       - name: Run tools using pytest under code coverage
         env:
@@ -490,6 +494,8 @@ jobs:
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
+          # Not using actions/checkout as the action clones only to GitHub workspace dir which is D:
+          # ~ or HOME dir is on C:
           mkdir -p $HOME\trees ;
           git clone --single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
           git -C $HOME\trees\firefox rev-parse HEAD
