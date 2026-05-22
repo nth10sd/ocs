@@ -104,7 +104,7 @@ pylint==4.0.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==1.0.0
+pyrefly==0.63.1
     # via ocs (pyproject.toml)
 pytest==9.0.3
     # via
@@ -139,7 +139,7 @@ pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
 pytest-xdist==3.8.0
     # via ocs (pyproject.toml)
-requests==2.33.1
+requests==2.34.2
     # via
     #   sphinx
     #   zzbase
