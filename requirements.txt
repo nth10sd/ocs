@@ -2,13 +2,15 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
+ast-serialize==0.5.0
+    # via mypy
 astroid==4.0.4
     # via pylint
 babel==2.18.0
     # via sphinx
-basedpyright==1.39.3
+basedpyright==1.39.5
     # via ocs (pyproject.toml)
-certifi==2026.4.22
+certifi==2026.5.20
     # via requests
 charset-normalizer==3.4.7
     # via requests
@@ -17,7 +19,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.13.5
+coverage[toml]==7.14.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -33,7 +35,7 @@ distro==1.9.0
     #   zzbase
 docutils==0.22.4
     # via sphinx
-dulwich==1.2.1
+dulwich==1.2.4
     # via zzbase
 execnet==2.1.2
     # via pytest-xdist
@@ -41,7 +43,7 @@ ffpuppet==1.0.0
     # via lithium-reducer
 filelock==3.29.0
     # via pytest-mypy
-idna==3.13
+idna==3.16
     # via requests
 imagesize==2.0.0
     # via sphinx
@@ -51,7 +53,7 @@ isort==8.0.1
     # via pylint
 jinja2==3.1.6
     # via sphinx
-librt==0.9.0 ; platform_python_implementation != 'PyPy'
+librt==0.11.0 ; platform_python_implementation != 'PyPy'
     # via mypy
 lithium-reducer==4.0.0
     # via zzbase
@@ -59,7 +61,7 @@ markupsafe==3.0.3
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==1.20.2
+mypy==2.0.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -102,7 +104,7 @@ pylint==4.0.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==0.63.1
+pyrefly==1.0.0
     # via ocs (pyproject.toml)
 pytest==9.0.3
     # via
@@ -143,7 +145,7 @@ requests==2.33.1
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.15.12
+ruff==0.15.14
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -172,9 +174,9 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomlkit==0.14.0
+tomlkit==0.15.0
     # via pylint
-ty==0.0.33
+ty==0.0.38
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -193,12 +195,12 @@ typing-extensions==4.15.0
     #   ocs (pyproject.toml)
     #   mypy
     #   zzbase
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   dulwich
     #   requests
     #   types-requests
-uv==0.11.8
+uv==0.11.16
     # via
     #   ocs (pyproject.toml)
     #   zzbase
