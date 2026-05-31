@@ -23,16 +23,16 @@ dependencies = [
   "setuptools-scm >= 10.0.5",
   "types-setuptools==82.0.0.20260408",  # Bump types-* only with mypy
   "typing-extensions ~= 4.15.0",
-  "uv >= 0.11.16",
+  "uv >= 0.11.17",
   "wheel >= 0.47.0",
 ]
 dynamic = ["readme", "version"]
 
 [project.optional-dependencies]
 test = [
-  "basedpyright ~= 1.39.5",
-  "coverage ~= 7.14.0",
-  "mypy ~= 2.0.0",
+  "basedpyright ~= 1.39.6",
+  "coverage ~= 7.14.1",
+  "mypy ~= 2.1.0",
   "pylint ~= 4.0.5",
   "pyrefly ~= 0.63.1",
   "pytest ~= 9.0.3",
@@ -46,9 +46,9 @@ test = [
   "pytest-ty ~= 0.2.1",
   "pytest-vulture ~= 2.2.2",
   "pytest-xdist ~= 3.8.0",
-  "ruff ~= 0.15.14",
+  "ruff ~= 0.15.15",
   "sphinx ~= 9.1.0",
-  "ty ~= 0.0.38",
+  "ty ~= 0.0.40",
   "vulture ~= 2.16",
 ]
 
