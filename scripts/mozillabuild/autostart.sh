@@ -20,6 +20,7 @@ pushd "$HOME"/trees/firefox/ || exit ;
 # Yes to optimally configure Git, no to pushing commits upstream and telemetry submission
 MACH_HIDE_DEV_DRIVE_SUGGESTION=1 ./mach bootstrap --app=js << EOF
 
+n
 y
 n
 n
