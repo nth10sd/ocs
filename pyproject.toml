@@ -284,6 +284,7 @@ external = [
 ]
 ignore = [
   "COM812",  # Seems to add trailing comma even when arguments already fit on one line
+  "CPY001",  # Copyright notices are at the root of the project, if any
   "D203",  # D211 is used by default, which is incompatible with this
   "D213",  # D212 is used by default, which is incompatible with this
   "EM101",  # String literals is used in exception constructors, stack is readable
