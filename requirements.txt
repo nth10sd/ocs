@@ -10,7 +10,7 @@ babel==2.18.0
     # via sphinx
 basedpyright==1.39.9
     # via ocs (pyproject.toml)
-certifi==2026.6.17
+certifi==2026.7.22
     # via requests
 charset-normalizer==3.4.9
     # via requests
@@ -145,7 +145,7 @@ requests==2.34.2
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.15.22
+ruff==0.16.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
@@ -176,7 +176,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.15.1
     # via pylint
-ty==0.0.61
+ty==0.0.63
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -200,7 +200,7 @@ urllib3==2.7.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.11.30
+uv==0.11.32
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -214,7 +214,7 @@ wheel==0.47.0
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.28 ; sys_platform == 'linux'
+xvfbwrapper==0.2.29 ; sys_platform == 'linux'
     # via ffpuppet
 zuban==0.9.0
     # via ocs (pyproject.toml)
