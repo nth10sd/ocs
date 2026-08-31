@@ -19,7 +19,7 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.15.4
+coverage[toml]==7.16.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -35,21 +35,21 @@ distro==1.9.0
     #   zzbase
 docutils==0.22.4
     # via sphinx
-dulwich==1.2.12
+dulwich==1.2.14
     # via zzbase
 execnet==2.1.2
     # via pytest-xdist
 ffpuppet==1.1.0
     # via lithium-reducer
-filelock==3.32.3
+filelock==3.32.5
     # via pytest-mypy
-idna==3.18
+idna==3.19
     # via requests
-imagesize==2.0.0
+imagesize==2.0.1
     # via sphinx
 iniconfig==2.3.0
     # via pytest
-isort==8.0.1
+isort==9.0.1
     # via pylint
 jinja2==3.1.6
     # via sphinx
@@ -66,8 +66,10 @@ mypy==2.3.1
     #   ocs (pyproject.toml)
     #   pytest-mypy
 mypy-extensions==1.1.0
-    # via mypy
-nodejs-wheel-binaries==24.16.0
+    # via
+    #   isort
+    #   mypy
+nodejs-wheel-binaries==24.19.0
     # via basedpyright
 orderly-set==5.5.0
     # via deepdiff
@@ -86,7 +88,7 @@ packaging==26.3
     #   zzbase
 pathspec==1.1.1
     # via mypy
-platformdirs==4.11.3
+platformdirs==4.11.5
     # via pylint
 pluggy==1.6.0
     # via
@@ -100,7 +102,7 @@ pygments==2.21.0
     # via
     #   pytest
     #   sphinx
-pylint==4.0.7
+pylint==4.0.8
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
@@ -145,11 +147,11 @@ requests==2.34.2
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.16.3
+ruff==0.16.5
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==83.0.0
+setuptools==84.0.0
     # via
     #   ocs (pyproject.toml)
     #   setuptools-scm
@@ -176,7 +178,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.15.1
     # via pylint
-ty==0.0.72
+ty==0.0.76
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -186,7 +188,7 @@ types-psutil==7.2.2.20260518
     # via zzbase
 types-requests==2.33.0.20260712
     # via zzbase
-types-setuptools==83.0.0.20260716
+types-setuptools==84.0.0.20260812
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -200,11 +202,11 @@ urllib3==2.7.0
     #   dulwich
     #   requests
     #   types-requests
-uv==0.12.5
+uv==0.12.7
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-vcs-versioning==2.2.4
+vcs-versioning==2.3.1
     # via setuptools-scm
 vulture==2.16
     # via
