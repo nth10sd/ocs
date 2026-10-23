@@ -2,24 +2,24 @@
 #    uv pip compile pyproject.toml requirements.in --all-extras --no-strip-extras --no-strip-markers --universal --output-file requirements.txt
 alabaster==1.0.0
     # via sphinx
-ast-serialize==0.8.0
+ast-serialize==0.13.1
     # via mypy
-astroid==4.0.4
+astroid==4.3.4
     # via pylint
 babel==2.18.0
     # via sphinx
-basedpyright==1.39.10
+basedpyright==1.40.2
     # via ocs (pyproject.toml)
-certifi==2026.7.22
+certifi==2026.10.19
     # via requests
-charset-normalizer==3.5.1
+charset-normalizer==3.5.2
     # via requests
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
     #   pylint
     #   pytest
     #   sphinx
-coverage[toml]==7.16.0
+coverage[toml]==7.17.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-cov
@@ -35,33 +35,33 @@ distro==1.9.0
     #   zzbase
 docutils==0.22.4
     # via sphinx
-dulwich==1.2.14
+dulwich==1.2.19
     # via zzbase
 execnet==2.1.2
     # via pytest-xdist
 ffpuppet==1.1.0
     # via lithium-reducer
-filelock==3.32.5
+filelock==4.2.4
     # via pytest-mypy
-idna==3.19
+idna==3.20
     # via requests
 imagesize==2.0.1
     # via sphinx
-iniconfig==2.3.0
+iniconfig==2.3.1
     # via pytest
-isort==9.0.1
+isort==9.0.2
     # via pylint
 jinja2==3.1.6
     # via sphinx
-librt==0.15.0 ; platform_python_implementation != 'PyPy'
+librt==0.16.0 ; platform_python_implementation != 'PyPy'
     # via mypy
 lithium-reducer==4.0.0
     # via zzbase
-markupsafe==3.0.3
+markupsafe==3.0.4
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==2.3.1
+mypy==2.4.0
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -88,9 +88,9 @@ packaging==26.3
     #   zzbase
 pathspec==1.1.1
     # via mypy
-platformdirs==4.11.5
+platformdirs==4.13.5
     # via pylint
-pluggy==1.6.0
+pluggy==1.7.0
     # via
     #   pytest
     #   pytest-cov
@@ -102,11 +102,11 @@ pygments==2.21.0
     # via
     #   pytest
     #   sphinx
-pylint==4.0.8
+pylint==4.1.3
     # via
     #   ocs (pyproject.toml)
     #   pytest-pylint
-pyrefly==1.2.0
+pyrefly==1.4.0
     # via ocs (pyproject.toml)
 pytest==9.0.3
     # via
@@ -125,17 +125,17 @@ pytest-cov==7.1.0
     # via ocs (pyproject.toml)
 pytest-instafail==0.5.0
     # via ocs (pyproject.toml)
-pytest-mypy==1.0.1
+pytest-mypy==1.1.0
     # via ocs (pyproject.toml)
 pytest-order==1.5.0
     # via ocs (pyproject.toml)
 pytest-pylint==0.21.0
     # via ocs (pyproject.toml)
-pytest-randomly==4.1.0
+pytest-randomly==5.0.0
     # via ocs (pyproject.toml)
 pytest-ruff==0.5
     # via ocs (pyproject.toml)
-pytest-ty==0.2.1
+pytest-ty==0.3.0
     # via ocs (pyproject.toml)
 pytest-vulture==2.2.2
     # via ocs (pyproject.toml)
@@ -147,22 +147,22 @@ requests==2.34.2
     #   zzbase
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.16.5
+ruff==0.17.2
     # via
     #   ocs (pyproject.toml)
     #   pytest-ruff
-setuptools==84.0.0
+setuptools==84.2.1
     # via
     #   ocs (pyproject.toml)
     #   setuptools-scm
     #   zzbase
-setuptools-scm==10.2.1
+setuptools-scm==10.3.4
     # via
     #   ocs (pyproject.toml)
     #   zzbase
 snowballstemmer==3.1.1
     # via sphinx
-sphinx==9.1.0
+sphinx==9.1.1
     # via ocs (pyproject.toml)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
@@ -170,25 +170,25 @@ sphinxcontrib-devhelp==2.0.0
     # via sphinx
 sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
-sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-jsmath==2.0.0
     # via sphinx
 sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-tomlkit==0.15.1
+tomlkit==0.15.2
     # via pylint
-ty==0.0.76
+ty==0.0.91
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
 types-defusedxml==0.7.0.20260504
     # via zzbase
-types-psutil==7.2.2.20260518
+types-psutil==7.2.2.20260906
     # via zzbase
-types-requests==2.33.0.20260712
+types-requests==2.33.0.20261006
     # via zzbase
-types-setuptools==84.0.0.20260812
+types-setuptools==84.0.0.20261006
     # via
     #   ocs (pyproject.toml)
     #   zzbase
@@ -197,16 +197,16 @@ typing-extensions==4.15.0
     #   ocs (pyproject.toml)
     #   mypy
     #   zzbase
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   dulwich
     #   requests
     #   types-requests
-uv==0.12.7
+uv==0.13.5
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-vcs-versioning==2.3.1
+vcs-versioning==2.6.0
     # via setuptools-scm
 vulture==2.16
     # via
@@ -216,9 +216,9 @@ wheel==0.48.0
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-xvfbwrapper==0.2.29 ; sys_platform == 'linux'
+xvfbwrapper==0.2.36 ; sys_platform == 'linux'
     # via ffpuppet
-zuban==0.9.1
+zuban==0.10.1
     # via ocs (pyproject.toml)
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
