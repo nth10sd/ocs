@@ -97,7 +97,9 @@ jobs:
       # - name: Run with zuban (mypy)
       #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+        run: python -u -m pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly coverage
+        run: python -u -m pyrefly coverage check --strict
       - name: Run basedpyright
         run: python -u -m basedpyright
       - name: Run with refurb to find code that can be written in a more modern way
@@ -303,7 +305,9 @@ jobs:
       # - name: Run with zuban (mypy)
       #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+        run: python -u -m pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly coverage
+        run: python -u -m pyrefly coverage check --strict
 
       - name: Make sure LLVM is installed and look for available LLVM versions
         run: brew install llvm || true ; brew link --overwrite python@3.14 ; brew install llvm ; ls -l /opt/homebrew/Cellar/llvm/
@@ -448,7 +452,9 @@ jobs:
       # - name: Run with zuban (mypy)
       #   run: zuban mypy
       - name: Run with pyrefly, displaying removed ignores, but due to pyrefly itself, even when removed ignores are found, it still exits with a zero exit code
-        run: git ls-files '*.py' | xargs pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+        run: python -u -m pyrefly check --remove-unused-ignores ; git diff ; git checkout -- .
+      - name: Run with pyrefly coverage
+        run: python -u -m pyrefly coverage check --strict
       - name: Install prerequisites
         run: |
           while ($True) {

@@ -7,7 +7,7 @@ from pathlib import Path
 # \    from beartype.claw import beartype_this_package
 
 __title__ = "ocs"
-__version__ = (Path(__file__).parent / "_version.txt").read_text(encoding="utf-8")
+__version__: str = (Path(__file__).parent / "_version.txt").read_text(encoding="utf-8")
 
 # If reactivation of beartype is desired, disable ruff TC001, TC002 and TC003 errors
 # "TC001",   # TYPE_CHECKING seems incompatible with beartype

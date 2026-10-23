@@ -202,31 +202,15 @@ min-similarity-lines = 8
 py-version = "3.12"
 
 [tool.pyrefly]
+baseline-error-level = "error"
+enabled-ignores = ["pyrefly"]
+preset = "all"
 project-excludes = ["build/"]
 python-version = "3.12"
 search-path = []
 
 [tool.pyrefly.errors]
-# All as of approx. pyrefly 0.52.0, 20260213
-# https://github.com/facebook/pyrefly/blob/5cb4611765e8caf4b740dfc630b3b267b2dd69ae/crates/pyrefly_config/src/error_kind.rs#L321
-deprecated = true
-implicit-abstract-class = true
-implicit-any = true
-implicitly-defined-attribute = true
-missing-override-decorator = true
-missing-source = true
-non-exhaustive-match = true
-not-required-key-access = true
-open-unpacking = true
-redundant-cast = true
-reveal-type = true
-unannotated-attribute = true
-unannotated-parameter = true
-unannotated-return = true
-unnecessary-comparison = true
-untyped-import = true
-unused-ignore = true
-# variance-mismatch = true
+implicit-bool = false  # Seems to go against our regular Python convention
 
 [tool.pytest]
 addopts = [
