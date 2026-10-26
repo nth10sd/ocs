@@ -408,26 +408,43 @@ jobs:
 
           # List of large pre-installed tool paths on GitHub Windows runners
           $pathsToClean = @(
+            # Android
+            "C:\Android",
+            "C:\Microsoft\AndroidNDK*",
             "C:\Program Files\Android",
-            "C:\Program Files (x86)\Android"
+            "C:\Program Files (x86)\Android",
+
+            # Java and Ruby
+            "C:\hostedtoolcache\windows\Java*",
+            "C:\hostedtoolcache\windows\Ruby*",
+            "C:\Ruby*",
+
+            # .NET SDKs & Runtimes (32-bit and 64-bit)
+            "C:\Program Files\dotnet",
+            "C:\Program Files (x86)\dotnet",
+
+            # Haskell
+            "C:\cabal"
           )
 
-          foreach ($path in $pathsToClean) {
-            if (Test-Path $path) {
-              Write-Host "Removing $path..."
+          foreach ($pathPattern in $pathsToClean) {
+            if (Test-Path -Path $pathPattern) {
+              Get-Item -Path $pathPattern -ErrorAction SilentlyContinue | ForEach-Object {
+                Write-Host "Found $($_.FullName), starting to remove it..."
 
-              $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
+                $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
 
-              # Execute robocopy purge
-              robocopy $emptyDir.FullName $path /MIR /MT:8 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
+                # Execute robocopy purge
+                robocopy $emptyDir.FullName $_.FullName /MIR /MT:8 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
 
-              # Reset exit code state so step doesn't falsely fail
-              $LASTEXITCODE = 0
+                # Reset exit code state so step doesn't falsely fail
+                $LASTEXITCODE = 0
 
-              Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
-              Remove-Item -Path $emptyDir.FullName -Force -ErrorAction SilentlyContinue
+                Remove-Item -Path $_.FullName -Force -ErrorAction SilentlyContinue
+                Remove-Item -Path $emptyDir.FullName -Force -ErrorAction SilentlyContinue
 
-              Write-Host "$path was found and removed!"
+                Write-Host "$($_.FullName) was found and removed!"
+              }
             }
           }
       - name: Check free space on Windows (after cleanup)
