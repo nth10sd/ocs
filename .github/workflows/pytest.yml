@@ -417,7 +417,10 @@ jobs:
               $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
 
               # Execute robocopy purge
-              robocopy $emptyDir.FullName $path /MIR /MT:16 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
+              robocopy $emptyDir.FullName $path /MIR /MT:8 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
+
+              # Reset exit code state so step doesn't falsely fail
+              $LASTEXITCODE = 0
 
               Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
               Remove-Item -Path $emptyDir.FullName -Force -ErrorAction SilentlyContinue
