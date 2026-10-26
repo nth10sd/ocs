@@ -412,8 +412,13 @@ jobs:
 
           foreach ($path in $pathsToClean) {
             if (Test-Path $path) {
-              Write-Host "Removing $path..."
-              Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+              $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
+
+              # Execute robocopy purge
+              robocopy $emptyDir.FullName $path /MIR /MT:16 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
+
+              Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
+              Remove-Item -Path $emptyDir.FullName -Force -ErrorAction SilentlyContinue
             }
           }
       - name: Check free space on Windows (after cleanup)
