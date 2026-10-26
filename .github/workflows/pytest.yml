@@ -390,6 +390,40 @@ jobs:
           ]
         python-version: ["3.12"]
     steps:
+      - name: Check free space on Windows (before cleanup)
+        if: startsWith(runner.os, 'Windows')
+        shell: powershell
+        run: |
+          $disk = Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'"
+          $freeGB = [math]::Round($disk.FreeSpace / 1GB, 2)
+          $totalGB = [math]::Round($disk.Size / 1GB, 2)
+          Write-Host "Free Space Before: $freeGB GB / $totalGB GB"steps:
+      - name: Free Disk Space (Windows)
+        if: startsWith(runner.os, 'Windows')
+        shell: powershell
+        run: |
+          Write-Host "Freeing disk space on Windows..."
+
+          # List of large pre-installed tool paths on GitHub Windows runners
+          $pathsToClean = @(
+            "C:\Program Files\Android",
+            "C:\Program Files (x86)\Android"
+          )
+
+          foreach ($path in $pathsToClean) {
+            if (Test-Path $path) {
+              Write-Host "Removing $path..."
+              Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
+            }
+          }
+      - name: Check free space on Windows (after cleanup)
+        if: startsWith(runner.os, 'Windows')
+        shell: powershell
+        run: |
+          $disk = Get-CimInstance -ClassName Win32_LogicalDisk -Filter "DeviceID='C:'"
+          $freeGB = [math]::Round($disk.FreeSpace / 1GB, 2)
+          $totalGB = [math]::Round($disk.Size / 1GB, 2)
+          Write-Host "Free Space Before: $freeGB GB / $totalGB GB"
       - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v7
