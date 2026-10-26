@@ -412,6 +412,8 @@ jobs:
 
           foreach ($path in $pathsToClean) {
             if (Test-Path $path) {
+              Write-Host "Removing $path..."
+
               $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
 
               # Execute robocopy purge
@@ -419,6 +421,8 @@ jobs:
 
               Remove-Item -Path $path -Force -ErrorAction SilentlyContinue
               Remove-Item -Path $emptyDir.FullName -Force -ErrorAction SilentlyContinue
+
+              Write-Host "$path was found and removed!"
             }
           }
       - name: Check free space on Windows (after cleanup)
