@@ -410,21 +410,16 @@ jobs:
           $pathsToClean = @(
             # Android
             "C:\Android",
-            "C:\Microsoft\AndroidNDK*",
             "C:\Program Files\Android",
             "C:\Program Files (x86)\Android",
 
             # Java and Ruby
             "C:\hostedtoolcache\windows\Java*",
             "C:\hostedtoolcache\windows\Ruby*",
-            "C:\Ruby*",
 
             # .NET SDKs & Runtimes (32-bit and 64-bit)
             "C:\Program Files\dotnet",
-            "C:\Program Files (x86)\dotnet",
-
-            # Haskell
-            "C:\cabal"
+            "C:\Program Files (x86)\dotnet"
           )
 
           foreach ($pathPattern in $pathsToClean) {
