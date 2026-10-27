@@ -179,7 +179,6 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p "$HOME"/trees ;
-          git config --global gc.auto 0 ;  # No need to pack objects on CI
           git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
           git -C "$HOME"/trees/firefox rev-parse HEAD
 
@@ -334,7 +333,6 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p "$HOME"/trees ;
-          git config --global gc.auto 0 ;  # No need to pack objects on CI
           git clone --single-branch https://github.com/mozilla-firefox/firefox.git "$HOME"/trees/firefox ;
           git -C "$HOME"/trees/firefox rev-parse HEAD
 
@@ -557,7 +555,6 @@ jobs:
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
           mkdir -p $HOME\trees ;
-          git config --global gc.auto 0 ;  # No need to pack objects on CI
           git clone --single-branch https://github.com/mozilla-firefox/firefox.git $HOME\trees\firefox ;
           git -C $HOME\trees\firefox rev-parse HEAD
 
