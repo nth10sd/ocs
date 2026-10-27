@@ -48,6 +48,21 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
+      - name: Free disk space (regular GitHub Actions Ubuntu images)
+        if: startsWith(runner.os, 'Linux')
+        uses: jlumbroso/free-disk-space@v2
+        with:
+          # Turn off Android, .NET and Haskell stuff for now
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: false
+
+          # these default to FALSE, because their failures are hard to
+          # trace back to this action — see the FAQ below before enabling
+          preinstalled-runtimes: false
+          swap-storage: false
       - uses: actions/checkout@v7
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v7
