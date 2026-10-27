@@ -428,6 +428,7 @@ jobs:
                 $emptyDir = New-Item -Path "$env:TEMP\empty_dir" -ItemType Directory -Force
 
                 # Execute robocopy purge
+                # Benchmarks done with 8, 6, 4, 3 and 2 threads on 20261026 on 4-core Windows images
                 robocopy $emptyDir.FullName $_.FullName /MIR /MT:6 /NFL /NDL /NJH /NJS /NC /NS /NP | Out-Null
 
                 # Reset exit code state so step doesn't falsely fail
