@@ -61,7 +61,7 @@ markupsafe==3.0.4
     # via jinja2
 mccabe==0.7.0
     # via pylint
-mypy==2.4.0
+mypy==2.4.1
     # via
     #   ocs (pyproject.toml)
     #   pytest-mypy
@@ -88,7 +88,7 @@ packaging==26.3
     #   zzbase
 pathspec==1.1.1
     # via mypy
-platformdirs==4.13.5
+platformdirs==4.14.0
     # via pylint
 pluggy==1.7.0
     # via
@@ -178,7 +178,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.15.2
     # via pylint
-ty==0.0.92
+ty==0.0.94
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -192,7 +192,7 @@ types-setuptools==84.0.0.20261006
     # via
     #   ocs (pyproject.toml)
     #   zzbase
-typing-extensions==4.15.0
+typing-extensions==4.16.0
     # via
     #   ocs (pyproject.toml)
     #   mypy
