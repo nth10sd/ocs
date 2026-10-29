@@ -255,6 +255,16 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
+      - name: Free up disk space by removing Android development library
+        run: |
+          echo "Disk space before Android development library cleanup:"
+          df -h
+
+          # Remove Android SDK / NDK installations
+          sudo rm -rf /Users/runner/Library/Android
+
+          echo "Disk space after Android development library cleanup:"
+          df -h
       # GitHub issue about disk space availability on GitHub Actions macOS runners
       # https://github.com/actions/runner-images/issues/10511#issuecomment-2325830665
       - name: Remove unused Xcode to prevent low disk space issues
