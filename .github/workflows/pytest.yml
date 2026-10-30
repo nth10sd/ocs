@@ -435,9 +435,8 @@ jobs:
             "C:\Program Files\Android",
             "C:\Program Files (x86)\Android",
 
-            # Java and Ruby
+            # Java
             "C:\hostedtoolcache\windows\Java*",
-            "C:\hostedtoolcache\windows\Ruby*",
 
             # .NET SDKs & Runtimes (32-bit and 64-bit)
             "C:\Program Files\dotnet",
