@@ -178,7 +178,7 @@ sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
 tomlkit==0.15.2
     # via pylint
-ty==0.0.94
+ty==0.0.95
     # via
     #   ocs (pyproject.toml)
     #   pytest-ty
@@ -218,7 +218,7 @@ wheel==0.48.0
     #   zzbase
 xvfbwrapper==0.2.37 ; sys_platform == 'linux'
     # via ffpuppet
-zuban==0.10.1
+zuban==0.10.2
     # via ocs (pyproject.toml)
 zzbase @ git+ssh://git@zzbase.github.com/nth10sd/zzbase@main
     # via -r requirements.in
