@@ -541,7 +541,7 @@ jobs:
         run: |
           while ($True) {
             try {
-              choco install mozillabuild sd-cli -y ;
+              choco install mozillabuild -y ;
               break
             } catch {
               echo "Error installing via choco, retrying in 2 seconds..." ;
@@ -573,8 +573,9 @@ jobs:
       - name: Copy custom MozillaBuild autostart script to mozilla-build location
         run: cp scripts/mozillabuild/autostart.sh C:\mozilla-build\
       - name: Amend MozillaBuild start command
+        shell: bash
         run: |
-          sd '%MOZILLABUILD%msys2\\msys2_shell.cmd -full-path %\*' '%MOZILLABUILD%msys2\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}' C:\mozilla-build\start-shell.bat
+          sed -i 's|%MOZILLABUILD%msys2\\msys2_shell\.cmd -full-path %\*|%MOZILLABUILD%msys2\\msys2_shell.cmd -no-start -defterm -full-path %* -shell bash %MOZILLABUILD%autostart.sh ${{ matrix.build-type }}|g' /c/mozilla-build/start-shell.bat
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
         run: |
