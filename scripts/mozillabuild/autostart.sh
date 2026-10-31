@@ -17,11 +17,10 @@ mkdir -p "$HOME"/.mozbuild/ ;
 touch "$HOME"/.mozbuild/.ANTIVIRUS_EXCLUSIONS_DONE ;
 # Run mach bootstrap
 pushd "$HOME"/trees/firefox/ || exit ;
-# Yes to optimally configure Git, no to pushing commits upstream and telemetry submission
-MACH_HIDE_DEV_DRIVE_SUGGESTION=1 ./mach bootstrap --app=js << EOF
-
-n
+# Yes to optimally configure Git, no to sccache, pushing commits upstream and telemetry submission
+MACH_HIDE_DEV_DRIVE_SUGGESTION=1 ./mach bootstrap --app=js --no-agentic-tools << EOF
 y
+n
 n
 n
 EOF
