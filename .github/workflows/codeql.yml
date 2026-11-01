@@ -19,14 +19,14 @@ jobs:
       UV_CACHE_DIR: /tmp/.uv-cache
       UV_SYSTEM_PYTHON: 1
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
       # uv pip cache dependencies to save time
       - name: Restore uv cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: /tmp/.uv-cache
           key: uv-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('requirements.txt') }}
@@ -35,7 +35,7 @@ jobs:
             uv-${{ runner.os }}-${{ runner.arch }}-
             uv-${{ runner.os }}-
       - name: Use deploy key
-        uses: webfactory/ssh-agent@v0.10.0
+        uses: webfactory/ssh-agent@e83874834305fe9a4a2997156cb26c5de65a8555 # v0.10.0
         with:
           ssh-private-key: |
             ${{ secrets.CRASH2COV_TOKEN }}
