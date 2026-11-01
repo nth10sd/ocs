@@ -519,8 +519,8 @@ jobs:
         run: python -c 'import fileinput; [print(line.partition("git@")[0] + "git@github.com/" + line.partition(".github.com/")[-1] if (".github.com/" in line and not line.startswith("#")) else line, end="") for line in fileinput.input(inplace=True)]' requirements.txt
       - name: Print differences in git repository needed to make CI work
         run: git diff
-      - name: Install requirements from possibly-changed requirements.txt, and package in development mode
-        run: uv pip install -r requirements.txt --config-settings editable_mode=strict -e .
+      - name: Install requirements from possibly-changed requirements.txt, and package in development mode (Windows seems to require --system)
+        run: uv pip install --system -r requirements.txt --config-settings editable_mode=strict -e .
       - name: Revert requirements.txt if changed
         run: git checkout -- requirements.txt
 
