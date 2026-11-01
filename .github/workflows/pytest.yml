@@ -139,7 +139,7 @@ jobs:
         if: matrix.build-type == '--enable-valgrind'
         run: sudo apt-get install valgrind
       - name: Install 32-bit prerequisites for some builds, only on x86_64 hosts
-        if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
+        if: contains(fromJSON('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]'), matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then sudo apt-get install g++-multilib lib32z1-dev libc6-dev-i386 ; fi
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
         if: startsWith(runner.os, 'Linux')
@@ -189,7 +189,7 @@ jobs:
         run: git clean -fd
 
       - name: Install 32-bit Rust toolchain for some builds, only on x86_64 hosts
-        if: contains('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]', matrix.build-type)
+        if: contains(fromJSON('["--enable-32bit", "--enable-debug --disable-optimize --enable-32bit", "--enable-debug --disable-optimize --enable-simulator=arm --enable-32bit",]'), matrix.build-type)
         run: if uname -m | grep -q 'x86_64' ; then rustup target add i686-unknown-linux-gnu ; fi
 
       - name: Clone firefox repository from GitHub and print the latest commit hash
