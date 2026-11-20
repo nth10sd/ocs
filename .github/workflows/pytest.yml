@@ -546,7 +546,7 @@ jobs:
         run: |
           while ($true) {
             try {
-              choco install mozillabuild --no-progress
+              choco install mozillabuild -y --no-progress --fail-on-unfound
               if ($LASTEXITCODE -ne 0) {
                   throw "Chocolatey exited with code $LASTEXITCODE"
               }
