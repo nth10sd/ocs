@@ -546,10 +546,11 @@ jobs:
         run: |
           while ($true) {
             try {
-              choco install mozillabuild -y --no-progress
+              choco install mozillabuild --no-progress
               if ($LASTEXITCODE -ne 0) {
                   throw "Chocolatey exited with code $LASTEXITCODE"
               }
+              refreshenv
               break
             } catch {
               Write-Warning "Error installing via choco ($($_.Exception.Message)), retrying in 2 seconds..."
