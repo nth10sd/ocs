@@ -544,13 +544,16 @@ jobs:
         run: python -u -m pyrefly coverage check --strict
       - name: Install prerequisites
         run: |
-          while ($True) {
+          while ($true) {
             try {
-              choco install mozillabuild -y ;
+              choco install mozillabuild -y --no-progress
+              if ($LASTEXITCODE -ne 0) {
+                  throw "Chocolatey exited with code $LASTEXITCODE"
+              }
               break
             } catch {
-              echo "Error installing via choco, retrying in 2 seconds..." ;
-              sleep 2 ;
+              Write-Warning "Error installing via choco ($($_.Exception.Message)), retrying in 2 seconds..."
+              Start-Sleep -Seconds 2
             }
           }
       - name: Use basedpyright to measure type-completeness of package (at least 100% for this package)
